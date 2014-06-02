@@ -1,0 +1,5 @@
+AuthName "Log in to use the IEEE exclusive check-in script" 
+AuthType Basic 
+AuthUserFile /home/vuong033/.www/.htpasswd 
+AuthGroupFile /dev/null 
+require valid-user
