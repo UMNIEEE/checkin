@@ -28,15 +28,17 @@
 	echo $meeting;
 
 	// Create connection
-	$con = mysqli_connect(localhost, "root", "4Eatiaeaor");
-	if (!$con){
+	$con = mysql_connect(localhost, "root", "4Eatiaeaor");
+	if (!$con)
+	{
 	   die('Could not connect: ' . mysql_error());
 	}
 	echo 'Connected Successfully';
 
 	//Select database
 	$db_selected = mysql_select_db('ieee', $con);
-	if (!$db_selected) {
+	if (!$db_selected) 
+	{
 	   die ('Can\'t use ieee: ' . mysql_error());
 	}
 
@@ -46,7 +48,8 @@
 		SET Active = "Yes"
 		WHERE Name = $firstName . " " . $lastName';
 	$result = mysql_query($sql, $con);	
-	if (!$result) {
+	if (!$result) 
+	{
 	   echo "DB Error, could not query the database\n";
 	   echo 'MySQL Error: ' . mysql_error();
 	   exit;
