@@ -24,18 +24,18 @@
                 </div>
             </form>
             <p class="section-label">Manual Entry <i class="fa fa-pencil"></i></p>
-            <form class="boxed-section margin-lg-after" action="check.cgi" method="POST" enctype="multipart/form-data" role="form">
+            <form class="boxed-section margin-lg-after" action="sqltest.php" method="POST" enctype="multipart/form-data" role="form">
                 <input class="form-control input-lg margin-sm-after" type="text" name="firstname" id="firstname" placeholder="First Name">
                 <input class="form-control input-lg margin-sm-after" type="text" name="lastname" id="lastname" placeholder="Last Name">
-                <button class="form-control input-lg btn btn-info check-in" type="submit"><i class="fa fa-check"></i> Check In</button>
+                <button class="form-control input-lg btn btn-info check-in" type="submit" value="sqltest.php"><i class="fa fa-check"></i> Check In</button>
             </form>
             <form class="boxed-section margin-lg-after" action="email.cgi" method="POST" enctype="multipart/form-data" role="form">
                 <input class="form-control input-lg margin-sm-after" type="email" name="recipient" id="recipient" placeholder="Recipient">
                 <input class="form-control input-lg margin-sm-after" type="text" name="subject" id="subject" placeholder="Subject">
                 <button class="form-control input-lg btn btn-info check-in" type="submit"><i class="fa fa-envelope"></i> Send Email</button>
             </form>
-            <form class="boxed-section" action="confirm.html" method="get">
-                <button class="form-control input-lg btn btn-info check-in" type="submit" value="confirm.html"><i class="fa fa-eraser"></i> Create A New Check In</button>
+            <form class="boxed-section" action="sqltest.php" method="POST">
+                <button class="form-control input-lg btn btn-info check-in" type="submit" value="sqltest.php"><i class="fa fa-eraser"></i> Create A New Check In</button>
             </form>            
             <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
             <p class="footer">Powered by the IEEE Tech Subcommittee</p>
