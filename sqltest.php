@@ -1,7 +1,8 @@
-<!doctype html>
+f<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<!--<meta http-equiv="refresh" content="1; url=checkin.php" />-->
     <title>IEEE Meeting Check-In</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700|Oswald:300' rel='stylesheet' type='text/css'>
@@ -45,22 +46,22 @@
 	{
 	   die ('Can\'t use ieee: ' . mysql_error());
 	}
-	
+	//Amith's addition, Getting Column Names
+	$query_uno = "select COLUMN_NAME
+  						from information_schema.columns 
+ 						where table_schema = 'ieee' 
+   						and table_name = 'users';";
+	$result_uno = mysql_query($query_uno) or die(mysql_error());
+	$result_array = array();
+	while($row = mysql_fetch_assoc($result_uno))
+	{
+		$result_array[] = $row['COLUMN_NAME'];
+	}
+	foreach ($result_array as $entry){
+		echo $entry;
+	}
+
 	$full_name = $firstName. ' ' .$lastName;
-	print "My Full Name: $full_name\n";
-	//Update info
-	 $query = sprintf("UPDATE `ieee`.`Users` SET `Active`='lord' WHERE `Name`='%s'", $full_name);
-	 $result = mysql_query($query);	
-	 if (!$result) 
-	 {
-	    echo "DB Error, could not query the database\n";
-	    echo 'MySQL Error: ' . mysql_error();
-	    exit;
-	 }
-	 else
-	 {
-		 echo 'Updated data successfully';
-	 }
 	
 	mysql_close($con);	
 	?>

@@ -40,6 +40,13 @@ hr {
   text-align: right;
   font-size: 21px;
 }
+.section-header{
+  margin-bottom: 2px;
+  margin-right: 15px;
+  padding: 12px;
+  text-align: center;
+  font-size: 21px; 
+}
 i {
   margin-left: 8px;
 }
@@ -61,4 +68,12 @@ input {
   margin-top: 40px;
   font-family: "Oswald", sans-serif;
   text-align: center;
+}
+.selectpicker{
+
+  display:inline-block;
+  text-align: center;  
+  margin-bottom: 30px;
+
+  position: relative;
 }

@@ -12,7 +12,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
     <head>
     <meta charset="utf-8">
-    <meta http-equiv="refresh" content="1; url=checkin.html" />    
+    <meta http-equiv="refresh" content="1; url=checkin.php" />    
         <title>IEEE Meeting Check-In</title>
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
         <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700|Oswald:300' rel='stylesheet' type='text/css'>
