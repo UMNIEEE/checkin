@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Name>IEEECheckin.PHP</Name>
+    <ProjectGuid>8659ee58-8994-4fc7-8292-97ae28b7091b</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>IEEECheckin.PHP</RootNamespace>
+    <ProjectTypeGuids>{A0786B88-2ADB-4C21-ABE8-AA2D79766269}</ProjectTypeGuids>
+    <AssemblyName>IEEECheckin.PHP</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <IncludeDebugInformation>true</IncludeDebugInformation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <IncludeDebugInformation>false</IncludeDebugInformation>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="index.php" />
+    <Compile Include="MemberPages\checkin.php" />
+    <Compile Include="MemberPages\confirm.php" />
+    <Compile Include="MemberPages\dropdown.php" />
+    <Compile Include="MemberPages\sqltest.php" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MemberPages\" />
+    <Folder Include="App_Data\" />
+    <Folder Include="Content\" />
+    <Folder Include="Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Data\.htaccess" />
+    <Content Include="App_Data\.htpasswd" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Images\ieee.svg" />
+    <Content Include="MemberPages\check.cgi" />
+    <Content Include="MemberPages\checkin.txt" />
+    <Content Include="MemberPages\delete.cgi" />
+    <Content Include="MemberPages\email.cgi" />
+    <Content Include="MemberPages\sqltest.html" />
+  </ItemGroup>
+</Project>

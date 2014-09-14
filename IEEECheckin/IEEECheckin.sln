@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IEEECheckin.ASP", "IEEECheckin.ASP\IEEECheckin.ASP.csproj", "{02500D74-8AA7-4A44-810D-0A5B780645B2}"
+EndProject
+Project("{A0786B88-2ADB-4C21-ABE8-AA2D79766269}") = "IEEECheckin.PHP", "IEEECheckin.PHP\IEEECheckin.PHP.phpproj", "{8659EE58-8994-4FC7-8292-97AE28B7091B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{02500D74-8AA7-4A44-810D-0A5B780645B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02500D74-8AA7-4A44-810D-0A5B780645B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02500D74-8AA7-4A44-810D-0A5B780645B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02500D74-8AA7-4A44-810D-0A5B780645B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8659EE58-8994-4FC7-8292-97AE28B7091B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8659EE58-8994-4FC7-8292-97AE28B7091B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8659EE58-8994-4FC7-8292-97AE28B7091B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8659EE58-8994-4FC7-8292-97AE28B7091B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
