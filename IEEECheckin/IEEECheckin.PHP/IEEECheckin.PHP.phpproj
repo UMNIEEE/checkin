@@ -8,6 +8,7 @@
     <RootNamespace>IEEECheckin.PHP</RootNamespace>
     <ProjectTypeGuids>{A0786B88-2ADB-4C21-ABE8-AA2D79766269}</ProjectTypeGuids>
     <AssemblyName>IEEECheckin.PHP</AssemblyName>
+    <IISProjectUrl>http://localhost:16205/</IISProjectUrl>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <IncludeDebugInformation>true</IncludeDebugInformation>
@@ -27,16 +28,14 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\" />
     <Folder Include="Images\" />
+    <Folder Include="Scripts\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\.htaccess" />
     <Content Include="App_Data\.htpasswd" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\ieee.svg" />
-    <Content Include="MemberPages\check.cgi" />
-    <Content Include="MemberPages\checkin.txt" />
-    <Content Include="MemberPages\delete.cgi" />
-    <Content Include="MemberPages\email.cgi" />
-    <Content Include="MemberPages\sqltest.html" />
+    <Content Include="Scripts\check-in.js" />
+    <Content Include="Scripts\umn-crawl.js" />
   </ItemGroup>
 </Project>
