@@ -55,19 +55,26 @@
             <h1 class="post-header">Meeting Check-In</h1>
             <p class="section-header">Meeting Options<i class="fa fa-list"></i></p>  
             <!-- Insert action to redirect to checkin.php -->
-            <form class="boxed-section margin-lg-after" action="checkin.php" method="POST" enctype="multipart/form-data" role="form"> 
-                <select class="selectpicker">
+            <form class="boxed-section margin-lg-after" action="checkin.php" method="POST" id="meetingForm" enctype="multipart/form-data" role="form"> 
+                <select class="form-control" name="meeting" id="meetingDropdown">
                 <?php
                     foreach ($result_array as $entry){
                     echo  '<option>' . htmlspecialchars($entry) . '</option>';
                     }
-                ?> 
+                ?>
                 </select>
-                <button class="form-control input-lg btn btn-info check-in" type="submit" value="checkin.php"><i class="fa fa-check"></i>New Meeting</button>
+                <p class="section-label">Create New Meeting<i class="fa fa-pencil"></i></p>
+            
+                <input class="form-control input-lg margin-sm-after" type="text" name="newmeeting" id="newmeeting" placeholder="Meeting Name">
+                
+        
+                <button class="form-control input-lg btn btn-info check-in" id="meetingButton" onclick="return meetingSubmit();" type="submit" value="checkin.php"><i class="fa fa-check"></i>New Meeting</button>
+
             </form>
             <!-- Button to Post selection -->
-
             <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+            <script src="checkin.js"></script>   
             <p class="footer">Powered by the IEEE Tech Subcommittee</p>
         </div>
     </div>
