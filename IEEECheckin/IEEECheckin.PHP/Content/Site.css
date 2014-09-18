@@ -74,6 +74,9 @@ input {
   display:inline-block;
   text-align: center;  
   margin-bottom: 30px;
+  color: black;
+  width: 300px;
+  margin-left: 10px;
 
   position: relative;
 }
