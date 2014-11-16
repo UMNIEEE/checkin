@@ -1,0 +1,155 @@
+body {
+  font-family: "Lato", sans-serif;
+  background-color: #006699;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+.no-margin-after {
+  margin-bottom: 0;
+}
+.margin-sm-after {
+  margin-bottom: 10px;
+}
+.margin-lg-after {
+  margin-bottom: 40px;
+}
+.logo {
+  width: 100%;
+}
+.pre-header, .post-header {
+  font-weight: bold;
+  text-align: center;
+  font-family: "Oswald", sans-serif;
+  font-weight: lighter;
+}
+.post-header {
+  margin-top: 10px;
+  margin-bottom: 50px;
+}
+.pre-header {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+hr {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+.section-label {
+  margin-bottom: 2px;
+  margin-right: 15px;
+  text-align: right;
+  font-size: 21px;
+}
+.section-header{
+  margin-bottom: 2px;
+  margin-right: 15px;
+  padding: 12px;
+  text-align: center;
+  font-size: 21px; 
+}
+i {
+  margin-left: 8px;
+}
+.boxed-section {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-style: dashed;
+  border-radius: 8px;
+  padding: 12px;
+  font-weight: lighter;
+}
+input {
+  opacity: 0.9;
+}
+.check-in {
+  font-size: 21px;
+}
+.footer {
+  font-size: 18px;
+  margin-top: 40px;
+  font-family: "Oswald", sans-serif;
+  text-align: center;
+}
+.selectpicker{
+
+  display:inline-block;
+  text-align: center;  
+  margin-bottom: 30px;
+  color: black;
+  width: 300px;
+  margin-left: 10px;
+
+  position: relative;
+}
+/* Overlay
+----------------------------------------------------------*/
+.overlay{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background-color: rgba(0,0,0,0.5); /*dim the background*/
+}
+
+.modal {
+	min-width: 300px;
+	max-width: 960px;
+	max-height: 80%;
+	line-height: 200%;
+	position: fixed;
+	left: 50%;
+	padding: 20px;
+	margin-top: 30px;
+	margin-left: -150px;
+	background-color: #ffffff;
+	border-radius: 5px;
+	text-align: left;
+	z-index: 11; /* 1px higher than the overlay layer */
+	overflow: auto;
+}
+/* Clearable text boxes
+----------------------------------------------------------*/
+input[type="submit"].clearButton {
+	background-color: rgba(200, 200, 200, 0.30);
+	border-color: #333;
+	color: #333;
+	content: "X";
+	width: 20px;
+	height: 20px;
+	z-index: 2;
+	margin-left: 6px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	padding: 2px;
+	text-align: center;
+	font-weight: normal;
+	font-size: 10px;
+	cursor: pointer;
+}
+input.clearableField {
+	border: none;
+	margin: 0;
+	vertical-align: bottom;
+}
+div.clearableField {
+	position: relative;
+	width: auto;
+	border: 1px solid #e2e2e2;
+	margin: 5px 0 5px 0;
+}
+/* Validatable elements
+----------------------------------------------------------*/
+div.validate {
+	position: relative;
+	width: auto;
+	z-index: 2;
+	border: none;
+}
+.message-error {
+	clear: both;
+	color: #e80c4d;
+	font-size: 1.1em;
+	font-weight: bold;
+	margin: 20px 0 10px 0;
+}
