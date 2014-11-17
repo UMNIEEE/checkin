@@ -1,7 +1,7 @@
 ieee-checkin
 ============
 
-Live preview(s) available at [https://github.umn.edu/pages/gask0032/ieeecheckin/](https://github.umn.edu/pages/gask0032/ieeecheckin/)
+Live preview(s) available at [https://github.umn.edu/pages/IEEE/ieeecheckin/](https://github.umn.edu/pages/IEEE/ieeecheckin/)
 
 Swipe your U Card or enter your info to check in at IEEE UMN meetings.
 
