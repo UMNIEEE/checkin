@@ -39,7 +39,6 @@
     <Content Include="Build\clippy.swf" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\logo.svg" />
-    <Content Include="manifest.webapp" />
     <Content Include="MemberPages\output.html" />
     <Content Include="Scripts\check-in.js" />
     <Content Include="Scripts\store.js" />

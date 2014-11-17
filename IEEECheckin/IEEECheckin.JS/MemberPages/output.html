@@ -27,7 +27,12 @@
         }
         .col-lg-4 {
             width: 50.0%;
-            }
+        }
+        #output {
+            background: white;
+            color: black;
+            border: 1px solid;
+        }
     </style>
 </head>
 <body>
@@ -37,15 +42,24 @@
             <h1 class="pre-header">University of Minnesota</h1>
             <img class="logo" src="../Images/logo.svg">
             <h1 class="post-header">Meeting Output</h1>
-            <table id="output">
-                <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Student ID</th>
-                    <th>Meeting</th>
-                    <th>Date</th>
-                </tr>
-            </table>
+
+            <!--<form id="form1" class="boxed-section margin-lg-after" role="form">
+                <button class="form-control input-lg btn btn-info check-in" onclick="return csvSubmit();" type="submit" id="csvbutton" name="csvbutton"><i class="fa fa-check"></i>Get CSV</button>
+            </form>-->
+
+            <div id="outputDiv">
+                <table id="output">
+                    <tbody>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Student ID</th>
+                            <th>Meeting</th>
+                            <th>Date</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <br />
 
             <div id="clippyDiv">
@@ -59,9 +73,10 @@
             <script src="../Scripts/umn-crawl.js"></script>
             <script src="../Scripts/store.js"></script>
             <script>
+                var outputCsv = "";
                 function dbOpenCallback() {
                     try {
-                        createOutput("#output", decodeURIComponent(GetQueryStringParams("meeting")));
+                        createOutput("#output tr:last", decodeURIComponent(GetQueryStringParams("meeting")));
                     }
                     catch (err) {
                         alert(err.message);
@@ -71,6 +86,7 @@
                     if (outputVal != null && outputVal.trim() != "") {
                         outputVal = outputVal.replace('/"', '/');
                         outputVal = "First Name, Last Name, Student ID, Meeting, Date\n" + outputVal;
+                        outputCsv = outputVal;
                         $("#clippyDiv").append(
                             '<object class="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="110" height="14" id="clippy">' +
                                 '<param name="movie" value="../Build/clippy.swf"/>' +
@@ -83,6 +99,11 @@
                             '</object>'
                         );
                     }
+                }
+                function csvSubmit() {
+                    $("#output").hide();
+                    $("#outputDiv").append("<p>" + outputCsv + "</p>");
+                    return false;
                 }
             </script>
             <p class="footer">Powered by the IEEE Tech Subcommittee</p>
