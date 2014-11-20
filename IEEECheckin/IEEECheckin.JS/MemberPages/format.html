@@ -1,0 +1,165 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+    <title>Meeting Check-In</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700|Oswald:300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../Content/Site.css">
+    <link rel="stylesheet" href="../Content/colorpicker.css" />
+    <style>
+        #colorSelector, #colorSelector2, #colorSelector3 {
+            position: relative;
+            width: 36px;
+            height: 36px;
+            background: url(../Images/select.png);
+        }
+        #colorSelector div {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 30px;
+            height: 30px;
+            background: url(../Images/select.png) center;
+        }
+        #colorSelector2 div {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 30px;
+            height: 30px;
+            background: url(../Images/select.png) center;
+        }
+        #colorSelector3 div {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 30px;
+            height: 30px;
+            background: url(../Images/select.png) center;
+        }
+    </style>
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+    <div class="container">
+        <div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
+            <h1 class="pre-header" id="topHeader">University of Minnesota</h1>
+            <img class="logo" id="logoImage" src="../Images/logo.svg">
+            <h1 class="post-header">Meeting Check-In for:</h1>
+            <h2 id="meetingName" class="post-header">Example Meeting</h2>
+            <p class="section-label">Swipe Card Entry <i class="fa fa-credit-card"></i></p>
+            <form id="form-ucard" class="boxed-section margin-lg-after" role="form">
+                <div class="form-group no-margin-after">
+                    <input class="form-control input-lg margin-sm-after" autofocus="autofocus" type="password" name="cardtxt" id="cardtxt" placeholder="Click here, then swipe your card">
+                </div>
+            </form>
+            <p class="section-label">Manual Entry <i class="fa fa-pencil"></i></p>
+            <form id="form-manual" class="boxed-section margin-lg-after" role="form">
+                <input class="form-control input-lg margin-sm-after" type="text" name="firstname" id="firstname" placeholder="First Name">
+                <input class="form-control input-lg margin-sm-after" type="text" name="lastname" id="lastname" placeholder="Last Name">
+                <button class="form-control input-lg btn btn-info check-in" onclick="return false;" type="submit" id="checkinbutton" name="checkinbutton"><i class="fa fa-check"></i> Check In</button>
+            </form>
+            <p class="section-label">Edit Content <i class="fa fa-pencil"></i></p>
+            <form id="form-edit" class="boxed-section margin-lg-after" role="form">
+                <input class="form-control input-lg margin-sm-after" type="text" name="imageUrl" id="imageUrl" placeholder="Image Url" onblur="updateImage()">
+                <input class="form-control input-lg margin-sm-after" type="text" name="topText" id="topText" placeholder="Top Text" onblur="updateTopText()">
+                <button class="form-control input-lg btn btn-info check-in" onclick="return resetTheme();" type="submit" id="resetbutton" name="resetbutton"><i class="fa fa-check"></i> Reset Theme</button>
+            </form>
+            <div id="colorSelector"></div>
+            <div id="colorSelector2"></div>
+            <div id="colorSelector3"></div>
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+            <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+            <script src="../Scripts/jquery.cookie.js"></script>
+            <script src="../Scripts/colorpicker.js"></script>
+            <script src="../Scripts/eye.js"></script>
+            <script src="../Scripts/utils.js"></script>
+            <script src="../Scripts/check-in.js"></script>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    var bbc = $.cookie("body-background-color");
+                    if (bbc != null && bbc != undefined)
+                        $("body").css("background-color", "#" + bbc);
+
+                    $('#colorSelector').ColorPicker({
+                        color: '#0000ff',
+                        onShow: function (colpkr) {
+                            $(colpkr).fadeIn(500);
+                            return false;
+                        },
+                        onHide: function (colpkr) {
+                            $(colpkr).fadeOut(500);
+                            return false;
+                        },
+                        onChange: function (hsb, hex, rgb) {
+                            $("body").css("background-color", "#" + hex);
+                            $.cookie("body-background-color", hex, { path: "/" });
+                        }
+                    });
+                    $('#colorSelector2').ColorPicker({
+                        color: '#39b3d7',
+                        onShow: function (colpkr) {
+                            $(colpkr).fadeIn(500);
+                            return false;
+                        },
+                        onHide: function (colpkr) {
+                            $(colpkr).fadeOut(500);
+                            return false;
+                        },
+                        onChange: function (hsb, hex, rgb) {
+                            $("#checkinbutton").css("background-color", "#" + hex);
+                            reduced = parseInt(hex, 16);
+                            if (hex & 0x30 >= 0x0A0000)
+                                reduced = reduced - 0x0A0000;
+                            if (hex & 0x0C >= 0x000A00)
+                                reduced = reduced - 0x000A00;
+                            if (hex & 0x03 >= 0x00000A)
+                                reduced = reduced - 0x00000A;
+                            var temp = ("000000" + reduced.toString(16)).substr(-6)
+                            $("#checkinbutton").css("border-color", "#" + temp);
+                        }
+                    });
+                    $('#colorSelector3').ColorPicker({
+                        color: '#ffffff',
+                        onShow: function (colpkr) {
+                            $(colpkr).fadeIn(500);
+                            return false;
+                        },
+                        onHide: function (colpkr) {
+                            $(colpkr).fadeOut(500);
+                            return false;
+                        },
+                        onChange: function (hsb, hex, rgb) {
+                            $("body").css("color", "#" + hex);
+                        }
+                    });
+                });
+                function updateImage() {
+                    var value = $("#imageUrl").val();
+                    if(value != null && value.trim() != "")
+                        $("#logoImage").attr("src", value);
+                    else
+                        $("#logoImage").attr("src", "../Images/logo.svg");
+                }
+                function updateTopText() {
+                    var value = $("#topText").val();
+                    if (value != null && value.trim() != "")
+                        $("#topHeader").html(value);
+                    else
+                        $("#topHeader").html("University of Minnesota");
+                }
+                function resetTheme() {
+
+                    return false;
+                }
+            </script>
+            <p class="footer">Powered by the IEEE Tech Subcommittee</p>
+        </div>
+    </div>
+</body>
+</html>

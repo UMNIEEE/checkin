@@ -18,6 +18,7 @@
             <h1 class="pre-header">University of Minnesota</h1>
             <img class="logo" src="../Images/logo.svg">
             <h1 class="post-header">Meeting Check-In for:</h1>
+            <h2 id="meetingName" class="post-header"></h2>
             <p class="section-label">Swipe Card Entry <i class="fa fa-credit-card"></i></p>
             <form id="form-ucard" class="boxed-section margin-lg-after" role="form">
                 <div class="form-group no-margin-after">
@@ -34,12 +35,14 @@
 
             <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
             <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+            <script src="../Scripts/jquery.cookie.js"></script>
             <script src="../Scripts/check-in.js"></script>
             <script src="../Scripts/umn-crawl.js"></script>
             <script src="../Scripts/store.js"></script>
             <script type="text/javascript">
                 $(document).ready(function () {
                     $("#cardtxt").focus();
+                    $("#meetingName").html(decodeURIComponent(GetQueryStringParams("meeting")));
                     // subscribe to the keydown for the U-card input
                     $("#cardtxt, #firstname, #lastname").keydown(function (event) {
                         if (event.keyCode == 13) {
@@ -90,6 +93,7 @@
                         alert(err.message);
                     }
                     $("#cardtxt").focus();
+                    window.location.href = "confirm.html";
                     return false;
                 }
             </script>
