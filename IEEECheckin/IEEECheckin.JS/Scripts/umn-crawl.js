@@ -328,11 +328,6 @@ function crawl(urlPath) {
 
                 resultsHtml += "<br/>";
                 resultsHtml += '<input type="submit" name="crawlConfirm" value="Confirm" onclick="return parseData();" id="crawlConfirm">';
-                $("#crawlConfirm").focus();
-                $("#crawlConfirm").keyup(function () {
-                    parseData();
-                    return false;
-                });
             }
             else {
                 if ($("#results tr").length <= 0) {

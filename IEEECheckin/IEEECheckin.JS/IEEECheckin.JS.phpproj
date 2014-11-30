@@ -38,6 +38,8 @@
   <ItemGroup>
     <Content Include="Build\clippy.swf" />
     <Content Include="Content\colorpicker.css" />
+    <Content Include="MemberPages\about.html" />
+    <Content Include="Scripts\format.js" />
     <Content Include="Scripts\jquery.cookie.js" />
     <Content Include="Content\layout.css" />
     <Content Include="Content\Site.css" />

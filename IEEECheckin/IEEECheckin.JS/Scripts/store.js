@@ -4,7 +4,7 @@ var dbName = "attendees";
 
 // create a blank instance of the object that is used to transfer data into the IDB. This is mainly for reference
 var newItem = [
-      { index: "", studentid: "", firstname: "", lastname: "", day: 0, month: 0, year: 0, meeting: "" }
+      { index: "", studentid: "", firstname: "", lastname: "", email: "", day: 0, month: 0, year: 0, meeting: "" }
 ];
 
 $(document).ready(function () {
@@ -59,6 +59,7 @@ $(document).ready(function () {
         // define what data items the objectStore will contain
         objectStore.createIndex("firstname", "firstname", { unique: false });
         objectStore.createIndex("lastname", "lastname", { unique: false });
+        objectStore.createIndex("email", "email", { unique: false });
         objectStore.createIndex("day", "day", { unique: false });
         objectStore.createIndex("month", "month", { unique: false });
         objectStore.createIndex("year", "year", { unique: false });
@@ -73,6 +74,7 @@ function addData() {
     var firstnameVal = $("#firstname").val().trim();
     var lastnameVal = $("#lastname").val().trim();
     var studentidVal = $("#studentid").val().trim();
+    var emailVal = $("#email").val().trim();
     var meetingVal = decodeURIComponent(GetQueryStringParams("meeting")).trim();
     var indexVal = lastnameVal + "-" + firstnameVal + "-" + studentidVal + "-" + Date.now();
 
@@ -94,7 +96,7 @@ function addData() {
         var dt = new Date();
         // grab the values entered into the form fields and store them in an object ready for being inserted into the IDB
         var newItem = [
-          { index: indexVal, studentid: studentidVal, firstname: firstnameVal, lastname: lastnameVal, day: dt.getDate(), month: dt.getMonth(), year: dt.getFullYear(), meeting: meetingVal }
+          { index: indexVal, studentid: studentidVal, firstname: firstnameVal, lastname: lastnameVal, email: emailVal, day: dt.getDate(), month: dt.getMonth(), year: dt.getFullYear(), meeting: meetingVal }
         ];
 
         // open a read/write db transaction, ready for adding the data
@@ -128,6 +130,7 @@ function addData() {
             $("#firstname").val("");
             $("#lastname").val("");
             $("#studentid").val("");
+            $("#email").val("");
 
         }
     }
@@ -227,23 +230,25 @@ function createOutput(tableSelector, meeting) {
                     else
                         tableRow = tableRow + "<td></td>";
 
-                    tableRow = tableRow + 
+                    tableRow = tableRow +
+                        "<td>" + cursor.value.email + "</td>" +
                         "<td>" + cursor.value.meeting + "</td>" +
                         "<td>" + cursor.value.day + "-" + cursor.value.month + "-" + cursor.value.year + "</td>" +
                         "</tr>";
                     $(tableSelector).after(tableRow);
 
                     outputText = outputText + 
-                        cursor.value.firstname + ", " +
-                        cursor.value.lastname + ", ";
+                        cursor.value.firstname + "," +
+                        cursor.value.lastname + ",";
 
                     if (cursor.value.studentid != undefined)
-                        outputText = outputText + cursor.value.studentid + ", ";
+                        outputText = outputText + cursor.value.studentid + ",";
                     else
-                        outputText = outputText + ", ";
+                        outputText = outputText + ",";
 
                     outputText = outputText +
-                        cursor.value.meeting + ", " +
+                        cursor.value.email + "," +
+                        cursor.value.meeting + "," +
                         cursor.value.day + "-" + cursor.value.month + "-" + cursor.value.year +
                         "\n";
                 }

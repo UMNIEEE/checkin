@@ -39,6 +39,17 @@
             height: 30px;
             background: url(../Images/select.png) center;
         }
+        td, th {
+            padding-left: 10px;
+            padding-right: 10px;
+            width: 230px;
+        }
+        th {
+            padding-bottom: 10px;
+        }
+        td {
+            padding-bottom: 5px;
+        }
     </style>
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -49,7 +60,7 @@
     <div class="container">
         <div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
             <h1 class="pre-header" id="topHeader">University of Minnesota</h1>
-            <img class="logo" id="logoImage" src="../Images/logo.svg">
+            <a href="menu.html"><img class="logo" id="logoImage" src="../Images/logo.svg"></a>
             <h1 class="post-header">Meeting Check-In for:</h1>
             <h2 id="meetingName" class="post-header">Example Meeting</h2>
             <p class="section-label">Swipe Card Entry <i class="fa fa-credit-card"></i></p>
@@ -62,17 +73,35 @@
             <form id="form-manual" class="boxed-section margin-lg-after" role="form">
                 <input class="form-control input-lg margin-sm-after" type="text" name="firstname" id="firstname" placeholder="First Name">
                 <input class="form-control input-lg margin-sm-after" type="text" name="lastname" id="lastname" placeholder="Last Name">
+                <input class="form-control input-lg margin-sm-after" type="text" name="email" id="email" placeholder="Email">
                 <button class="form-control input-lg btn btn-info check-in" onclick="return false;" type="submit" id="checkinbutton" name="checkinbutton"><i class="fa fa-check"></i> Check In</button>
             </form>
-            <p class="section-label">Edit Content <i class="fa fa-pencil"></i></p>
+            <p class="section-label">Edit Content <i class="fa fa-cogs"></i></p>
             <form id="form-edit" class="boxed-section margin-lg-after" role="form">
                 <input class="form-control input-lg margin-sm-after" type="text" name="imageUrl" id="imageUrl" placeholder="Image Url" onblur="updateImage()">
                 <input class="form-control input-lg margin-sm-after" type="text" name="topText" id="topText" placeholder="Top Text" onblur="updateTopText()">
                 <button class="form-control input-lg btn btn-info check-in" onclick="return resetTheme();" type="submit" id="resetbutton" name="resetbutton"><i class="fa fa-check"></i> Reset Theme</button>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Background Color</td>
+                            <td>Button Color</td>
+                            <td>Text Color</td>
+                        </tr>
+                        <tr>
+                            <td><div id="colorSelector"></div></td>
+                            <td><div id="colorSelector2"></div></td>
+                            <td><div id="colorSelector3"></div></td>
+                        </tr>
+                    </tbody>
+                </table>
             </form>
-            <div id="colorSelector"></div>
-            <div id="colorSelector2"></div>
-            <div id="colorSelector3"></div>
+            <p class="section-label">Import/Export Format <i class="fa fa-cogs"></i></p>
+            <form id="form1" class="boxed-section margin-lg-after" role="form">
+                <input class="form-control input-lg margin-sm-after" type="multiline" name="export" id="export">
+            </form>
+            
+
             <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
             <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
             <script src="../Scripts/jquery.cookie.js"></script>
@@ -80,13 +109,10 @@
             <script src="../Scripts/eye.js"></script>
             <script src="../Scripts/utils.js"></script>
             <script src="../Scripts/check-in.js"></script>
+            <script src="../Scripts/format.js"></script>
             <script type="text/javascript">
                 $(document).ready(function () {
-                    var bbc = $.cookie("body-background-color");
-                    if (bbc != null && bbc != undefined)
-                        $("body").css("background-color", "#" + bbc);
-
-                    $('#colorSelector').ColorPicker({
+                    $('#colorSelector').ColorPicker({ // body background
                         color: '#0000ff',
                         onShow: function (colpkr) {
                             $(colpkr).fadeIn(500);
@@ -101,7 +127,7 @@
                             $.cookie("body-background-color", hex, { path: "/" });
                         }
                     });
-                    $('#colorSelector2').ColorPicker({
+                    $('#colorSelector2').ColorPicker({ // button color
                         color: '#39b3d7',
                         onShow: function (colpkr) {
                             $(colpkr).fadeIn(500);
@@ -112,7 +138,8 @@
                             return false;
                         },
                         onChange: function (hsb, hex, rgb) {
-                            $("#checkinbutton").css("background-color", "#" + hex);
+                            $("button").css("background-color", "#" + hex);
+                            $.cookie("button-background-color", hex, { path: "/" });
                             reduced = parseInt(hex, 16);
                             if (hex & 0x30 >= 0x0A0000)
                                 reduced = reduced - 0x0A0000;
@@ -121,10 +148,10 @@
                             if (hex & 0x03 >= 0x00000A)
                                 reduced = reduced - 0x00000A;
                             var temp = ("000000" + reduced.toString(16)).substr(-6)
-                            $("#checkinbutton").css("border-color", "#" + temp);
+                            $("button").css("border-color", "#" + temp);
                         }
                     });
-                    $('#colorSelector3').ColorPicker({
+                    $('#colorSelector3').ColorPicker({ // body (font) color
                         color: '#ffffff',
                         onShow: function (colpkr) {
                             $(colpkr).fadeIn(500);
@@ -136,29 +163,41 @@
                         },
                         onChange: function (hsb, hex, rgb) {
                             $("body").css("color", "#" + hex);
+                            $("button").css("color", "#" + hex);
+                            $.cookie("body-color", hex, { path: "/" });
                         }
                     });
                 });
                 function updateImage() {
                     var value = $("#imageUrl").val();
-                    if(value != null && value.trim() != "")
+                    if (value != null && value.trim() != "") {
                         $("#logoImage").attr("src", value);
-                    else
-                        $("#logoImage").attr("src", "../Images/logo.svg");
+                        $.cookie("image-url", value, { path: "/" });
+                    }
+                    //else
+                    //    $("#logoImage").attr("src", "../Images/logo.svg");
                 }
                 function updateTopText() {
                     var value = $("#topText").val();
-                    if (value != null && value.trim() != "")
+                    if (value != null && value.trim() != "") {
                         $("#topHeader").html(value);
-                    else
-                        $("#topHeader").html("University of Minnesota");
+                        $.cookie("header-text", value, { path: "/" });
+                    }
+                    //else
+                    //    $("#topHeader").html("University of Minnesota");
                 }
                 function resetTheme() {
-
+                    $.removeCookie("body-background-color", { path: '/' });
+                    $.removeCookie("button-background-color", { path: '/' });
+                    $.removeCookie("background-color", { path: '/' });
+                    $.removeCookie("body-color", { path: '/' });
+                    $.removeCookie("image-url", { path: '/' });
+                    $.removeCookie("header-text", { path: '/' });
+                    location.reload();
                     return false;
                 }
             </script>
-            <p class="footer">Powered by the IEEE Tech Subcommittee</p>
+            <p class="footer"></p>
         </div>
     </div>
 </body>

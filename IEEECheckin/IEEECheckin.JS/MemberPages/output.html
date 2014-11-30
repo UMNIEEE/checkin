@@ -39,8 +39,8 @@
 
     <div class="container">
         <div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
-            <h1 class="pre-header">University of Minnesota</h1>
-            <img class="logo" src="../Images/logo.svg">
+            <h1 class="pre-header" id="topHeader">University of Minnesota</h1>
+            <a href="menu.html"><img class="logo" id="logoImage" src="../Images/logo.svg"></a>
             <h1 class="post-header">Meeting Output</h1>
 
             <!--<form id="form1" class="boxed-section margin-lg-after" role="form">
@@ -54,6 +54,7 @@
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Student ID</th>
+                            <th>Email</th>
                             <th>Meeting</th>
                             <th>Date</th>
                         </tr>
@@ -73,6 +74,7 @@
             <script src="../Scripts/check-in.js"></script>
             <script src="../Scripts/umn-crawl.js"></script>
             <script src="../Scripts/store.js"></script>
+            <script src="../Scripts/format.js"></script>
             <script>
                 var outputCsv = "";
                 function dbOpenCallback() {
@@ -84,9 +86,14 @@
                     }
                 }
                 function cursorCallback(outputVal) {
+                    var bc = $.cookie("body-color");
+                    if (bc == null || bc == undefined) {
+                        bc = "006699";
+                        $("#clippyDiv").css("color", "#" + bc);
+                    }
                     if (outputVal != null && outputVal.trim() != "") {
                         outputVal = outputVal.replace('/"', '/');
-                        outputVal = "First Name, Last Name, Student ID, Meeting, Date\n" + outputVal;
+                        outputVal = "First Name,Last Name,Student ID,Email,Meeting,Date\n" + outputVal;
                         outputCsv = outputVal;
                         $("#clippyDiv").append(
                             '<object class="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="110" height="14" id="clippy">' +
@@ -95,7 +102,7 @@
                                 '<param name="quality" value="high" />' +
                                 '<param name="scale" value="noscale" />' +
                                 '<param NAME="FlashVars" id="clippyText" value="text=' + outputVal + '">' +
-                                '<param name="bgcolor" value="#006699">' +
+                                '<param name="bgcolor" value="#' + bc + '">' +
                                 '<embed src="../Build/clippy.swf" width="110" height="14"/>' +
                             '</object>'
                         );
@@ -107,7 +114,7 @@
                     return false;
                 }
             </script>
-            <p class="footer">Powered by the IEEE Tech Subcommittee</p>
+            <p class="footer"></p>
         </div>
     </div>
 </body>
