@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
     updateFormat();
     var dt = new Date();
-    $(".footer").html("Powered by the IEEE Tech Subcommittee. &copy; " + dt.getFullYear() + " - University of Minnesota IEEE Student Branch");
+    $(".footer").html("Powered by the U of M IEEE Tech Subcommittee. &copy; " + dt.getFullYear() + " - University of Minnesota IEEE Student Branch");
 });
 function updateFormat() {
     var bbc = $.cookie("body-background-color");

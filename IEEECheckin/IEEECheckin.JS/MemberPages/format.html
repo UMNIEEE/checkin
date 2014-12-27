@@ -80,11 +80,10 @@
             </form>
             <p class="section-label">Edit Content <i class="fa fa-cogs"></i></p>
             <form id="form-edit" class="boxed-section margin-lg-after" role="form">
-                <p>Changes occur when a control loses focus (click somewhere else on page for chages).</p>
+                <p>Changes occur when a control loses focus (click somewhere else on page for chages to occur).</p>
                 <input class="form-control input-lg margin-sm-after" type="text" name="imageUrl" id="imageUrl" placeholder="Image Url" onblur="updateImage()">
                 <input class="form-control input-lg margin-sm-after" type="text" name="topText" id="topText" placeholder="Top Text" onblur="updateTopText()">
                 <table><tbody><tr><td><input class="form-control margin-sm-after" type="checkbox" name="swipeCheck" id="swipeCheck" onblur="updateSwipe()"></td><td>Use U-Card Swipe</td></tr></tbody></table>
-                <button class="form-control input-lg btn btn-info check-in" onclick="return resetTheme();" type="submit" id="resetbutton" name="resetbutton"><i class="fa fa-check"></i> Reset Theme</button>
                 <table>
                     <tbody>
                         <tr>
@@ -99,6 +98,7 @@
                         </tr>
                     </tbody>
                 </table>
+                <button class="form-control input-lg btn btn-info check-in" onclick="return resetTheme();" type="submit" id="resetbutton" name="resetbutton"><i class="fa fa-check"></i> Reset Theme</button>
             </form>
             <p class="section-label">Import/Export Format <i class="fa fa-copy"></i></p>
             <form id="form1" class="boxed-section margin-lg-after" role="form">

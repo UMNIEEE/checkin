@@ -47,6 +47,8 @@
                 <input class="form-control input-lg margin-sm-after" type="hidden" name="format" id="format" placeholder="First Name">
                 <input class="form-control input-lg margin-sm-after" type="hidden" name="submitData" id="submitData" placeholder="First Name">
                 <button class="form-control input-lg btn btn-info check-in" onclick="return csvSubmit();" type="submit" id="csvbutton" name="csvbutton"><i class="fa fa-check"></i>Get CSV</button>
+                <br /><br />
+                <button class="form-control input-lg btn btn-info check-in" onclick="return jsonSubmit();" type="submit" id="jsonbutton" name="jsonbutton"><i class="fa fa-check"></i>Get JSON</button>
             </form>
 
             <div id="outputDiv">
@@ -63,12 +65,7 @@
                     </tbody>
                 </table>
             </div>
-            <br />
-
-            <div id="clippyDiv">
-
-            </div>
-            
+            <br />            
 
             <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
             <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
@@ -78,7 +75,6 @@
             <script src="../Scripts/store.js"></script>
             <script src="../Scripts/format.js"></script>
             <script>
-                var outputCsv = "";
                 function dbOpenCallback() {
                     try {
                         createOutput("#output tr:last", decodeURIComponent(GetQueryStringParams("meeting")));
@@ -89,25 +85,9 @@
                 }
                 function cursorCallback(outputVal) {
                     var bc = $.cookie("body-color");
-                    if (bc == null || bc == undefined) {
-                        bc = "006699";
-                        $("#clippyDiv").css("color", "#" + bc);
-                    }
                     if (outputVal != null && outputVal.trim() != "") {
                         outputVal = outputVal.replace('/"', '/');
                         outputVal = "First Name,Last Name,Student ID,Email,Meeting,Date\n" + outputVal;
-                        outputCsv = outputVal;
-                        $("#clippyDiv").append(
-                            '<object class="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="110" height="14" id="clippy">' +
-                                '<param name="movie" value="../Build/clippy.swf"/>' +
-                                '<param name="allowScriptAccess" value="always" />' +
-                                '<param name="quality" value="high" />' +
-                                '<param name="scale" value="noscale" />' +
-                                '<param NAME="FlashVars" id="clippyText" value="text=' + outputVal + '">' +
-                                '<param name="bgcolor" value="#' + bc + '">' +
-                                '<embed src="../Build/clippy.swf" width="110" height="14"/>' +
-                            '</object>'
-                        );
                     }
                 }
                 function cursorObjectCallback(outputVal) {
@@ -118,7 +98,12 @@
                 }
                 function csvSubmit() {
                     getJson(decodeURIComponent(GetQueryStringParams("meeting")));
-                    $("#format").val("csv");
+                    $("#format").val("csv")
+                    return false;
+                }
+                function jsonSubmit() {
+                    getJson(decodeURIComponent(GetQueryStringParams("meeting")));
+                    $("#format").val("json")
                     return false;
                 }
             </script>

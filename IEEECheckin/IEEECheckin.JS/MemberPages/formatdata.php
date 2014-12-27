@@ -30,8 +30,7 @@ switch($format) {
     case "sql":
         die("SQL not currently supported");
         break;
-}
-    
+}  
 
 function formatCsv($data) {
     try {
@@ -68,7 +67,7 @@ function formatCsv($data) {
 function formatJson($data) {
     $output = fopen('php://output', 'w');
     
-    fputs($output, $data["data"]);
+    fputs($output, json_encode($data["data"]));
 }
 
 ?>
