@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -26,13 +26,14 @@
                     <div id="links" style="margin-top: 45px;"></div>
                 </div>
             </div>
-
-            <p class="section-label">Swipe Card Entry <i class="fa fa-credit-card"></i></p>
-            <form id="form-ucard" class="boxed-section margin-lg-after" role="form">
-                <div class="form-group no-margin-after">
-                    <input class="form-control input-lg margin-sm-after" autofocus="autofocus" type="password" name="cardtxt" id="cardtxt" placeholder="Click here, then swipe your card">
-                </div>
-            </form>
+            <div id="swipe-section">
+                <p class="section-label">U-Card Swipe Card Entry <i class="fa fa-credit-card"></i></p>
+                <form id="form-ucard" class="boxed-section margin-lg-after" role="form">
+                    <div class="form-group no-margin-after">
+                        <input class="form-control input-lg margin-sm-after" autofocus="autofocus" type="password" name="cardtxt" id="cardtxt" placeholder="Click here, then swipe your card">
+                    </div>
+                </form>
+            </div>
             <p class="section-label">Manual Entry <i class="fa fa-pencil"></i></p>
             <form id="form-manual" class="boxed-section margin-lg-after" role="form">
                 <input class="form-control input-lg margin-sm-after" type="text" name="firstname" id="firstname" placeholder="First Name">
@@ -51,7 +52,15 @@
             <script src="../Scripts/format.js"></script>
             <script type="text/javascript">
                 $(document).ready(function () {
-                    $("#cardtxt").focus();
+
+                    var us = $.cookie("use-swipe");
+                    if (us != null && us != undefined && us === "false") {
+                        $("#firstname").focus();
+                    }
+                    else {
+                        $("#cardtxt").focus();
+                    }
+
                     $("#meetingName").html(decodeURIComponent(GetQueryStringParams("meeting")));
                     // subscribe to the keydown for the U-card input
                     $("#cardtxt, #firstname, #lastname, #email").keydown(function (event) {
@@ -62,23 +71,23 @@
                 });
                 // called when U-card parsing has completed
                 function parseUCardComplete(uCard) {
-                    if(uCard === null || uCard === undefined)
+                    if (uCard === null || uCard === undefined)
                         return false;
-                    
+
                     $("#firstname").val(uCard["firstName"]);
                     $("#lastname").val(uCard["lastName"]);
                     $("#studentid").val(uCard["studentId"]);
                 }
                 // called when crawl parsing of a single person has completed
                 function parseCrawlComplete(uPerson) {
-                    if(uPerson === null || uPerson === undefined)
+                    if (uPerson === null || uPerson === undefined)
                         return;
                     // add post crawl code here
                 }
                 // called when crawl parsing of multiple persons returned has completed
                 // html - raw HTML of the search results that can be displayed in an overlay
                 function searchResultSelected(html) {
-                    
+
                 }
                 function entrySubmit() {
                     try {
@@ -115,7 +124,14 @@
                         alert(err.message);
                     }
 
-                    $("#cardtxt").focus();
+                    var us = $.cookie("use-swipe");
+                    if (us != null && us != undefined && us === "false") {
+                        $("#firstname").focus();
+                    }
+                    else {
+                        $("#cardtxt").focus();
+                    }
+
                     window.location.href = "confirm.html";
                     return false;
                 }

@@ -25,4 +25,9 @@ function updateFormat() {
     var ht = $.cookie("header-text");
     if (ht != null && ht != undefined)
         $("#topHeader").html(ht);
+
+    var us = $.cookie("use-swipe");
+    if (us != null && us != undefined && us === "false") {
+        $("#swipe-section").attr("style", "display: none;");
+    }
 }

@@ -43,9 +43,11 @@
             <a href="menu.html"><img class="logo" id="logoImage" src="../Images/logo.svg"></a>
             <h1 class="post-header">Meeting Output</h1>
 
-            <!--<form id="form1" class="boxed-section margin-lg-after" role="form">
+            <form id="formFile" class="boxed-section margin-lg-after" role="form" method="post" action="formatdata.php">
+                <input class="form-control input-lg margin-sm-after" type="hidden" name="format" id="format" placeholder="First Name">
+                <input class="form-control input-lg margin-sm-after" type="hidden" name="submitData" id="submitData" placeholder="First Name">
                 <button class="form-control input-lg btn btn-info check-in" onclick="return csvSubmit();" type="submit" id="csvbutton" name="csvbutton"><i class="fa fa-check"></i>Get CSV</button>
-            </form>-->
+            </form>
 
             <div id="outputDiv">
                 <table id="output">
@@ -108,9 +110,15 @@
                         );
                     }
                 }
+                function cursorObjectCallback(outputVal) {
+                    var data = { "data": outputVal };
+                    var dataVal = JSON.stringify(data);
+                    $("#submitData").val(dataVal);
+                    $("#formFile").submit();
+                }
                 function csvSubmit() {
-                    $("#output").hide();
-                    $("#outputDiv").append("<p>" + outputCsv + "</p>");
+                    getJson(decodeURIComponent(GetQueryStringParams("meeting")));
+                    $("#format").val("csv");
                     return false;
                 }
             </script>

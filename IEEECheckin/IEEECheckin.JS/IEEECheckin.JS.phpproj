@@ -25,6 +25,8 @@
   <ItemGroup>
     <Compile Include="index.html" />
     <Compile Include="MemberPages\checkin.html" />
+    <Compile Include="MemberPages\ChromePhp.php" />
+    <Compile Include="MemberPages\formatdata.php" />
     <Compile Include="MemberPages\menu.html" />
   </ItemGroup>
   <ItemGroup>

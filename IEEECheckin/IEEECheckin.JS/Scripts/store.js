@@ -270,3 +270,38 @@ function createOutput(tableSelector, meeting) {
         }
     }
 }
+
+var outputObject = [];
+
+function getJson(meeting) {
+    var transaction = db.transaction([dbName], "readonly");
+    var objectStore = transaction.objectStore(dbName);
+    outputObject = [];
+
+    objectStore.openCursor().onsuccess = function (event) {
+        try {
+            var cursor = event.target.result;
+            if (cursor) {
+                if (meeting == "null" || meeting == cursor.value.meeting) {
+                    var val = cursor.value;
+                    delete val.index;
+                    outputObject[outputObject.length] = val;
+                }
+
+                cursor.continue();
+            } else {
+                //alert("All elements displayed.");
+                try {
+                    if (cursorObjectCallback != undefined)
+                        cursorObjectCallback(outputObject);
+                }
+                catch (err) {
+
+                }
+            }
+        }
+        catch (err) {
+            alert(err.message);
+        }
+    }
+}
