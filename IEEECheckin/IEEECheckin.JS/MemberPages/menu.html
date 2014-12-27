@@ -23,8 +23,8 @@
 
     <div class="container">
         <div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
-            <h1 class="pre-header">University of Minnesota</h1>
-            <img class="logo" src="../Images/logo.svg">
+            <h1 class="pre-header" id="topHeader">University of Minnesota</h1>
+            <img class="logo" id="logoImage" src="../Images/logo.svg">
             <h1 class="post-header">Meeting Check-In</h1>
 
             <p class="section-header">Meeting Options <i class="fa fa-list"></i></p>  
@@ -50,11 +50,23 @@
                 <button class="form-control input-lg btn btn-info check-in" onclick="return clearSubmit();" type="submit" id="Button1" name="outputbutton"><i class="fa fa-check"></i>Clear</button>
             </form>
 
+            <p class="section-header">Format Appearance <i class="fa fa-cogs"></i></p>
+            <form id="form3" class="boxed-section margin-lg-after" role="form">
+                <button class="form-control input-lg btn btn-info check-in" onclick="return formatSubmit();" type="submit" id="Button2" name="outputbutton"><i class="fa fa-check"></i>Format</button>
+            </form>
+
+            <p class="section-header">About <i class="fa fa-info-circle"></i></p>
+            <form id="form4" class="boxed-section margin-lg-after" role="form">
+                <button class="form-control input-lg btn btn-info check-in" onclick="return aboutSubmit();" type="submit" id="Button3" name="outputbutton"><i class="fa fa-check"></i>About</button>
+            </form>
+
             <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
             <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+            <script src="../Scripts/jquery.cookie.js"></script>
             <script src="../Scripts/check-in.js"></script>
             <script src="../Scripts/umn-crawl.js"></script>
             <script src="../Scripts/store.js"></script>
+            <script src="../Scripts/format.js"></script>
             <script>
                 $(document).ready(function () {
                     $("#newmeeting").keydown(function (event) {
@@ -122,8 +134,16 @@
                     $("#meetingClear").val("");
                     return false;
                 }
+                function formatSubmit() {
+                    window.location.href = "format.html";
+                    return false;
+                }
+                function aboutSubmit() {
+                    window.location.href = "about.html";
+                    return false;
+                }
             </script>
-            <p class="footer">Powered by the IEEE Tech Subcommittee</p>
+            <p class="footer"></p>
         </div>
     </div>
 </body>

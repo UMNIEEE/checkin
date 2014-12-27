@@ -25,6 +25,8 @@
   <ItemGroup>
     <Compile Include="index.html" />
     <Compile Include="MemberPages\checkin.html" />
+    <Compile Include="MemberPages\ChromePhp.php" />
+    <Compile Include="MemberPages\formatdata.php" />
     <Compile Include="MemberPages\menu.html" />
   </ItemGroup>
   <ItemGroup>
@@ -37,11 +39,48 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Build\clippy.swf" />
+    <Content Include="Content\colorpicker.css" />
+    <Content Include="MemberPages\about.html" />
+    <Content Include="Scripts\format.js" />
+    <Content Include="Scripts\jquery.cookie.js" />
+    <Content Include="Content\layout.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\blank.gif" />
+    <Content Include="Images\colorpicker_background.png" />
+    <Content Include="Images\colorpicker_hex.png" />
+    <Content Include="Images\colorpicker_hsb_b.png" />
+    <Content Include="Images\colorpicker_hsb_h.png" />
+    <Content Include="Images\colorpicker_hsb_s.png" />
+    <Content Include="Images\colorpicker_indic.gif" />
+    <Content Include="Images\colorpicker_overlay.png" />
+    <Content Include="Images\colorpicker_rgb_b.png" />
+    <Content Include="Images\colorpicker_rgb_g.png" />
+    <Content Include="Images\colorpicker_rgb_r.png" />
+    <Content Include="Images\colorpicker_select.gif" />
+    <Content Include="Images\colorpicker_submit.png" />
+    <Content Include="Images\custom_background.png" />
+    <Content Include="Images\custom_hex.png" />
+    <Content Include="Images\custom_hsb_b.png" />
+    <Content Include="Images\custom_hsb_h.png" />
+    <Content Include="Images\custom_hsb_s.png" />
+    <Content Include="Images\custom_indic.gif" />
+    <Content Include="Images\custom_rgb_b.png" />
+    <Content Include="Images\custom_rgb_g.png" />
+    <Content Include="Images\custom_rgb_r.png" />
+    <Content Include="Images\custom_submit.png" />
     <Content Include="Images\logo.svg" />
+    <Content Include="Images\select.png" />
+    <Content Include="Images\select2.png" />
+    <Content Include="Images\slider.png" />
+    <Content Include="MemberPages\confirm.html" />
+    <Content Include="MemberPages\format.html" />
     <Content Include="MemberPages\output.html" />
     <Content Include="Scripts\check-in.js" />
+    <Content Include="Scripts\colorpicker.js" />
+    <Content Include="Scripts\eye.js" />
+    <Content Include="Scripts\layout.js" />
     <Content Include="Scripts\store.js" />
     <Content Include="Scripts\umn-crawl.js" />
+    <Content Include="Scripts\utils.js" />
   </ItemGroup>
 </Project>
