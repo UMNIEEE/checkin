@@ -19,9 +19,10 @@
   <ItemGroup>
     <Compile Include="index.php" />
     <Compile Include="MemberPages\checkin.php" />
-    <Compile Include="MemberPages\confirm.php" />
-    <Compile Include="MemberPages\dropdown.php" />
-    <Compile Include="MemberPages\sqltest.php" />
+    <Compile Include="MemberPages\ChromePhp.php" />
+    <Compile Include="MemberPages\event.php" />
+    <Compile Include="MemberPages\menu.php" />
+    <Compile Include="MemberPages\submit.php" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="MemberPages\" />
@@ -35,6 +36,7 @@
     <Content Include="App_Data\.htpasswd" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\ieee.svg" />
+    <Content Include="MemberPages\confirm.html" />
     <Content Include="Scripts\check-in.js" />
     <Content Include="Scripts\umn-crawl.js" />
   </ItemGroup>
