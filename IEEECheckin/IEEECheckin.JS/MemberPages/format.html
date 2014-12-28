@@ -149,7 +149,7 @@
                         },
                         onChange: function (hsb, hex, rgb) {
                             $("body").css("background-color", "#" + hex);
-                            $.cookie("body-background-color", hex, { path: "/" });
+                            $.cookie("body-background-color", hex, { expires: 365, path: "/" });
                             $("#colorSelector").css("background-color", "#" + hex);
                             themeUpdated();
                         }
@@ -166,7 +166,7 @@
                         },
                         onChange: function (hsb, hex, rgb) {
                             $("button").css("background-color", "#" + hex);
-                            $.cookie("button-background-color", hex, { path: "/" });
+                            $.cookie("button-background-color", hex, { expires: 365, path: "/" });
                             reduced = parseInt(hex, 16);
                             if (hex & 0x30 >= 0x0A0000)
                                 reduced = reduced - 0x0A0000;
@@ -193,7 +193,7 @@
                         onChange: function (hsb, hex, rgb) {
                             $("body").css("color", "#" + hex);
                             $("button").css("color", "#" + hex);
-                            $.cookie("body-color", hex, { path: "/" });
+                            $.cookie("body-color", hex, { expires: 365, path: "/" });
                             $("#colorSelector3").css("background-color", "#" + hex);
                             themeUpdated();
                         }
@@ -205,7 +205,7 @@
                     var value = $("#imageUrl").val();
                     if (value != null) {
                         $("#logoImage").attr("src", value);
-                        $.cookie("image-url", value, { path: "/" });
+                        $.cookie("image-url", value, { expires: 365, path: "/" });
                     }
                     //else
                     //    $("#logoImage").attr("src", "../Images/logo.svg");
@@ -216,7 +216,7 @@
                     var value = $("#topText").val();
                     if (value != null) {
                         $("#topHeader").html(value);
-                        $.cookie("header-text", value, { path: "/" });
+                        $.cookie("header-text", value, { expires: 365, path: "/" });
                     }
                     //else
                     //    $("#topHeader").html("University of Minnesota");
@@ -230,18 +230,18 @@
                     $.removeCookie("body-color", { path: '/' });
                     $.removeCookie("image-url", { path: '/' });
                     $.removeCookie("header-text", { path: '/' });
-                    $.removeCookie("use-swipe", true, { path: "/" });
+                    $.removeCookie("use-swipe", true, { expires: 365, path: "/" });
                     location.reload();
                     themeUpdated();
                     return false;
                 }
                 function updateSwipe() {
                     if ($("#swipeCheck").prop("checked")) {
-                        $.cookie("use-swipe", true, { path: "/" });
+                        $.cookie("use-swipe", true, { expires: 365, path: "/" });
                         $("#swipe-section").attr("style", "display: inherit;");
                     }
                     else {
-                        $.cookie("use-swipe", false, { path: "/" });
+                        $.cookie("use-swipe", false, { expires: 365, path: "/" });
                         $("#swipe-section").attr("style", "display: none;");
                     }
                     themeUpdated();
@@ -299,27 +299,27 @@
 
                         var bbc = theme.bodyBackgroundColor;
                         if (bbc != null && bbc != undefined)
-                            $.cookie("body-background-color", bbc, { path: "/" });
+                            $.cookie("body-background-color", bbc, { expires: 365, path: "/" });
 
                         var bubc = theme.buttonBackgroundColor;
                         if (bubc != null && bubc != undefined)
-                            $.cookie("button-background-color", bubc, { path: "/" });
+                            $.cookie("button-background-color", bubc, { expires: 365, path: "/" });
 
                         var bc = theme.bodyColor;
                         if (bc != null && bc != undefined)
-                            $.cookie("body-color", bc, { path: "/" });
+                            $.cookie("body-color", bc, { expires: 365, path: "/" });
 
                         var iu = theme.imageUrl;
                         if (iu != null && iu != undefined)
-                            $.cookie("image-url", iu, { path: "/" });
+                            $.cookie("image-url", iu, { expires: 365, path: "/" });
 
                         var ht = theme.headerText;
                         if (ht != null && ht != undefined)
-                            $.cookie("header-text", ht, { path: "/" });
+                            $.cookie("header-text", ht, { expires: 365, path: "/" });
 
                         var us = theme.useSwipe;
                         if (us != null && us != undefined)
-                            $.cookie("use-swipe", us, { path: "/" });
+                            $.cookie("use-swipe", us, { expires: 365, path: "/" });
 
                         updateFormat();
                     }
