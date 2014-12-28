@@ -44,8 +44,9 @@
             <h1 class="post-header">Meeting Output</h1>
 
             <form id="formFile" class="boxed-section margin-lg-after" role="form" method="post" action="output.php">
-                <input class="form-control input-lg margin-sm-after" type="hidden" name="format" id="format" placeholder="First Name">
-                <input class="form-control input-lg margin-sm-after" type="hidden" name="submitData" id="submitData" placeholder="First Name">
+                <input class="form-control input-lg margin-sm-after" type="hidden" name="format" id="format" />
+                <input class="form-control input-lg margin-sm-after" type="hidden" name="submitData" id="submitData" />
+                <input class="form-control input-lg margin-sm-after" type="hidden" name="meeting" id="meeting" />
                 <button class="form-control input-lg btn btn-info check-in" onclick="return csvSubmit();" type="submit" id="csvbutton" name="csvbutton"><i class="fa fa-check"></i>Get CSV</button>
                 <br /><br />
                 <button class="form-control input-lg btn btn-info check-in" onclick="return jsonSubmit();" type="submit" id="jsonbutton" name="jsonbutton"><i class="fa fa-check"></i>Get JSON</button>
@@ -77,7 +78,7 @@
             <script>
                 function dbOpenCallback() {
                     try {
-                        createOutput("#output tr:last", decodeURIComponent(GetQueryStringParams("meeting")));
+                        createOutput("#output tr:last", decodeURI(GetQueryStringParams("meeting")), decodeURI(GetQueryStringParams("date")));
                     }
                     catch (err) {
                         alert(err.message);
@@ -98,12 +99,16 @@
                 }
                 function csvSubmit() {
                     getJson(decodeURIComponent(GetQueryStringParams("meeting")));
-                    $("#format").val("csv")
+                    $("#format").val("csv");
+                    var meeting = decodeURIComponent(GetQueryStringParams("meeting")) + " " +decodeURIComponent(GetQueryStringParams("date"));
+                    $("#meeting").val(meeting);
                     return false;
                 }
                 function jsonSubmit() {
                     getJson(decodeURIComponent(GetQueryStringParams("meeting")));
-                    $("#format").val("json")
+                    $("#format").val("json");
+                    var meeting = decodeURIComponent(GetQueryStringParams("meeting")) + " " + decodeURIComponent(GetQueryStringParams("date"));
+                    $("#meeting").val(meeting);
                     return false;
                 }
             </script>

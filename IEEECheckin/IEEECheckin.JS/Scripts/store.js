@@ -76,11 +76,12 @@ function addData() {
     var studentidVal = $("#studentid").val().trim();
     var emailVal = $("#email").val().trim();
     var meetingVal = decodeURIComponent(GetQueryStringParams("meeting")).trim();
+    var dateVal = decodeURIComponent(GetQueryStringParams("date")).trim();
     var indexVal = lastnameVal + "-" + firstnameVal + "-" + studentidVal + "-" + Date.now();
 
     // Stop the form submitting if any values are left empty. This is just for browsers that don't support the HTML5 form
     // required attributes
-    if (firstnameVal == "" || lastnameVal == "" || meetingVal == "") {
+    if (firstnameVal == "" || lastnameVal == "" || meetingVal == "" || dateVal == "") {
         var missingVal = "";
         if (firstnameVal == "")
             missingVal = "First Name";
@@ -88,15 +89,17 @@ function addData() {
             missingVal = "Last Name";
         else if (meetingVal == "")
             missingVal = "Meeting Name. Re-enter the meeting";
+        else if (dateVal == "")
+            missingVal = "Meeting Date. Re-enter the meeting";
 
         alert("Data not submitted — form incomplete: " + missingVal);
         return;
     } else {
 
-        var dt = new Date();
+        var dtParts = dateVal.split("-");
         // grab the values entered into the form fields and store them in an object ready for being inserted into the IDB
         var newItem = [
-          { index: indexVal, studentid: studentidVal, firstname: firstnameVal, lastname: lastnameVal, email: emailVal, day: dt.getDate(), month: dt.getMonth(), year: dt.getFullYear(), meeting: meetingVal }
+          { index: indexVal, studentid: studentidVal, firstname: firstnameVal, lastname: lastnameVal, email: emailVal, day: dtParts[2], month: dtParts[1], year: dtParts[0], meeting: meetingVal }
         ];
 
         // open a read/write db transaction, ready for adding the data
@@ -148,7 +151,7 @@ function GetQueryStringParams(sParam) {
     return null;
 }
 
-function deleteItems(meeting) {
+function deleteItems(meeting, date) {
     var transaction = db.transaction([dbName], "readwrite");
     var objectStore = transaction.objectStore(dbName);
 
@@ -156,13 +159,15 @@ function deleteItems(meeting) {
         try {
             var cursor = event.target.result;
             if (cursor) {
-                if (meeting == cursor.value.meeting) {
+                var cursorDate = cursor.value.year + "-" + cursor.value.month + "-" + cursor.value.day;
+                if (meeting == cursor.value.meeting && date == cursorDate) {
                     cursor.delete();
                 }
                 cursor.continue();
             } else {
                 //alert("All elements displayed.");
-                alert("Data for '" + meeting + "' cleared.");
+                alert("Data for '" + meeting + date + "' cleared.");
+                location.reload();
             }
         }
         catch (err) {
@@ -206,12 +211,13 @@ function clearData() {
     objectStoreRequest.onsuccess = function (event) {
         // report the success of our clear operation
         alert("Data cleared.");
+        location.reload();
     }
 }
 
 var outputText = "";
 
-function createOutput(tableSelector, meeting) {
+function createOutput(tableSelector, meeting, date) {
     var transaction = db.transaction([dbName], "readonly");
     var objectStore = transaction.objectStore(dbName);
     outputText = "";
@@ -220,7 +226,8 @@ function createOutput(tableSelector, meeting) {
         try {
             var cursor = event.target.result;
             if (cursor) {
-                if (meeting == "null" || meeting == cursor.value.meeting) {
+                var cursorDate = cursor.value.year + "-" + cursor.value.month + "-" + cursor.value.day;
+                if ((meeting == "" && date == "") || (meeting == cursor.value.meeting && date == cursorDate)) {
                     var tableRow = "<tr>" +
                         "<td>" + cursor.value.firstname + "</td>" +
                         "<td>" + cursor.value.lastname + "</td>";
@@ -233,7 +240,7 @@ function createOutput(tableSelector, meeting) {
                     tableRow = tableRow +
                         "<td>" + cursor.value.email + "</td>" +
                         "<td>" + cursor.value.meeting + "</td>" +
-                        "<td>" + cursor.value.day + "-" + cursor.value.month + "-" + cursor.value.year + "</td>" +
+                        "<td>" + cursor.value.year + "-" + cursor.value.month + "-" + cursor.value.day + "</td>" +
                         "</tr>";
                     $(tableSelector).after(tableRow);
 
@@ -249,7 +256,7 @@ function createOutput(tableSelector, meeting) {
                     outputText = outputText +
                         cursor.value.email + "," +
                         cursor.value.meeting + "," +
-                        cursor.value.day + "-" + cursor.value.month + "-" + cursor.value.year +
+                        cursor.value.year + "-" + cursor.value.month + "-" + cursor.value.day +
                         "\n";
                 }
 
@@ -294,6 +301,62 @@ function getJson(meeting) {
                 try {
                     if (cursorObjectCallback != undefined)
                         cursorObjectCallback(outputObject);
+                }
+                catch (err) {
+
+                }
+            }
+        }
+        catch (err) {
+            alert(err.message);
+        }
+    }
+}
+
+var outputObjectsM = [];
+var outputMeetings = [];
+
+function getMeetings() {
+    var transaction = db.transaction([dbName], "readonly");
+    var objectStore = transaction.objectStore(dbName);
+    outputObjectsM = [];
+    outputMeetings = [];
+
+    objectStore.openCursor().onsuccess = function (event) {
+        try {
+            var cursor = event.target.result;
+            if (cursor) {
+                var val = cursor.value;
+                delete val.index;
+                outputObjectsM[outputObjectsM.length] = val;
+                cursor.continue();
+            } else {
+                //alert("All elements displayed.");
+
+                for (var i = 0; i < outputObjectsM.length; i++) {
+                    var meet = outputObjectsM[i].meeting;
+                    var date = outputObjectsM[i].year + "-" + outputObjectsM[i].month + "-" + outputObjectsM[i].day;
+                    var outputMeetLen = outputMeetings.length;
+                    var newMeet = true;
+                    if (outputMeetings.length > 0) {
+                        for (var j = 0; j < outputMeetLen; j++) {
+                            if (meet === outputMeetings[j].meeting) {
+                                newMeet = false;
+                                break;
+                            }
+                        }
+                        if (newMeet) {
+                            outputMeetings[outputMeetings.length] = { "meeting": meet, "date": date };
+                        }
+                    }
+                    else {
+                        outputMeetings[outputMeetings.length] = { "meeting": meet, "date": date };
+                    }
+                }
+
+                try {
+                    if (meetingCallback != undefined)
+                        meetingCallback(outputMeetings);
                 }
                 catch (err) {
 

@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -29,7 +29,9 @@
 
             <p class="section-header">Meeting Options <i class="fa fa-list"></i></p>  
             <!-- Insert action to redirect to checkin.php -->
-            <form class="boxed-section margin-lg-after" id="meetingForm"> 
+            <form class="boxed-section margin-lg-after" id="meetingForm">
+                <p class="section-label">Select Exisiting Meeting<i class="fa fa-calendar-o"></i></p>
+                <select class="selectpicker" id="meetingDropdown" name="meeting"></select>
                 <p class="section-label">Create New Meeting<i class="fa fa-pencil"></i></p>
                 <input class="form-control input-lg margin-sm-after" type="text" id="newmeeting" placeholder="Meeting Name">
                 <button class="form-control input-lg btn btn-info check-in" id="meetingButton" onclick="return meetingSubmit();" type="submit" ><i class="fa fa-check"></i>New Meeting</button>
@@ -38,15 +40,16 @@
 
             <p class="section-header">View Meeting Attendance <i class="fa fa-file-text"></i></p> 
             <form id="form1" class="boxed-section margin-lg-after" role="form">
-                <p class="section-label">Filter Meetings (leave empty for all)<i class="fa fa-filter"></i></p>
-                <input class="form-control input-lg margin-sm-after" type="text" id="meetingSearch" placeholder="Meeting Name">
+                <p class="section-label">Filter Meetings<i class="fa fa-filter"></i></p>
+                <select class="selectpicker" id="ouputDropdown" name="meeting"></select>
+                <!--<input class="form-control input-lg margin-sm-after" type="text" id="meetingSearch" placeholder="Meeting Name">-->
                 <button class="form-control input-lg btn btn-info check-in" onclick="return outputSubmit();" type="submit" id="outputbutton" name="outputbutton"><i class="fa fa-check"></i>View</button>
             </form>
 
             <p class="section-header">Clear Attendance <i class="fa fa-eraser"></i></p>
             <form id="form2" class="boxed-section margin-lg-after" role="form">
-                <p class="section-label">Filter Meetings (leave empty for all)<i class="fa fa-filter"></i></p>
-                <input class="form-control input-lg margin-sm-after" type="text" id="meetingClear" placeholder="Meeting Name">
+                <p class="section-label">Filter Meetings<i class="fa fa-filter"></i></p>
+                <select class="selectpicker" id="clearDropdown" name="meeting"></select>
                 <button class="form-control input-lg btn btn-info check-in" onclick="return clearSubmit();" type="submit" id="Button1" name="outputbutton"><i class="fa fa-check"></i>Clear</button>
             </form>
 
@@ -84,33 +87,96 @@
                             clearSubmit()
                         }
                     });
+                    
                 });
+                function dbOpenCallback() {
+                    try {
+                        getMeetings();
+                    }
+                    catch (err) {
+                        alert(err.message);
+                    }
+                }
+                function meetingCallback(meetings) {
+                    var htmlVal = "";
+                    for(var i = 0; i < meetings.length; i++) {
+                        htmlVal = htmlVal + "<option value='" + "meeting=" + meetings[i].meeting + "&" + "date=" + meetings[i].date + "'>" + meetings[i].meeting + " " + meetings[i].date + "</option>";
+                    }
+
+                    $("#meetingDropdown").html(htmlVal);
+
+                    var htmlVal = "<option value='meeting=&date='>All Meetings</option>" + htmlVal;
+                    $("#ouputDropdown").html(htmlVal);
+                    $("#clearDropdown").html(htmlVal);
+                }
+
                 function meetingSubmit() {
-                    var meet = $("#newmeeting").val();
-                    if(meet == null || meet.trim() == "") {
-                        alert("Must enter meeting new or existing name.");
+                    var newUrl = "";
+                    var meeting = $("#newmeeting").val();
+                    var meetingDrop = $("#meetingDropdown option:selected").val()
+                    if (meeting === null || meeting === undefined || meeting.trim() === "" && meetingDrop !== null && meetingDrop !== undefined && meetingDrop.trim() !== "") {
+                        var meetUrl = $("#meetingDropdown option:selected").val().trim();
+                        var meet = "";
+                        var date = "";
+
+                        var sURLVariables = meetUrl.split('&');
+                        for (var i = 0; i < sURLVariables.length; i++) {
+                            var sParameterName = sURLVariables[i].split('=');
+                            if (sParameterName[0] == "meeting") {
+                                meet = sParameterName[1];
+                            }
+                        }
+                        for (var i = 0; i < sURLVariables.length; i++) {
+                            var sParameterName = sURLVariables[i].split('=');
+                            if (sParameterName[0] == "date") {
+                                date = sParameterName[1];
+                            }
+                        }
+                    }
+                    else if($("#newmeeting").val() !== null && $("#newmeeting").val() !== undefined && $("#newmeeting").val().trim() !== ""){
+                        var dt = new Date();
+                        date = dt.getFullYear() + "-" + dt.getMonth() + "-" + dt.getDate();
+                        meet = $("#newmeeting").val().trim();
+                    }
+                    else {
+                        alert("Must select a meeting or create a new meeting.");
                         return false;
                     }
-                    var newUrl = encodeURI(meet.trim());
-                    $("#newmeeting").val("");
 
-                    window.location.href = "checkin.html?meeting=" + newUrl;
+                    newUrl = encodeURI("meeting=" + meet + "&date=" + date);
+                    $("#newmeeting").val("");
+                    window.location.href = "checkin.html?" + newUrl;
 
                     return false;
                 }
                 function outputSubmit() {
-                    var meet = $("#meetingSearch").val();
+                    var meet = encodeURI($("#ouputDropdown option:selected").val().trim());
                     var newUrl = "output.html";
                     if (meet != null && meet.trim() != "")
-                        newUrl = newUrl + "?meeting=" + encodeURI(meet.trim());
-                    $("#meetingSearch").val("");
+                        newUrl = newUrl + "?" + meet;
 
                     window.location.href = newUrl;
 
                     return false;
                 }
                 function clearSubmit() {
-                    var meet = $("#meetingClear").val();
+                    var meetUrl = $("#clearDropdown option:selected").val().trim();
+                    var meet = "";
+                    var date = "";
+
+                    var sURLVariables = meetUrl.split('&');
+                    for (var i = 0; i < sURLVariables.length; i++) {
+                        var sParameterName = sURLVariables[i].split('=');
+                        if (sParameterName[0] == "meeting") {
+                            meet = sParameterName[1];
+                        }
+                    }
+                    for (var i = 0; i < sURLVariables.length; i++) {
+                        var sParameterName = sURLVariables[i].split('=');
+                        if (sParameterName[0] == "date") {
+                            date = sParameterName[1];
+                        }
+                    }
 
                     var msg = "Are you sure you want to clear '";
                     if (meet != null && meet.trim() != "")
@@ -121,8 +187,8 @@
                     var r = confirm(msg);
                     if (r == true) {
                         try {
-                            if (meet != null && meet.trim() != "")
-                                deleteItems(meet.trim());
+                            if ((meet != null && date != null) && (meet.trim() != "" && date.trim() != ""))
+                                deleteItems(meet.trim(), date.trim());
                             else
                                 clearData();
                         }
@@ -131,7 +197,6 @@
                         }
                     }
 
-                    $("#meetingClear").val("");
                     return false;
                 }
                 function formatSubmit() {
