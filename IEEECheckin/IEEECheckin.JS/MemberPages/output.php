@@ -8,17 +8,23 @@ if(empty($_POST['format'])) die("No format specified.");
     
 $data = json_decode($_POST['submitData'], true);
 $format = $_POST['format'];
+$meeting = $_POST['meeting'];
+if($meeting == null || trim($meeting) == "")
+    $meeting = "meeting-sign-ins";
+else
+    $meeting = str_replace(" ", "_", $meeting);
+
     
 switch($format) {
     case "csv":
-        $fileName = "meeting-sign-ins-" . date("Y-m-d-H-i-s") . ".csv";
+        $fileName = $meeting . ".csv";
         // output headers so that the file is downloaded rather than displayed
         header('Content-Type: text/csv; charset=utf-8');
         header('Content-Disposition: attachment; filename=' . $fileName);
         formatCsv($data);
         break;
     case "json":
-        $fileName = "meeting-sign-ins-" . date("Y-m-d-H-i-s") . ".js";
+        $fileName = $meeting . ".js";
         // output headers so that the file is downloaded rather than displayed
         header('Content-Type: text/plain; charset=utf-8');
         header('Content-Disposition: attachment; filename=' . $fileName);
