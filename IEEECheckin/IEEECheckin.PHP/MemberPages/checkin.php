@@ -18,33 +18,35 @@
             <h1 class="pre-header">University of Minnesota</h1>
             <img class="logo" src="../Images/ieee.svg">
             <h1 class="post-header">Meeting Check-In for:</h1>
+            <h2 id="meetingName" class="post-header"></h2>
+            
             <p class="section-label">Swipe Card Entry <i class="fa fa-credit-card"></i></p>
-            <form class="boxed-section margin-lg-after" action="<?php echo 'sqltest.php?meeting=' . $_GET['meeting']; ?>" method="POST" enctype="multipart/form-data" role="form">
+            <form class="boxed-section margin-lg-after" onsubmit="return false" role="form">
                 <div class="form-group no-margin-after">
                     <input class="form-control input-lg margin-sm-after" autofocus="autofocus" type="password" name="cardtxt" id="cardtxt" placeholder="Click here, then swipe your card">
                 </div>
             </form>
             <p class="section-label">Manual Entry <i class="fa fa-pencil"></i></p>
-            <form class="boxed-section margin-lg-after" action="<?php echo 'sqltest.php?meeting=' . $_GET['meeting']; ?>" method="POST" enctype="multipart/form-data" role="form">
+            <form class="boxed-section margin-lg-after" onsubmit="return formSubmit()" role="form" id="manualForm">
                 <input class="form-control input-lg margin-sm-after" type="text" name="firstname" id="firstname" placeholder="First Name">
                 <input class="form-control input-lg margin-sm-after" type="text" name="lastname" id="lastname" placeholder="Last Name">
-                <input class="form-control input-lg margin-sm-after" type="hidden" name="studentID" id="studentid" placeholder="Student ID">
-                <!--<input class="form-control input-lg margin-sm-after" type="hidden" name="meeting" value="<?php echo $meeting; ?>">-->
-                <button class="form-control input-lg btn btn-info check-in" onclick="return meetingSubmit();" type="submit" value="sqltest.php" id="checkinbutton" name="checkinbutton"><i class="fa fa-check"></i> Check In</button>
+                <input class="form-control input-lg margin-sm-after" type="text" name="email" id="email" placeholder="Email">
+                <input class="form-control input-lg margin-sm-after" type="hidden" name="studentid" id="studentid" placeholder="Student ID">
+                <button class="form-control input-lg btn btn-info check-in" type="submit" id="checkinbutton" name="checkinbutton"><i class="fa fa-check"></i> Check In</button>
             </form>
-            <!--<form class="boxed-section margin-lg-after" action="email.cgi" method="POST" enctype="multipart/form-data" role="form">
-                <input class="form-control input-lg margin-sm-after" type="email" name="recipient" id="recipient" placeholder="Recipient">
-                <input class="form-control input-lg margin-sm-after" type="text" name="subject" id="subject" placeholder="Subject">
-                <button class="form-control input-lg btn btn-info check-in" type="submit"><i class="fa fa-envelope"></i> Send Email</button>
-            </form>-->
-            <!--<form class="boxed-section" action="sqltest.php" method="POST">
-                <button class="form-control input-lg btn btn-info check-in" type="submit" value="sqltest.php"><i class="fa fa-eraser"></i> Create A New Check In</button>
-            </form> -->
+
             <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
             <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
             <script src="../Scripts/check-in.js"></script>
             <script src="../Scripts/umn-crawl.js"></script>
             <script type="text/javascript">
+                // document ready
+                $(document).ready(function () {
+                    $("#cardtxt").focus();
+                    var meetingName = GetQueryStringParams("name");
+                    if(meetingName != null)
+                    $("#meetingName").html(decodeURI(meetingName));
+                });
                 // called when U-card parsing has completed
                 function parseUCardComplete(uCard) {
                     if(uCard === null || uCard === undefined)
@@ -86,6 +88,26 @@
                 // html - raw HTML of the search results that can be displayed in an overlay
                 function searchResultSelected(html) {
                     
+                }
+                function formSubmit() {
+                    var urlVal = "submit.php?meeting=" + GetQueryStringParams("meeting");
+                    $.ajax({type:'POST', 
+                            url: urlVal, 
+                            data:$('#manualForm').serialize(),
+                            dataType: 'html', 
+                            success: function(response) {
+                                if(response === "true") {
+                                    $("#firstname").val("");
+                                    $("#lastname").val("");
+                                    $("#studentid").val("");
+                                    $("#email").val("");
+                                    window.location.href = "confirm.html";
+                                    }
+                                else
+                                    alert("Data not entered.");
+                                }
+                            });
+                    return false;
                 }
             </script>
             <p class="footer">Powered by the IEEE Tech Subcommittee</p>
