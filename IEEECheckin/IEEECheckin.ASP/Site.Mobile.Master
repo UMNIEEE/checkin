@@ -10,14 +10,27 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
-        <h1>Mobile Master Page</h1>
-        <asp:ContentPlaceHolder runat="server" ID="FeaturedContent" />
-        <section class="content-wrapper main-content clear-fix">
-            <asp:ContentPlaceHolder runat="server" ID="MainContent" />
-        </section>
-        <friendlyUrls:ViewSwitcher runat="server" />
-    </div>
+        <div>
+            <h1>Mobile Master Page</h1>
+            <div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
+                <h1 class="pre-header">University of Minnesota</h1>
+                <img class="logo" src="../Images/ieee.svg" />
+                <asp:ContentPlaceHolder runat="server" ID="MainContent" />
+            </div>
+            <friendlyUrls:ViewSwitcher runat="server" />
+        </div>
+                <asp:ContentPlaceHolder runat="server" ID="JavaScripts" />
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="../Scripts/check-in.js"></script>
+        <script src="../Scripts/umn-crawl.js"></script>
+        <footer>
+            <div class="content-wrapper">
+                <div class="footer">
+                    <p>&copy; <%: DateTime.Now.Year %> - University of Minnesota IEEE Tech Sub-Committee</p>
+                </div>
+            </div>
+        </footer>
     </form>
 </body>
 </html>
