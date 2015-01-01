@@ -5,6 +5,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Owin;
 using IEEECheckin.ASPDocs.Models;
+using Google.GData.Client;
+using Google.GData.Spreadsheets;
 
 namespace IEEECheckin.ASPDocs.Account
 {
@@ -16,7 +18,7 @@ namespace IEEECheckin.ASPDocs.Account
             // Enable this once you have account confirmation enabled for password reset functionality
             //ForgotPasswordHyperLink.NavigateUrl = "Forgot";
             OpenAuthLogin.ReturnUrl = Request.QueryString["ReturnUrl"];
-            var returnUrl = HttpUtility.UrlEncode(Request.QueryString["ReturnUrl"]);
+            var returnUrl = System.Web.HttpUtility.UrlEncode(Request.QueryString["ReturnUrl"]);
             if (!String.IsNullOrEmpty(returnUrl))
             {
                 RegisterHyperLink.NavigateUrl += "?ReturnUrl=" + returnUrl;
@@ -56,6 +58,12 @@ namespace IEEECheckin.ASPDocs.Account
                         break;
                 }
             }
+        }
+
+        protected void LogInGoogle(object sender, EventArgs e)
+        {
+            // Get the authorization url
+            Response.Redirect(OAuthUtil.CreateOAuth2AuthorizationUrl(GoogleOAuth2.GetParameters()));
         }
     }
 }

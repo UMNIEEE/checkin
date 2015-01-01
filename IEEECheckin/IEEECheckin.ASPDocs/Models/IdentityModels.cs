@@ -2,11 +2,16 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+using System.Configuration;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using IEEECheckin.ASPDocs.Models;
+using Google.GData.Client;
+using Google.GData.Spreadsheets;
+using System.Web.Security;
+
 
 namespace IEEECheckin.ASPDocs.Models
 {
@@ -39,6 +44,48 @@ namespace IEEECheckin.ASPDocs.Models
             return new ApplicationDbContext();
         }
     }
+
+    public class GoogleOAuth2
+    {
+        public static OAuth2Parameters GetParameters()
+        {
+            // OAuth2Parameters holds all the parameters related to OAuth 2.0.
+            OAuth2Parameters parameters = new OAuth2Parameters();
+
+            parameters.ClientId = ConfigurationManager.AppSettings["GoogleClientId"];
+            parameters.ClientSecret = ConfigurationManager.AppSettings["GoogleClientSecret"];
+            parameters.Scope = ConfigurationManager.AppSettings["GoogleScope"];
+            parameters.RedirectUri = ConfigurationManager.AppSettings["GoogleRedirectUri"];
+            parameters.AccessType = "online";
+
+            return parameters;
+        }
+
+        public static OAuth2Parameters GetParameters(HttpRequest Request)
+        {
+            // OAuth2Parameters holds all the parameters related to OAuth 2.0.
+            OAuth2Parameters parameters = new OAuth2Parameters();
+
+            string codeCookieName = ConfigurationManager.AppSettings["GoogleCodeCookie"];
+            string tokenCookeName = ConfigurationManager.AppSettings["GoogleTokenCookie"];
+
+            parameters.ClientId = ConfigurationManager.AppSettings["GoogleClientId"];
+            parameters.ClientSecret = ConfigurationManager.AppSettings["GoogleClientSecret"];
+            parameters.Scope = ConfigurationManager.AppSettings["GoogleScope"];
+            parameters.RedirectUri = ConfigurationManager.AppSettings["GoogleRedirectUri"];
+            if (Request.Cookies[codeCookieName] != null && !String.IsNullOrWhiteSpace(Request.Cookies[codeCookieName].Value))
+            {
+                FormsAuthenticationTicket codeTicket = FormsAuthentication.Decrypt(Request.Cookies[codeCookieName].Value);
+                parameters.AccessCode = codeTicket.UserData;
+            }
+            if (Request.Cookies[tokenCookeName] == null || String.IsNullOrWhiteSpace(Request.Cookies[tokenCookeName].Value))
+                return null;
+            FormsAuthenticationTicket tokenTicket = FormsAuthentication.Decrypt(Request.Cookies[tokenCookeName].Value);
+            parameters.AccessToken = tokenTicket.UserData;
+
+            return parameters;
+        }
+    }
 }
 
 #region Helpers
@@ -64,18 +111,18 @@ namespace IEEECheckin.ASPDocs
         public const string UserIdKey = "userId";
         public static string GetUserIdFromRequest(HttpRequest request)
         {
-            return HttpUtility.UrlDecode(request.QueryString[UserIdKey]);
+            return System.Web.HttpUtility.UrlDecode(request.QueryString[UserIdKey]);
         }
 
         public static string GetResetPasswordRedirectUrl(string code, HttpRequest request)
         {
-            var absoluteUri = "/Account/ResetPassword?" + CodeKey + "=" + HttpUtility.UrlEncode(code);
+            var absoluteUri = "/Account/ResetPassword?" + CodeKey + "=" + System.Web.HttpUtility.UrlEncode(code);
             return new Uri(request.Url, absoluteUri).AbsoluteUri.ToString();
         }
 
         public static string GetUserConfirmationRedirectUrl(string code, string userId, HttpRequest request)
         {
-            var absoluteUri = "/Account/Confirm?" + CodeKey + "=" + HttpUtility.UrlEncode(code) + "&" + UserIdKey + "=" + HttpUtility.UrlEncode(userId);
+            var absoluteUri = "/Account/Confirm?" + CodeKey + "=" + System.Web.HttpUtility.UrlEncode(code) + "&" + UserIdKey + "=" + System.Web.HttpUtility.UrlEncode(userId);
             return new Uri(request.Url, absoluteUri).AbsoluteUri.ToString();
         }
 

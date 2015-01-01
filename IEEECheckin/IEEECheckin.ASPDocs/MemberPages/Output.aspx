@@ -38,6 +38,8 @@
         <asp:Button CssClass="form-control input-lg btn btn-info check-in" OnClick="SubmitCsv" Text="Get CSV" id="csvbutton" runat="server" />
         <br /><br />
         <asp:Button CssClass="form-control input-lg btn btn-info check-in" OnClick="SubmitJson" Text="Get JSON" id="jsonbutton" runat="server" />
+        <br /><br />
+        <asp:Button CssClass="form-control input-lg btn btn-info check-in" OnClick="SubmitGoogle" Text="Add to Google" id="googlebutton" runat="server" />
     </div>
 
     <div id="outputDiv">

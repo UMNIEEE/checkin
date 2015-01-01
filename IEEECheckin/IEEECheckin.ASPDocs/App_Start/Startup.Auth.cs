@@ -8,6 +8,7 @@ using Microsoft.Owin.Security.DataProtection;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using IEEECheckin.ASPDocs.Models;
+using System.Collections.Generic;
 
 namespace IEEECheckin.ASPDocs
 {
@@ -59,11 +60,13 @@ namespace IEEECheckin.ASPDocs
             //   appId: "",
             //   appSecret: "");
 
-            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            {
-                ClientId = "881100586767-hntimbqomjhmjdn8q2gq0ntp3o18ohc3.apps.googleusercontent.com",
-                ClientSecret = ""
-            });
+            /*GoogleOAuth2AuthenticationOptions googleOpts = new GoogleOAuth2AuthenticationOptions();
+            googleOpts.ClientId = "377066508465-aqv73mg2o2e0cev6tm4q5ludbkg7auel.apps.googleusercontent.com";
+            googleOpts.ClientSecret = "zbGdGXhVx46YqvrcF8mXFjzy";
+            googleOpts.Scope.Add("https://spreadsheets.google.com/feeds");
+            googleOpts.Scope.Add("https://docs.google.com/feeds");
+
+            app.UseGoogleAuthentication(googleOpts);*/
         }
     }
 }
