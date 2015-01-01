@@ -145,7 +145,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="About.aspx" />
     <Content Include="Account\AddPhoneNumber.aspx" />
     <Content Include="Account\Confirm.aspx" />
     <Content Include="Account\Forgot.aspx" />
@@ -161,11 +160,46 @@
     <Content Include="Account\ResetPasswordConfirmation.aspx" />
     <Content Include="Account\TwoFactorAuthenticationSignIn.aspx" />
     <Content Include="Account\VerifyPhoneNumber.aspx" />
-    <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\colorpicker.css" />
+    <Content Include="Content\layout.css" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Images\blank.gif" />
+    <Content Include="Images\colorpicker_background.png" />
+    <Content Include="Images\colorpicker_hex.png" />
+    <Content Include="Images\colorpicker_hsb_b.png" />
+    <Content Include="Images\colorpicker_hsb_h.png" />
+    <Content Include="Images\colorpicker_hsb_s.png" />
+    <Content Include="Images\colorpicker_indic.gif" />
+    <Content Include="Images\colorpicker_overlay.png" />
+    <Content Include="Images\colorpicker_rgb_b.png" />
+    <Content Include="Images\colorpicker_rgb_g.png" />
+    <Content Include="Images\colorpicker_rgb_r.png" />
+    <Content Include="Images\colorpicker_select.gif" />
+    <Content Include="Images\colorpicker_submit.png" />
+    <Content Include="Images\custom_background.png" />
+    <Content Include="Images\custom_hex.png" />
+    <Content Include="Images\custom_hsb_b.png" />
+    <Content Include="Images\custom_hsb_h.png" />
+    <Content Include="Images\custom_hsb_s.png" />
+    <Content Include="Images\custom_indic.gif" />
+    <Content Include="Images\custom_rgb_b.png" />
+    <Content Include="Images\custom_rgb_g.png" />
+    <Content Include="Images\custom_rgb_r.png" />
+    <Content Include="Images\custom_submit.png" />
+    <Content Include="Images\icon-128.png" />
+    <Content Include="Images\logo.svg" />
+    <Content Include="Images\select.png" />
+    <Content Include="Images\select2.png" />
+    <Content Include="Images\slider.png" />
+    <Content Include="MemberPages\About.aspx" />
+    <Content Include="MemberPages\Checkin.aspx" />
+    <Content Include="MemberPages\Confirm.aspx" />
+    <Content Include="MemberPages\Format.aspx" />
+    <Content Include="MemberPages\Menu.aspx" />
+    <Content Include="MemberPages\Output.aspx" />
     <Content Include="packages.config" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -174,11 +208,20 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\check-in.js" />
+    <Content Include="Scripts\colorpicker.js" />
+    <Content Include="Scripts\eye.js" />
+    <Content Include="Scripts\format.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery.cookie.js" />
+    <Content Include="Scripts\layout.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\store.js" />
+    <Content Include="Scripts\umn-crawl.js" />
+    <Content Include="Scripts\utils.js" />
     <Content Include="Scripts\WebForms\DetailsView.js" />
     <Content Include="Scripts\WebForms\Focus.js" />
     <Content Include="Scripts\WebForms\GridView.js" />
@@ -325,23 +368,9 @@
       <DependentUpon>VerifyPhoneNumber.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="About.aspx.cs">
-      <DependentUpon>About.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="About.aspx.designer.cs">
-      <DependentUpon>About.aspx</DependentUpon>
-    </Compile>
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Contact.aspx.cs">
-      <DependentUpon>Contact.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Contact.aspx.designer.cs">
-      <DependentUpon>Contact.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -351,6 +380,48 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="MemberPages\About.aspx.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MemberPages\About.aspx.designer.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MemberPages\Checkin.aspx.cs">
+      <DependentUpon>Checkin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MemberPages\Checkin.aspx.designer.cs">
+      <DependentUpon>Checkin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MemberPages\Confirm.aspx.cs">
+      <DependentUpon>Confirm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MemberPages\Confirm.aspx.designer.cs">
+      <DependentUpon>Confirm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MemberPages\Format.aspx.cs">
+      <DependentUpon>Format.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MemberPages\Format.aspx.designer.cs">
+      <DependentUpon>Format.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MemberPages\Menu.aspx.cs">
+      <DependentUpon>Menu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MemberPages\Menu.aspx.designer.cs">
+      <DependentUpon>Menu.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MemberPages\Output.aspx.cs">
+      <DependentUpon>Output.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MemberPages\Output.aspx.designer.cs">
+      <DependentUpon>Output.aspx</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

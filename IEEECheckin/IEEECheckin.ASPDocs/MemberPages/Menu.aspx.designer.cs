@@ -7,11 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace IEEECheckin.ASPDocs
+namespace IEEECheckin.ASPDocs.MemberPages
 {
 
 
-    public partial class Contact
+    public partial class Menu
     {
     }
 }

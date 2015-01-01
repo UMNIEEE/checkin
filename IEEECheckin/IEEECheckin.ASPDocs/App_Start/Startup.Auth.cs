@@ -59,11 +59,11 @@ namespace IEEECheckin.ASPDocs
             //   appId: "",
             //   appSecret: "");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "881100586767-hntimbqomjhmjdn8q2gq0ntp3o18ohc3.apps.googleusercontent.com",
+                ClientSecret = ""
+            });
         }
     }
 }
