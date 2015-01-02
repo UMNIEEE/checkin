@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web;
 using System.Web.UI;
+using System.Configuration;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Owin;
@@ -63,7 +64,7 @@ namespace IEEECheckin.ASPDocs.Account
         protected void LogInGoogle(object sender, EventArgs e)
         {
             // Get the authorization url
-            Response.Redirect(OAuthUtil.CreateOAuth2AuthorizationUrl(GoogleOAuth2.GetParameters()));
+            Response.Redirect(GoogleOAuth2.GoogleAuthenticate(Request));
         }
     }
 }

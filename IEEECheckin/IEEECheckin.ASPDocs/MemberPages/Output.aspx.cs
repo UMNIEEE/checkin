@@ -12,15 +12,25 @@ using Newtonsoft.Json;
 using Google.GData.Client;
 using Google.GData.Spreadsheets;
 using IEEECheckin.ASPDocs.Models;
+using System.Web.Services;
 
 
 namespace IEEECheckin.ASPDocs.MemberPages
 {
     public partial class Output : System.Web.UI.Page
     {
+
+        public string SubmitDataStr { get { return SubmitData.Text; } set { SubmitData.Text = value; } }
+        public string MeetingNameStr { get { return MeetingName.Text; } set { MeetingName.Text = value; } }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             
+        }
+
+        protected void SubmitGoogle(object sender, EventArgs e)
+        {
+            Server.Transfer("~/MemberPages/GoogleDocSelect.aspx");
         }
 
         protected void SubmitCsv(object sender, EventArgs e)
@@ -28,11 +38,14 @@ namespace IEEECheckin.ASPDocs.MemberPages
             try
             {
                 string meetingName = "meeting_sign_ins";
-                if (!String.IsNullOrWhiteSpace(meeting.Value))
-                    meetingName = meeting.Value.Replace(' ', '_');
+                if (!String.IsNullOrWhiteSpace(MeetingNameStr))
+                {
+                    meetingName = MeetingNameStr;
+                    meetingName = meetingName.Replace(' ', '_');
+                }
                 meetingName += ".csv";
 
-                if (String.IsNullOrWhiteSpace(submitData.Value))
+                if (String.IsNullOrWhiteSpace(SubmitDataStr))
                 {
                     return; // error
                 }
@@ -43,11 +56,11 @@ namespace IEEECheckin.ASPDocs.MemberPages
                 Response.ClearContent();
 
                 // create file content
-                XmlDocument xml = JsonConvert.DeserializeXmlNode(submitData.Value, "data", false);
+                XmlDocument xml = JsonConvert.DeserializeXmlNode(SubmitDataStr, "data", false);
 
                 StringBuilder csvStr = new StringBuilder();
 
-                csvStr.AppendLine("Student Id,First Name,Last Name,Email,Day,Month,Year,Meeting");
+                csvStr.AppendLine("Student Id,First Name,Last Name,Email,Date,Meeting");
 
                 foreach (XmlNode node in xml.DocumentElement.ChildNodes)
                 {
@@ -79,11 +92,14 @@ namespace IEEECheckin.ASPDocs.MemberPages
             try
             {
                 string meetingName = "meeting_sign_ins";
-                if (!String.IsNullOrWhiteSpace(meeting.Value))
-                    meetingName = meeting.Value.Replace(' ', '_');
+                if (!String.IsNullOrWhiteSpace(MeetingNameStr))
+                {
+                    meetingName = MeetingNameStr;
+                    meetingName = meetingName.Replace(' ', '_');
+                }
                 meetingName += ".js";
 
-                if (String.IsNullOrWhiteSpace(submitData.Value))
+                if (String.IsNullOrWhiteSpace(SubmitDataStr))
                 {
                     return; // error
                 }
@@ -95,41 +111,13 @@ namespace IEEECheckin.ASPDocs.MemberPages
 
                 // add header to response
                 Response.AddHeader("Content-Disposition", "attachment; filename=" + meetingName);
-                Response.AddHeader("Content-Length", submitData.Value.Length.ToString());
+                Response.AddHeader("Content-Length", (SubmitDataStr).Length.ToString());
                 Response.ContentType = "text/plain";
 
                 // write output to response
                 Response.Flush();
-                Response.Output.Write(submitData.Value);
+                Response.Output.Write(SubmitDataStr);
                 Response.End();
-            }
-            catch(Exception ex)
-            {
-
-            }
-        }
-
-        protected void SubmitGoogle(object sender, EventArgs e)
-        {
-            try
-            {
-                // Get OAuth parameters (from config and cookies)
-                OAuth2Parameters parameters = GoogleOAuth2.GetParameters(Page.Request);
-                if (parameters == null)
-                {
-                    return; // error
-                }
-
-                // Make an OAuth authorized request to Google
-                // Initialize the variables needed to make the request
-                GOAuth2RequestFactory requestFactory =
-                    new GOAuth2RequestFactory(null, ConfigurationManager.AppSettings["ApplicationName"], parameters);
-                SpreadsheetsService service = new SpreadsheetsService(ConfigurationManager.AppSettings["ApplicationName"]);
-                service.RequestFactory = requestFactory;
-
-                // Make the request to Google
-                GoogleAddRow(service);
-
             }
             catch(Exception ex)
             {

@@ -101,7 +101,13 @@
             }
             else if($("#newmeeting").val() !== null && $("#newmeeting").val() !== undefined && $("#newmeeting").val().trim() !== ""){
                 var dt = new Date();
-                date = dt.getFullYear() + "-" + dt.getMonth() + "-" + dt.getDate();
+                var month = dt.getMonth() + 1;
+                if (month < 10)
+                    month = "0" + month;
+                var day = dt.getDate();
+                if (day < 10)
+                    day = "0" + day;
+                date = dt.getFullYear() + "-" + month + "-" + day;
                 meet = $("#newmeeting").val().trim();
             }
             else {

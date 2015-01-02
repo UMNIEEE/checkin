@@ -182,6 +182,7 @@
     <Content Include="Content\layout.css" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="MemberPages\GoogleDocSelect.aspx" />
     <Content Include="signin-google.aspx" />
     <Content Include="Images\blank.gif" />
     <Content Include="Images\colorpicker_background.png" />
@@ -397,6 +398,13 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="MemberPages\GoogleDocSelect.aspx.cs">
+      <DependentUpon>GoogleDocSelect.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MemberPages\GoogleDocSelect.aspx.designer.cs">
+      <DependentUpon>GoogleDocSelect.aspx</DependentUpon>
     </Compile>
     <Compile Include="signin-google.aspx.cs">
       <DependentUpon>signin-google.aspx</DependentUpon>

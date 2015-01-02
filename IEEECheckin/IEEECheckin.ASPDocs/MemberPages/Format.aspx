@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Format.aspx.cs" Inherits="IEEECheckin.ASPDocs.MemberPages.Format" %>
+﻿<%@ Page Title="Format" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Format.aspx.cs" Inherits="IEEECheckin.ASPDocs.MemberPages.Format" %>
 <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server">
     <link rel="stylesheet" href="../Content/colorpicker.css" />
     <style>

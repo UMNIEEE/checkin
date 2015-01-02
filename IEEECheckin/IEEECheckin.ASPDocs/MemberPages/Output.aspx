@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Output.aspx.cs" Inherits="IEEECheckin.ASPDocs.MemberPages.Output" %>
+﻿<%@ Page Title="Output" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Output.aspx.cs" EnableSessionState="True" Inherits="IEEECheckin.ASPDocs.MemberPages.Output" %>
 <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server">
     <style>
         td, th {
@@ -32,9 +32,8 @@
 
     <p class="section-header">Download <i class="fa fa-download"></i></p> 
     <div class="boxed-section margin-lg-after">
-        <asp:HiddenField id="format" runat="server" />
-        <asp:HiddenField id="submitData" runat="server" />
-        <asp:HiddenField id="meeting" runat="server" />
+        <asp:TextBox CssClass="form-control input-lg margin-sm-after" ID="SubmitData" runat="server" />
+        <asp:TextBox CssClass="form-control input-lg margin-sm-after" ID="MeetingName" runat="server" />
         <asp:Button CssClass="form-control input-lg btn btn-info check-in" OnClick="SubmitCsv" Text="Get CSV" id="csvbutton" runat="server" />
         <br /><br />
         <asp:Button CssClass="form-control input-lg btn btn-info check-in" OnClick="SubmitJson" Text="Get JSON" id="jsonbutton" runat="server" />
@@ -61,8 +60,6 @@
             try {
                 createOutput("#MainContent_output tr:last", decodeURI(GetQueryStringParams("meeting")), decodeURI(GetQueryStringParams("date")));
                 getJson(decodeURIComponent(GetQueryStringParams("meeting")), decodeURI(GetQueryStringParams("date")));
-                var meeting = decodeURIComponent(GetQueryStringParams("meeting")) + " " + decodeURIComponent(GetQueryStringParams("date"));
-                $("#MainContent_meeting").val(meeting);
             }
             catch (err) {
                 alert(err.message);
@@ -75,9 +72,11 @@
             }
         }
         function cursorObjectCallback(outputVal) {
+            var meeting = decodeURIComponent(GetQueryStringParams("meeting")) + " " + decodeURIComponent(GetQueryStringParams("date"));
             var data = { "data": outputVal };
             var dataVal = JSON.stringify(data);
-            $("#MainContent_submitData").val(dataVal);
+            $("#MainContent_SubmitData").val(dataVal);
+            $("#MainContent_MeetingName").val(meeting);
         }
     </script>
 </asp:Content>

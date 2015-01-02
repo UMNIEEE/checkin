@@ -60,9 +60,7 @@ $(document).ready(function () {
         objectStore.createIndex("firstname", "firstname", { unique: false });
         objectStore.createIndex("lastname", "lastname", { unique: false });
         objectStore.createIndex("email", "email", { unique: false });
-        objectStore.createIndex("day", "day", { unique: false });
-        objectStore.createIndex("month", "month", { unique: false });
-        objectStore.createIndex("year", "year", { unique: false });
+        objectStore.createIndex("date", "date", { unique: false });
         objectStore.createIndex("meeting", "meeting", { unique: false });
 
         //alert("Object store created.");
@@ -96,10 +94,9 @@ function addData() {
         return;
     } else {
 
-        var dtParts = dateVal.split("-");
         // grab the values entered into the form fields and store them in an object ready for being inserted into the IDB
         var newItem = [
-          { index: indexVal, studentid: studentidVal, firstname: firstnameVal, lastname: lastnameVal, email: emailVal, day: dtParts[2], month: dtParts[1], year: dtParts[0], meeting: meetingVal }
+          { index: indexVal, studentid: studentidVal, firstname: firstnameVal, lastname: lastnameVal, email: emailVal, date: dateVal, meeting: meetingVal }
         ];
 
         // open a read/write db transaction, ready for adding the data
@@ -226,8 +223,7 @@ function createOutput(tableSelector, meeting, date) {
         try {
             var cursor = event.target.result;
             if (cursor) {
-                var cursorDate = cursor.value.year + "-" + cursor.value.month + "-" + cursor.value.day;
-                if ((meeting === "" && date === "") || (meeting === "null" && date === "null") || (meeting === cursor.value.meeting && date === cursorDate)) {
+                if ((meeting === "" && date === "") || (meeting === "null" && date === "null") || (meeting === cursor.value.meeting && date === cursor.value.date)) {
                     var tableRow = "<tr>" +
                         "<td>" + cursor.value.firstname + "</td>" +
                         "<td>" + cursor.value.lastname + "</td>";
@@ -240,7 +236,7 @@ function createOutput(tableSelector, meeting, date) {
                     tableRow = tableRow +
                         "<td>" + cursor.value.email + "</td>" +
                         "<td>" + cursor.value.meeting + "</td>" +
-                        "<td>" + cursor.value.year + "-" + cursor.value.month + "-" + cursor.value.day + "</td>" +
+                        "<td>" + cursor.value.date + "</td>" +
                         "</tr>";
                     $(tableSelector).after(tableRow);
 
@@ -256,7 +252,7 @@ function createOutput(tableSelector, meeting, date) {
                     outputText = outputText +
                         cursor.value.email + "," +
                         cursor.value.meeting + "," +
-                        cursor.value.year + "-" + cursor.value.month + "-" + cursor.value.day +
+                        cursor.value.date +
                         "\n";
                 }
 
@@ -289,8 +285,7 @@ function getJson(meeting, date) {
         try {
             var cursor = event.target.result;
             if (cursor) {
-                var cursorDate = cursor.value.year + "-" + cursor.value.month + "-" + cursor.value.day;
-                if ((meeting === "" && date === "") || (meeting === "null" && date === "null") || (meeting === cursor.value.meeting && date === cursorDate)) {
+                if ((meeting === "" && date === "") || (meeting === "null" && date === "null") || (meeting === cursor.value.meeting && date === cursor.value.date)) {
                     var val = cursor.value;
                     delete val.index;
                     outputObject[outputObject.length] = val;
@@ -336,7 +331,7 @@ function getMeetings() {
 
                 for (var i = 0; i < outputObjectsM.length; i++) {
                     var meet = outputObjectsM[i].meeting;
-                    var date = outputObjectsM[i].year + "-" + outputObjectsM[i].month + "-" + outputObjectsM[i].day;
+                    var date = outputObjectsM[i].date;
                     var outputMeetLen = outputMeetings.length;
                     var newMeet = true;
                     if (outputMeetings.length > 0) {

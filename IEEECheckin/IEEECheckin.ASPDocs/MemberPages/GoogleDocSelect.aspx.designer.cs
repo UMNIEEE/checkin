@@ -10,7 +10,7 @@
 namespace IEEECheckin.ASPDocs.MemberPages {
     
     
-    public partial class Output {
+    public partial class GoogleDocSelect {
         
         /// <summary>
         /// SubmitData control.
@@ -31,39 +31,42 @@ namespace IEEECheckin.ASPDocs.MemberPages {
         protected global::System.Web.UI.WebControls.TextBox MeetingName;
         
         /// <summary>
-        /// csvbutton control.
+        /// SheetList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button csvbutton;
+        protected global::System.Web.UI.WebControls.ListBox SheetList;
         
         /// <summary>
-        /// jsonbutton control.
+        /// newDocument control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button jsonbutton;
+        protected global::System.Web.UI.WebControls.TextBox newDocument;
         
         /// <summary>
-        /// googlebutton control.
+        /// submitButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button googlebutton;
+        protected global::System.Web.UI.WebControls.Button submitButton;
         
         /// <summary>
-        /// output control.
+        /// PreviousPage property.
         /// </summary>
         /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// Auto-generated property.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Table output;
+        public new IEEECheckin.ASPDocs.MemberPages.Output PreviousPage {
+            get {
+                return ((IEEECheckin.ASPDocs.MemberPages.Output)(base.PreviousPage));
+            }
+        }
     }
 }
