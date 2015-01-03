@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Google Doc Export" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="GoogleDocSelect.aspx.cs" EnableSessionState="True" Inherits="IEEECheckin.ASPDocs.MemberPages.GoogleDocSelect" %>
+﻿<%@ Page Title="Google Doc Export" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="GoogleDocSelect.aspx.cs" Inherits="IEEECheckin.ASPDocs.MemberPages.GoogleDocSelect" %>
 
 <%@ PreviousPageType VirtualPath="~/MemberPages/Output.aspx" %> 
 
@@ -19,9 +19,37 @@
         <asp:TextBox CssClass="form-control input-lg margin-sm-after" ID="SubmitData" runat="server" />
         <asp:TextBox CssClass="form-control input-lg margin-sm-after" ID="MeetingName" runat="server" />
         <asp:ListBox ID="SheetList" runat="server"></asp:ListBox>
-        <asp:TextBox class="form-control input-lg margin-sm-after" ID="newDocument" placeholder="Meeting Name" runat="server" />
-        <asp:Button CssClass="form-control input-lg btn btn-info check-in" ID="submitButton" OnClick="SubmitGoogle" Text="Select Doc" runat="server" />
+        <asp:TextBox class="form-control input-lg margin-sm-after" ID="NewDocument" placeholder="Meeting Name" runat="server" />
+        <asp:Button CssClass="form-control input-lg btn btn-info check-in" ID="SubmitButton" OnClientClick="return submitGoogle()" Text="Select Doc" runat="server" />
     </div>
 </asp:Content>
 <asp:Content ID="JavaScriptContent" ContentPlaceHolderID="JavaScripts" runat="server">
+    <script>
+        function submitGoogle() {
+            var data = {
+                "submitData": $("#MainContent_SubmitData").val(),
+                "meetingName": $("#MainContent_MeetingName").val(),
+                "newDocumentName": $("#MainContent_NewDocument").val(),
+                "selectedUri": $("#MainContent_SheetList option:selected").val(),
+                "accessToken": $.cookie("GoogleTokenCode"),
+                "refreshToken": $.cookie("GoogleRefreshCode")
+            };
+            var dataVal = JSON.stringify(data);
+            $.ajax({
+                type: "POST",
+                url: "Output.aspx/SubmitGoogle",
+                data: dataVal,
+                contentType: 'application/json; charset=utf-8',
+                dataType: "json",
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("Request: " + XMLHttpRequest.toString() + "\n\nStatus: " + textStatus + "\n\nError: " + errorThrown);
+                },
+                success: function (data) {
+                    alert(data)
+                }
+            });
+
+            return false;
+        }
+    </script>
 </asp:Content>

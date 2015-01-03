@@ -148,6 +148,38 @@ namespace IEEECheckin.ASPDocs.Models
         }
 
         /// <summary>
+        /// Gets the OAuth2 parameters from the provided access and refresh Tokens.
+        /// </summary>
+        /// <param name="accessToken">The previously obtained and encrypted Google access token.</param>
+        /// <param name="refreshToken">The previously obtained and encrypted Google refresh token.</param>
+        /// <param name="forceRefresh">If a force refresh should occur.</param>
+        /// <returns>The OAuth2 parameters.</returns>
+        public static OAuth2Parameters GetParameters(string accessToken, string refreshToken, bool forceRefresh = false)
+        {
+            // OAuth2Parameters holds all the parameters related to OAuth 2.0.
+            OAuth2Parameters parameters = new OAuth2Parameters();
+
+            parameters.ClientId = ConfigurationManager.AppSettings["GoogleClientId"];
+            parameters.ClientSecret = ConfigurationManager.AppSettings["GoogleClientSecret"];
+            parameters.Scope = ConfigurationManager.AppSettings["GoogleScope"];
+            parameters.RedirectUri = ConfigurationManager.AppSettings["GoogleRedirectUri"];
+
+            if (forceRefresh)
+            {
+                parameters.AccessType = "offline";
+                parameters.ApprovalPrompt = "force";
+            }
+
+            FormsAuthenticationTicket tokenTicket = FormsAuthentication.Decrypt(accessToken);
+            parameters.AccessToken = tokenTicket.UserData;
+
+            FormsAuthenticationTicket refreshTicket = FormsAuthentication.Decrypt(refreshToken);
+            parameters.RefreshToken = refreshTicket.UserData;
+
+            return parameters;
+        }
+
+        /// <summary>
         /// Gets the OAuth2 parameters, including the authentication tokens after authentication has occurred.
         /// </summary>
         /// <param name="Request">The page request.</param>
@@ -220,6 +252,31 @@ namespace IEEECheckin.ASPDocs.Models
         }
 
         /// <summary>
+        /// Gets the Spreadsheet Service using the previously obtained authentication tokens.
+        /// </summary>
+        /// <param name="accessToken">The previously obtained and encrypted Google access token.</param>
+        /// <param name="refreshToken">The previously obtained and encrypted Google refresh token.</param>
+        /// <returns>The Spreadsheet Service.</returns>
+        public static SpreadsheetsService GoogleAuthService(string accessToken, string refreshToken)
+        {
+            // Get OAuth parameters (from config and cookies)
+            OAuth2Parameters parameters = GoogleOAuth2.GetParameters(accessToken, refreshToken);
+            if (parameters == null)
+            {
+                return null;
+            }
+
+            // Make an OAuth authorized request to Google
+            // Initialize the variables needed to make the request
+            GOAuth2RequestFactory requestFactory =
+                new GOAuth2RequestFactory(null, ConfigurationManager.AppSettings["ApplicationName"], parameters);
+            SpreadsheetsService service = new SpreadsheetsService(ConfigurationManager.AppSettings["ApplicationName"]);
+            service.RequestFactory = requestFactory;
+
+            return service;
+        }
+
+        /// <summary>
         /// Performs the initial step in Google authentication to get the access code.
         /// </summary>
         /// <param name="Request">The page request.</param>
@@ -270,7 +327,7 @@ namespace IEEECheckin.ASPDocs.Models
             FormsAuthenticationTicket codeTicket = new FormsAuthenticationTicket(1, codeCookieName, DateTime.Now, DateTime.Now.AddHours(expireHours), persistent, parameters.AccessCode, FormsAuthentication.FormsCookiePath);
             string encCodeTicket = FormsAuthentication.Encrypt(codeTicket);
             Response.Cookies.Add(new HttpCookie(codeCookieName, encCodeTicket));
-            Response.Cookies[codeCookieName].HttpOnly = true;
+            //Response.Cookies[codeCookieName].HttpOnly = true;
             if(!persistent)
                 Response.Cookies[codeCookieName].Expires = DateTime.Now.AddHours(expireHours);
 
@@ -282,7 +339,7 @@ namespace IEEECheckin.ASPDocs.Models
             FormsAuthenticationTicket tokenTicket = new FormsAuthenticationTicket(1, tokenCookieName, DateTime.Now, DateTime.Now.AddHours(expireHours), persistent, parameters.AccessToken, FormsAuthentication.FormsCookiePath);
             string encTokenTicket = FormsAuthentication.Encrypt(tokenTicket);
             Response.Cookies.Add(new HttpCookie(tokenCookieName, encTokenTicket));
-            Response.Cookies[tokenCookieName].HttpOnly = true;
+            //Response.Cookies[tokenCookieName].HttpOnly = true;
             if (!persistent)
                 Response.Cookies[tokenCookieName].Expires = DateTime.Now.AddHours(expireHours);
 
@@ -292,7 +349,7 @@ namespace IEEECheckin.ASPDocs.Models
                 FormsAuthenticationTicket refreshTicket = new FormsAuthenticationTicket(1, refreshCookieName, DateTime.Now, DateTime.Now.AddHours(expireHours), true, parameters.RefreshToken, FormsAuthentication.FormsCookiePath);
                 string encRefreshTicket = FormsAuthentication.Encrypt(refreshTicket);
                 Response.Cookies.Add(new HttpCookie(refreshCookieName, encRefreshTicket));
-                Response.Cookies[refreshCookieName].HttpOnly = true;
+                //Response.Cookies[refreshCookieName].HttpOnly = true;
                 Response.Cookies[refreshCookieName].Expires = DateTime.Now.AddHours(expireHours);
             }
 
@@ -326,7 +383,7 @@ namespace IEEECheckin.ASPDocs.Models
             FormsAuthenticationTicket tokenTicket = new FormsAuthenticationTicket(1, tokenCookieName, DateTime.Now, DateTime.Now.AddHours(expireHours), persistent, parameters.AccessToken, FormsAuthentication.FormsCookiePath);
             string encTokenTicket = FormsAuthentication.Encrypt(tokenTicket);
             Response.Cookies.Add(new HttpCookie(tokenCookieName, encTokenTicket));
-            Response.Cookies[tokenCookieName].HttpOnly = true;
+            //Response.Cookies[tokenCookieName].HttpOnly = true;
             if (!persistent)
                 Response.Cookies[tokenCookieName].Expires = DateTime.Now.AddHours(expireHours);
 

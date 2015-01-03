@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Output" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Output.aspx.cs" EnableSessionState="True" Inherits="IEEECheckin.ASPDocs.MemberPages.Output" %>
+﻿<%@ Page Title="Output" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Output.aspx.cs" Inherits="IEEECheckin.ASPDocs.MemberPages.Output" %>
 <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server">
     <style>
         td, th {
@@ -38,7 +38,7 @@
         <br /><br />
         <asp:Button CssClass="form-control input-lg btn btn-info check-in" OnClick="SubmitJson" Text="Get JSON" id="jsonbutton" runat="server" />
         <br /><br />
-        <asp:Button CssClass="form-control input-lg btn btn-info check-in" OnClick="SubmitGoogle" Text="Add to Google" id="googlebutton" runat="server" />
+        <asp:Button CssClass="form-control input-lg btn btn-info check-in" PostBackUrl="~/MemberPages/GoogleDocSelect" Text="Add to Google" id="googlebutton" runat="server" />
     </div>
 
     <div id="outputDiv">

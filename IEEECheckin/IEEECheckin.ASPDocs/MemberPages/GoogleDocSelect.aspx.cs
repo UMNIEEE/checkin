@@ -4,12 +4,14 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.Services;
 using System.Configuration;
 using System.Xml;
 using Newtonsoft.Json;
 using Google.GData.Client;
 using Google.GData.Spreadsheets;
 using IEEECheckin.ASPDocs.Models;
+
 
 namespace IEEECheckin.ASPDocs.MemberPages
 {
@@ -28,8 +30,8 @@ namespace IEEECheckin.ASPDocs.MemberPages
 
                     if(PreviousPage != null)
                     {
-                        SubmitDataStr = PreviousPage.SubmitDataStr;
-                        MeetingNameStr = PreviousPage.MeetingNameStr;
+                        //SubmitDataStr = PreviousPage.SubmitDataStr;
+                        //MeetingNameStr = PreviousPage.MeetingNameStr;
                     }
 
                     // Make the Auth request to Google
@@ -74,27 +76,29 @@ namespace IEEECheckin.ASPDocs.MemberPages
             SheetList.DataBind();
         }
 
-        protected void SubmitGoogle(object sender, EventArgs e)
+        [WebMethod]
+        public static string SubmitGoogle(string submitData, string meetingName, string newDocumentName, string selectedUri, string accessToken, string refreshToken)
         {
             // Make the Auth request to Google
-            SpreadsheetsService service = GoogleOAuth2.GoogleAuthService(Page.Request);
+            SpreadsheetsService service = GoogleOAuth2.GoogleAuthService(accessToken, refreshToken);
             if (service == null)
             {
-                Response.Redirect("~/Account/Login");
+                //Response.Redirect("~/Account/Login");
+                return "Error - re-login";
             }
 
-            if (String.IsNullOrWhiteSpace(newDocument.Text) && String.IsNullOrWhiteSpace(SheetList.SelectedValue))
+            if (String.IsNullOrWhiteSpace(newDocumentName) && String.IsNullOrWhiteSpace(selectedUri))
             {
-                return; //error
+                return "Error - no document selected"; //error
             }
 
-            if (String.IsNullOrWhiteSpace(SubmitDataStr))
+            if (String.IsNullOrWhiteSpace(submitData))
             {
-                return; // error
+                return "Error - no data provided"; // error
             }
 
             // create file content
-            XmlDocument xml = JsonConvert.DeserializeXmlNode(SubmitDataStr, "data", false);
+            XmlDocument xml = JsonConvert.DeserializeXmlNode(submitData, "data", false);
 
             List<CheckinEntry> entries = new List<CheckinEntry>();
 
@@ -113,15 +117,15 @@ namespace IEEECheckin.ASPDocs.MemberPages
                 });
             }
 
-            if(String.IsNullOrWhiteSpace(newDocument.Text)) // use pre-existing
+            if(String.IsNullOrWhiteSpace(newDocumentName)) // use pre-existing
             {
-                SpreadsheetQuery query = new SpreadsheetQuery(SheetList.SelectedValue);
+                SpreadsheetQuery query = new SpreadsheetQuery(selectedUri);
                 // Make a request to the API and get all spreadsheets.
                 SpreadsheetFeed feed = service.Query(query);
 
                 if (feed.Entries.Count == 0)
                 {
-                    return; // error
+                    return "Error - no spreadsheet found"; // error
                 }
 
                 SpreadsheetEntry spreadsheet = (SpreadsheetEntry)feed.Entries[0];
@@ -129,8 +133,8 @@ namespace IEEECheckin.ASPDocs.MemberPages
                 // Create new worksheet in selected spreadhseet
 
                 string meeting = "my_meeting_" + DateTime.Now.ToString("yyyy-MM-dd");
-                if (!String.IsNullOrWhiteSpace(MeetingNameStr))
-                    meeting = MeetingNameStr;
+                if (!String.IsNullOrWhiteSpace(meetingName))
+                    meeting = meetingName;
 
                 meeting = meeting.Replace(" ", "_");
 
@@ -197,6 +201,8 @@ namespace IEEECheckin.ASPDocs.MemberPages
 
 
             }
+
+            return "Success";
         }
     }
 }
