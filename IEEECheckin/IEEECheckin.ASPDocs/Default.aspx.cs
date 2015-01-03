@@ -11,7 +11,7 @@ namespace IEEECheckin.ASPDocs
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Response.Redirect("~/MemberPages/Menu");
+            Response.Redirect("~/MemberPages/Menu.aspx");
         }
     }
 }

@@ -65,6 +65,22 @@ namespace IEEECheckin.ASPDocs.Models
         }
     }
 
+    public class CellAddress
+    {
+        public uint Row { get; set; }
+        public uint Col { get; set; }
+        public string IdString { get; set; }
+
+        public CellAddress() { }
+
+        public CellAddress(uint row, uint col)
+        {
+            Row = row;
+            Col = col;
+            IdString = string.Format("R{0}C{1}", row, col);
+        }
+    }
+
     public class CheckinEntry
     {
         private const string _dateFormat = "yyyy-MM-dd";
@@ -191,7 +207,7 @@ namespace IEEECheckin.ASPDocs.Models
             OAuth2Parameters parameters = new OAuth2Parameters();
 
             string codeCookieName = ConfigurationManager.AppSettings["GoogleCodeCookie"];
-            string tokenCookeName = ConfigurationManager.AppSettings["GoogleTokenCookie"];
+            string tokenCookieName = ConfigurationManager.AppSettings["GoogleTokenCookie"];
             string refreshCookieName = ConfigurationManager.AppSettings["GoogleRefreshCookie"];
 
             parameters.ClientId = ConfigurationManager.AppSettings["GoogleClientId"];
@@ -212,9 +228,9 @@ namespace IEEECheckin.ASPDocs.Models
                 parameters.AccessCode = codeTicket.UserData;
             }
 
-            if (Request.Cookies[tokenCookeName] != null && !String.IsNullOrWhiteSpace(Request.Cookies[tokenCookeName].Value))
+            if (Request.Cookies[tokenCookieName] != null && !String.IsNullOrWhiteSpace(Request.Cookies[tokenCookieName].Value))
             {
-                FormsAuthenticationTicket tokenTicket = FormsAuthentication.Decrypt(Request.Cookies[tokenCookeName].Value);
+                FormsAuthenticationTicket tokenTicket = FormsAuthentication.Decrypt(Request.Cookies[tokenCookieName].Value);
                 parameters.AccessToken = tokenTicket.UserData;
             }
 
@@ -290,6 +306,55 @@ namespace IEEECheckin.ASPDocs.Models
                 forceRefresh = true; // refresh token is gone, so need to force new creation
 
             return OAuthUtil.CreateOAuth2AuthorizationUrl(GoogleOAuth2.GetParameters(forceRefresh));
+        }
+
+        /// <summary>
+        /// Gets if cookies exist for Google authentication.
+        /// </summary>
+        /// <param name="Request">The page request.</param>
+        /// <returns>If cookies exist for Google authentication.</returns>
+        public static bool IsGoogleAuthenticated(HttpRequest Request)
+        {
+            string tokenCookieName = ConfigurationManager.AppSettings["GoogleTokenCookie"];
+            string refreshCookieName = ConfigurationManager.AppSettings["GoogleRefreshCookie"];
+
+            if (Request.Cookies[tokenCookieName] != null && !String.IsNullOrWhiteSpace(Request.Cookies[tokenCookieName].Value)
+                && Request.Cookies[refreshCookieName] != null && !String.IsNullOrWhiteSpace(Request.Cookies[refreshCookieName].Value))
+                return true;
+
+            return false;
+        }
+
+        /// <summary>
+        /// Deletes the Google authentication cookies, requiring the user to re-enter their credentials.
+        /// </summary>
+        /// <param name="Request">The page request.</param>
+        public static void GoogleLogOff(HttpRequest Request, HttpResponse Response)
+        {
+            string codeCookieName = ConfigurationManager.AppSettings["GoogleCodeCookie"];
+            string tokenCookieName = ConfigurationManager.AppSettings["GoogleTokenCookie"];
+            string refreshCookieName = ConfigurationManager.AppSettings["GoogleRefreshCookie"];
+
+            if (Request.Cookies[codeCookieName] != null)
+            {
+                HttpCookie aCookie = new HttpCookie(codeCookieName);
+                aCookie.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(aCookie);
+            }
+
+            if (Request.Cookies[tokenCookieName] != null)
+            {
+                HttpCookie aCookie = new HttpCookie(tokenCookieName);
+                aCookie.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(aCookie);
+            }
+
+            if (Request.Cookies[refreshCookieName] != null)
+            {
+                HttpCookie aCookie = new HttpCookie(refreshCookieName);
+                aCookie.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(aCookie);
+            }
         }
 
         /// <summary>

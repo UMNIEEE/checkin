@@ -68,13 +68,15 @@ $(document).ready(function () {
 
 });
 
-function addData() {
-    var firstnameVal = $("#firstname").val().trim();
-    var lastnameVal = $("#lastname").val().trim();
-    var studentidVal = $("#studentid").val().trim();
-    var emailVal = $("#email").val().trim();
-    var meetingVal = decodeURIComponent(GetQueryStringParams("meeting")).trim();
-    var dateVal = decodeURIComponent(GetQueryStringParams("date")).trim();
+function addData(data) {
+    var firstnameVal = data["firstname"];
+    var lastnameVal = data["lastname"];
+    var studentidVal = data["studentid"];
+    var emailVal = data["email"];
+    var meetingVal = data["meeting"];
+    var dateVal = data["date"];
+
+
     var indexVal = lastnameVal + "-" + firstnameVal + "-" + studentidVal + "-" + Date.now();
 
     // Stop the form submitting if any values are left empty. This is just for browsers that don't support the HTML5 form
@@ -125,13 +127,6 @@ function addData() {
 
             // report the success of our new item going into the database
             //alert("New item added to database.");
-
-            // clear the form, ready for adding the next entry
-            $("#firstname").val("");
-            $("#lastname").val("");
-            $("#studentid").val("");
-            $("#email").val("");
-
         }
     }
 }
@@ -260,8 +255,8 @@ function createOutput(tableSelector, meeting, date) {
             } else {
                 //alert("All elements displayed.");
                 try {
-                    if (cursorCallback != undefined)
-                        cursorCallback(outputText);
+                    if (outputCallback != undefined)
+                        outputCallback(outputText);
                 }
                 catch (err) {
 
@@ -295,8 +290,8 @@ function getJson(meeting, date) {
             } else {
                 //alert("All elements displayed.");
                 try {
-                    if (cursorObjectCallback != undefined)
-                        cursorObjectCallback(outputObject);
+                    if (jsonCallback != undefined)
+                        jsonCallback(outputObject);
                 }
                 catch (err) {
 

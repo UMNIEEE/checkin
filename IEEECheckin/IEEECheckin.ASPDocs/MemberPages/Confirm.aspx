@@ -7,9 +7,6 @@
 </asp:Content>
 <asp:Content runat="server" ID="JavaScriptContent" ContentPlaceHolderID="JavaScripts">
     <script type="text/javascript">
-        $(document).ready(function () {
-            $("#headerSection").css("display", "none");
-        });
         setTimeout(goBack, 750);
         function goBack() {
             window.history.back();

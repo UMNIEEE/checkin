@@ -1,4 +1,7 @@
 ﻿<%@ Page Title="Check-in" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Checkin.aspx.cs" Inherits="IEEECheckin.ASPDocs.MemberPages.Checkin" %>
+
+<%@ PreviousPageType VirtualPath="~/MemberPages/Menu.aspx" %> 
+
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <h1 class="post-header">Meeting Check-In for:</h1>
     <h2 id="meetingName" class="post-header"></h2>
@@ -13,16 +16,18 @@
         <p class="section-label">U-Card Swipe Card Entry <i class="fa fa-credit-card"></i></p>
         <div class="boxed-section margin-lg-after">
             <div class="form-group no-margin-after">
-                <input class="form-control input-lg margin-sm-after" autofocus="autofocus" type="password" name="cardtxt" id="cardtxt" placeholder="Click here, then swipe your card">
+                <asp:HiddenField ID="MeetingName" runat="server" />
+                <asp:HiddenField ID="MeetingDate" runat="server" />
+                <input class="form-control input-lg margin-sm-after" autofocus="autofocus" type="password" id="cardtxt" placeholder="Click here, then swipe your card">
             </div>
         </div>
     </div>
     <p class="section-label">Manual Entry <i class="fa fa-pencil"></i></p>
     <div class="boxed-section margin-lg-after">
-        <input class="form-control input-lg margin-sm-after" type="text" name="firstname" id="firstname" placeholder="First Name">
-        <input class="form-control input-lg margin-sm-after" type="text" name="lastname" id="lastname" placeholder="Last Name">
-        <input class="form-control input-lg margin-sm-after" type="text" name="email" id="email" placeholder="Email">
-        <input class="form-control input-lg margin-sm-after" type="hidden" name="studentid" id="studentid" placeholder="Student ID">
+        <input class="form-control input-lg margin-sm-after" type="text" id="firstname" placeholder="First Name">
+        <input class="form-control input-lg margin-sm-after" type="text" id="lastname" placeholder="Last Name">
+        <input class="form-control input-lg margin-sm-after" type="text" id="email" placeholder="Email">
+        <input class="form-control input-lg margin-sm-after" type="hidden" id="studentid" placeholder="Student ID">
         <button class="form-control input-lg btn btn-info check-in" onclick="return entrySubmit();" type="submit" id="checkinbutton" name="checkinbutton"><i class="fa fa-check"></i> Check In</button>
     </div>
 </asp:Content>
@@ -38,7 +43,7 @@
                 $("#cardtxt").focus();
             }
 
-            $("#meetingName").html(decodeURIComponent(GetQueryStringParams("meeting")));
+            $("#meetingName").html($("#MainContent_MeetingName").val());
             // subscribe to the keydown for the U-card input
             $("#cardtxt, #firstname, #lastname, #email").keydown(function (event) {
                 if (event.keyCode == 13) {
@@ -95,7 +100,22 @@
                     showOverlay("#umnOverlay");
                 }
 
-                addData();
+                var data = {
+                    "firstname": $("#firstname").val().trim(),
+                    "lastname": $("#lastname").val().trim(),
+                    "studentid": $("#studentid").val().trim(),
+                    "email": $("#email").val().trim(),
+                    "meeting": $("#MainContent_MeetingName").val().trim(),
+                    "date": $("#MainContent_MeetingDate").val().trim()
+                };
+
+                addData(data);
+
+                // clear the form, ready for adding the next entry
+                $("#firstname").val("");
+                $("#lastname").val("");
+                $("#studentid").val("");
+                $("#email").val("");
             }
             catch (err) {
                 alert(err.message);
@@ -109,7 +129,7 @@
                 $("#cardtxt").focus();
             }
 
-            window.location.href = "Confirm";
+            window.location.href = "Confirm.aspx";
             return false;
         }
     </script>

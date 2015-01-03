@@ -20,5 +20,35 @@ namespace IEEECheckin.ASPDocs.MemberPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button overlayClose;
+        
+        /// <summary>
+        /// MeetingName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField MeetingName;
+        
+        /// <summary>
+        /// MeetingDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField MeetingDate;
+        
+        /// <summary>
+        /// PreviousPage property.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated property.
+        /// </remarks>
+        public new IEEECheckin.ASPDocs.MemberPages.Menu PreviousPage {
+            get {
+                return ((IEEECheckin.ASPDocs.MemberPages.Menu)(base.PreviousPage));
+            }
+        }
     }
 }

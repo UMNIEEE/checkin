@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IEEECheckin.ASPDocs.Models;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -68,13 +69,33 @@ namespace IEEECheckin.ASPDocs
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if(GoogleOAuth2.IsGoogleAuthenticated(Page.Request)) // logged in
+            {
+                LoginButton.Text = "Google Log Off";
+                LoginButton.Click += LogOffGoogle;
+            }
+            else // logged off
+            {
+                LoginButton.Text = "Google Log In";
+                LoginButton.Click += LogInGoogle;
+            }
         }
 
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
         {
             Context.GetOwinContext().Authentication.SignOut();
         }
+
+        protected void LogInGoogle(object sender, EventArgs e)
+        {
+            // Get the authorization url & redirect to it
+            Response.Redirect(GoogleOAuth2.GoogleAuthenticate(Page.Request));
+        }
+        protected void LogOffGoogle(object sender, EventArgs e)
+        {
+            GoogleOAuth2.GoogleLogOff(Page.Request, Page.Response);
+        }
+
     }
 
 }

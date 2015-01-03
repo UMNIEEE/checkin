@@ -19,7 +19,7 @@ namespace IEEECheckin.ASPDocs.MemberPages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox SubmitData;
+        protected global::System.Web.UI.WebControls.HiddenField SubmitData;
         
         /// <summary>
         /// MeetingName control.
@@ -28,7 +28,16 @@ namespace IEEECheckin.ASPDocs.MemberPages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox MeetingName;
+        protected global::System.Web.UI.WebControls.HiddenField MeetingName;
+        
+        /// <summary>
+        /// MeetingDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField MeetingDate;
         
         /// <summary>
         /// csvbutton control.
@@ -56,14 +65,5 @@ namespace IEEECheckin.ASPDocs.MemberPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button googlebutton;
-        
-        /// <summary>
-        /// output control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Table output;
     }
 }
