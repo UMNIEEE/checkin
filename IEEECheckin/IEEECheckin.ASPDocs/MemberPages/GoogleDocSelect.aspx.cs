@@ -7,11 +7,23 @@ using System.Web.UI.WebControls;
 using System.Web.Services;
 using System.Configuration;
 using System.Xml;
+using System.IO;
+using System.Threading.Tasks;
+using System.Threading;
 using Newtonsoft.Json;
 using Google.GData.Client;
 using Google.GData.Spreadsheets;
+using Google.Apis.Drive.v2;
+using GDrive = Google.Apis.Drive.v2.Data;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Services;
 using IEEECheckin.ASPDocs.Models;
-
+using Google.Apis.Auth.OAuth2.Flows;
+using Google.Apis.Util.Store;
+using Google.Apis.Auth.OAuth2.Web;
+using Google.Apis.Drive.v2.Data;
+using System.Xml.Serialization;
+using System.Text;
 
 namespace IEEECheckin.ASPDocs.MemberPages
 {
@@ -22,6 +34,17 @@ namespace IEEECheckin.ASPDocs.MemberPages
         public string MeetingNameStr { get { return MeetingName.Value; } set { MeetingName.Value = value; } }
         public string MeetingDateStr { get { return MeetingDate.Value; } set { MeetingDate.Value = value; } }
         public string MeetingNameDate { get { return MeetingNameStr + " " + MeetingDateStr; } }
+
+        public const string _FolderMime = "application/vnd.google-apps.folder";
+        public const string _SheetMime = "application/vnd.google-apps.spreadsheet";
+
+        private List<GoogleSheet> _sheetList;
+
+        /// <summary>
+        /// Application logic should manage users authentication. This sample works with only one user. You can change
+        /// it by retrieving data from the session.
+        /// </summary>
+        private const string UserId = "user-id";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -38,14 +61,37 @@ namespace IEEECheckin.ASPDocs.MemberPages
                     }
 
                     // Make the Auth request to Google
-                    SpreadsheetsService service = GoogleOAuth2.GoogleAuthService(Page.Request);
-                    if (service == null)
+                    SpreadsheetsService sheetsService = GoogleOAuth2.GoogleAuthSheets(Page.Request);
+                    if (sheetsService == null)
                     {
-                        Response.Redirect("~/Account/Login.aspx");
+                        return;
                     }
+                    _sheetList = GoogleRetrieveAllSheets(sheetsService);
 
                     // Get list of sheets
-                    GoogleListSheets(service);
+                    DriveService driveService = GoogleOAuth2.GoogleAuthDrive(Page.Request);
+                    if (driveService == null)
+                    {
+                        return;
+                    }
+                    //List<GDrive.File> fileList = GoogleRetrieveAllSheets(driveService);
+                    GoogleFolder root = new GoogleFolder(null, "root", "root", "", 0);
+                    root = GoogleRetrieveSheetTree(driveService, root, 1);
+
+                    System.Xml.Serialization.XmlSerializer x = new System.Xml.Serialization.XmlSerializer(root.GetType());
+                    using(var stream = new StreamWriter(@"D:\Bryan Stadick\Downloads\output.xml", false))
+                    {
+                        x.Serialize(stream, root);
+                    }
+
+                    XmlDocument doc = new XmlDocument();
+                    string xmlStr = SerializeXml<GoogleFolder>(root);
+                    xmlStr = xmlStr.Replace("<Children>", "").Replace("<Children />", "").Replace("</Children>", "");
+                    xmlStr = xmlStr.Replace("<Sheets>", "").Replace("<Sheets />", "").Replace("</Sheets>", "");
+                    doc.LoadXml(xmlStr);
+
+                    SheetTreeDataSource.Data = xmlStr;
+                    SheetTree.DataBind();
                     
                 }
                 catch (Exception ex)
@@ -55,7 +101,32 @@ namespace IEEECheckin.ASPDocs.MemberPages
             }
         }
 
-        private void GoogleListSheets(SpreadsheetsService service)
+        public static string SerializeXml<T>(T value)
+        {
+
+            if (value == null)
+            {
+                return null;
+            }
+
+            XmlSerializer serializer = new XmlSerializer(typeof(T));
+
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Encoding = new UnicodeEncoding(false, false); // no BOM in a .NET string
+            settings.Indent = false;
+            settings.OmitXmlDeclaration = false;
+
+            using (StringWriter textWriter = new StringWriter())
+            {
+                using (XmlWriter xmlWriter = XmlWriter.Create(textWriter, settings))
+                {
+                    serializer.Serialize(xmlWriter, value);
+                }
+                return textWriter.ToString();
+            }
+        }
+
+        private List<GoogleSheet> GoogleRetrieveAllSheets(SpreadsheetsService service)
         {
             // Instantiate a SpreadsheetQuery object to retrieve spreadsheets.
             SpreadsheetQuery query = new SpreadsheetQuery();
@@ -64,19 +135,128 @@ namespace IEEECheckin.ASPDocs.MemberPages
             SpreadsheetFeed feed = service.Query(query);
 
             List<GoogleSheet> sheetList = new List<GoogleSheet>(feed.Entries.Count);
-            sheetList.Add(new GoogleSheet("<Select a Spreadsheet>", (Uri)null));
+            sheetList.Add(new GoogleSheet(null, "", "<Select a Spreadsheet>", "", ""));
 
             // Iterate through all of the spreadsheets returned
             foreach (SpreadsheetEntry entry in feed.Entries)
             {
                 // Print the title of this spreadsheet to the screen
-                sheetList.Add(new GoogleSheet(entry.Title.Text, new Uri(entry.Id.Uri.Content)));
+                sheetList.Add(new GoogleSheet(null, entry.Id.Uri.Content.Split('/').Last(), entry.Title.Text, entry.Id.Uri.Content, entry.Id.Uri.Content));
             }
 
-            SheetList.DataTextField = "Title";
-            SheetList.DataValueField = "Uri";
-            SheetList.DataSource = sheetList;
-            SheetList.DataBind();
+            return sheetList;
+        }
+
+        /// <summary>
+        /// Retrieve a list of File resources.
+        /// </summary>
+        /// <param name="service">Drive API service instance.</param>
+        /// <returns>List of File resources.</returns>
+        private List<GDrive.File> GoogleRetrieveAllSheets(DriveService service)
+        {
+            List<GDrive.File> result = new List<GDrive.File>();
+            FilesResource.ListRequest request = service.Files.List();
+            request.Q = String.Format("mimeType='{0}'", _SheetMime);
+
+            do
+            {
+                try
+                {
+                    GDrive.FileList files = request.Execute();
+
+                    result.AddRange(files.Items);
+                    request.PageToken = files.NextPageToken;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("An error occurred: " + e.Message);
+                    request.PageToken = null;
+                }
+            } while (!String.IsNullOrEmpty(request.PageToken));
+
+            return result;
+        }
+
+        public GoogleFolder GoogleRetrieveSheetTree(DriveService service, GoogleFolder root, int level)
+        {
+            // Start with relative root folder
+            ChildrenResource.ListRequest request = service.Children.List(root.Id);
+            // Request immediate folder children of the relative root folder
+            request.Q = String.Format("mimeType='{0}'", _FolderMime);
+
+            do {
+                try
+                {
+                    ChildList children = request.Execute();
+
+                    foreach (ChildReference child in children.Items)
+                    {
+                        // Get child folder metadata
+                        GDrive.File file = service.Files.Get(child.Id).Execute();
+                        // Add folder to relative root children folder list
+                        root.Children.Add(new GoogleFolder(root, child.Id, file.Title, child.ChildLink, level));
+                    }
+
+                    request.PageToken = children.NextPageToken;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("An error occurred: " + e.Message);
+                    request.PageToken = null;
+                }
+            } while (!String.IsNullOrEmpty(request.PageToken));        
+
+            // Get list of sheets in the relative root folder
+            FilesResource.ListRequest requestFile = service.Files.List();
+            requestFile.Q = String.Format("mimeType='{0}' and '{1}' in parents", _SheetMime, root.Id);
+
+            do
+            {
+                try
+                {
+                    GDrive.FileList files = requestFile.Execute();
+
+                    foreach(GDrive.File file in files.Items)
+                    {
+                        // Get feed uri for current sheet
+                        string feedUri = "";
+                        if(_sheetList != null && _sheetList.Count > 0)
+                        {
+                            feedUri = (from feed in _sheetList where feed.Id.Equals(file.Id) select feed.FeedUri).First();
+                        }
+                        // Add sheet to relative root sheet list
+                        root.Sheets.Add(new GoogleSheet(root, file.Id, file.Title + ".sheet", file.SelfLink, feedUri));
+                    }
+                    request.PageToken = files.NextPageToken;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("An error occurred: " + e.Message);
+                    request.PageToken = null;
+                }
+            } while (!String.IsNullOrEmpty(request.PageToken));
+
+            // Recurse through the children folders
+            for(int i = 0; i < root.Children.Count; i++)
+            {
+                root.Children[i] = GoogleRetrieveSheetTree(service, root.Children[i], level + 1);
+            }
+
+            // Trim away folders that don't contain children and don't contain sheets
+            List<GoogleFolder> notNullChildren = new List<GoogleFolder>();
+            foreach(GoogleFolder folder in root.Children)
+            {
+                if (folder != null)
+                    notNullChildren.Add(folder);
+            }
+            root.Children.Clear();
+            root.Children.AddRange(notNullChildren);
+
+            // Return null if not sheets and no children with sheets
+            if (root.ChildrenCount > 0 || root.SheetCount > 0)
+                return root;
+            else
+                return null;
         }
 
         protected void SubmitGoogle(object sender, EventArgs e)
@@ -84,12 +264,16 @@ namespace IEEECheckin.ASPDocs.MemberPages
             try
             {
                 string newDocumentName = NewDocument.Text;
-                string selectedUri = SheetList.SelectedValue;
+                if(!SheetTree.SelectedNode.Text.Contains(".sheet"))
+                {
+                    return;
+                }
+                string selectedUri = SheetTree.SelectedNode.Value;
                 string submitData = SubmitDataStr;
                 string meetingName = MeetingNameDate;
 
                 // Make the Auth request to Google
-                SpreadsheetsService service = GoogleOAuth2.GoogleAuthService(Page.Request);
+                SpreadsheetsService service = GoogleOAuth2.GoogleAuthSheets(Page.Request);
                 if (service == null)
                 {
                     //Response.Redirect("~/Account/Login");
@@ -244,7 +428,7 @@ namespace IEEECheckin.ASPDocs.MemberPages
 
                 }
 
-                string script = string.Format("alert('Data added successfully.'); window.location.href = 'Menu.aspx';");
+                string script = string.Format("alert('Data added successfully.'); window.location.href = 'Output.aspx';");
                 Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "alert", script, true);
             }
             catch(Exception ex)
@@ -256,7 +440,11 @@ namespace IEEECheckin.ASPDocs.MemberPages
 
         private SpreadsheetEntry QuerySpreadsheet(SpreadsheetsService service, string selectedUri)
         {
+            if (String.IsNullOrWhiteSpace(selectedUri))
+                return null;
+
             SpreadsheetQuery query = new SpreadsheetQuery(selectedUri);
+            
             // Make a request to the API and get all spreadsheets.
             SpreadsheetFeed feed = service.Query(query);
 
@@ -317,5 +505,7 @@ namespace IEEECheckin.ASPDocs.MemberPages
 
             return cellEntryMap;
         }
+
+
     }
 }

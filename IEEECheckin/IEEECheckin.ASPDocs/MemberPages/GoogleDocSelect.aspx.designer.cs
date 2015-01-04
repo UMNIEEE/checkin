@@ -40,13 +40,22 @@ namespace IEEECheckin.ASPDocs.MemberPages {
         protected global::System.Web.UI.WebControls.HiddenField MeetingDate;
         
         /// <summary>
-        /// SheetList control.
+        /// SheetTreeDataSource control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListBox SheetList;
+        protected global::System.Web.UI.WebControls.XmlDataSource SheetTreeDataSource;
+        
+        /// <summary>
+        /// SheetTree control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TreeView SheetTree;
         
         /// <summary>
         /// NewDocument control.
