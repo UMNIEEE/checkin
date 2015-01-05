@@ -10,7 +10,7 @@
 namespace IEEECheckin.ASPDocs.MemberPages {
     
     
-    public partial class Output {
+    public partial class GoogleDocLoading {
         
         /// <summary>
         /// SubmitData control.
@@ -40,22 +40,22 @@ namespace IEEECheckin.ASPDocs.MemberPages {
         protected global::System.Web.UI.WebControls.HiddenField MeetingDate;
         
         /// <summary>
-        /// CsvButton control.
+        /// FolderTreeXml control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button CsvButton;
+        protected global::System.Web.UI.WebControls.HiddenField FolderTreeXml;
         
         /// <summary>
-        /// JsonButton control.
+        /// LoadingImage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button JsonButton;
+        protected global::System.Web.UI.WebControls.Image LoadingImage;
         
         /// <summary>
         /// GoogleButton control.
@@ -65,5 +65,17 @@ namespace IEEECheckin.ASPDocs.MemberPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button GoogleButton;
+        
+        /// <summary>
+        /// PreviousPage property.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated property.
+        /// </remarks>
+        public new IEEECheckin.ASPDocs.MemberPages.Output PreviousPage {
+            get {
+                return ((IEEECheckin.ASPDocs.MemberPages.Output)(base.PreviousPage));
+            }
+        }
     }
 }

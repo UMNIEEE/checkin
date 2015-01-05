@@ -40,11 +40,11 @@
         <asp:HiddenField ID="SubmitData" runat="server" />
         <asp:HiddenField ID="MeetingName" runat="server" />
         <asp:HiddenField ID="MeetingDate" runat="server" />
-        <asp:Button CssClass="form-control input-lg btn btn-info check-in" OnClick="SubmitCsv" Text="Get CSV" id="csvbutton" runat="server" />
+        <asp:Button CssClass="form-control input-lg btn btn-info check-in" OnClick="SubmitCsv" Text="Get CSV" id="CsvButton" runat="server" />
         <br /><br />
-        <asp:Button CssClass="form-control input-lg btn btn-info check-in" OnClick="SubmitJson" Text="Get JSON" id="jsonbutton" runat="server" />
+        <asp:Button CssClass="form-control input-lg btn btn-info check-in" OnClick="SubmitJson" Text="Get JSON" id="JsonButton" runat="server" />
         <br /><br />
-        <asp:Button CssClass="form-control input-lg btn btn-info check-in" PostBackUrl="~/MemberPages/GoogleDocSelect.aspx" Text="Add to Google" id="googlebutton" runat="server" />
+        <asp:Button CssClass="form-control input-lg btn btn-info check-in" PostBackUrl="~/MemberPages/GoogleDocLoading.aspx" Text="Add to Google" id="GoogleButton" runat="server" />
     </div>
 
     <p class="section-header">Clear Attendance <i class="fa fa-eraser"></i></p>

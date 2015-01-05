@@ -5,25 +5,32 @@ using System.Web;
 using System.Web.Security;
 using System.IO;
 using System.Configuration;
+using System.Threading;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Serialization;
+using System.Xml;
+using System.Text;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using IEEECheckin.ASPDocs.Models;
+using Newtonsoft.Json;
+
 using Google.GData.Client;
 using Google.GData.Spreadsheets;
-using Newtonsoft.Json;
 using Google.Apis.Drive.v2;
+using GDrive = Google.Apis.Drive.v2.Data;
+
 using Google.Apis.Services;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Auth.OAuth2.Responses;
 using Google.Apis.Auth.OAuth2.Flows;
-using Google.Apis.Util.Store;
 using Google.Apis.Auth.OAuth2.Web;
-using System.Threading;
-using System.Collections.Generic;
-using System.Xml.Serialization;
+using Google.Apis.Util.Store;
 
+using IEEECheckin.ASPDocs.Models;
+using Google.Apis.Drive.v2.Data;
 
 
 namespace IEEECheckin.ASPDocs.Models
@@ -694,6 +701,506 @@ namespace IEEECheckin.ASPDocs.Models
                 Response.Cookies.Add(aCookie);
             }
         }
+
+    }
+
+    public class GoogleDriveHelpers
+    {
+        public const string _FolderMime = "application/vnd.google-apps.folder";
+        public const string _SheetMime = "application/vnd.google-apps.spreadsheet";
+        private const string _UserId = "user-id";
+
+        #region Folder Tree
+
+        /// <summary>
+        /// Serializes an object into an XML string.
+        /// </summary>
+        /// <typeparam name="T">The type to serialize.</typeparam>
+        /// <param name="value">The object instance to serialize.</param>
+        /// <returns>The serialized object XML string.</returns>
+        public static string SerializeXml<T>(T value)
+        {
+
+            if (value == null)
+            {
+                return null;
+            }
+
+            XmlSerializer serializer = new XmlSerializer(typeof(T));
+
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Encoding = new UnicodeEncoding(false, false); // no BOM in a .NET string
+            settings.Indent = false;
+            settings.OmitXmlDeclaration = false;
+
+            using (StringWriter textWriter = new StringWriter())
+            {
+                using (XmlWriter xmlWriter = XmlWriter.Create(textWriter, settings))
+                {
+                    serializer.Serialize(xmlWriter, value);
+                }
+                return textWriter.ToString();
+            }
+        }
+
+        /// <summary>
+        /// Retrieves all sheets using the SpreadSheet API.
+        /// </summary>
+        /// <param name="service">The Google SpreadSheet service to access.</param>
+        /// <returns>A list of Google sheets.</returns>
+        public static List<GoogleSheet> GoogleRetrieveAllSheets(SpreadsheetsService service)
+        {
+            // Instantiate a SpreadsheetQuery object to retrieve spreadsheets.
+            SpreadsheetQuery query = new SpreadsheetQuery();
+
+            // Make a request to the API and get all spreadsheets.
+            SpreadsheetFeed feed = service.Query(query);
+
+            List<GoogleSheet> sheetList = new List<GoogleSheet>(feed.Entries.Count);
+            sheetList.Add(new GoogleSheet(null, "", "<Select a Spreadsheet>", "", ""));
+
+            // Iterate through all of the spreadsheets returned
+            foreach (SpreadsheetEntry entry in feed.Entries)
+            {
+                // Print the title of this spreadsheet to the screen
+                sheetList.Add(new GoogleSheet(null, entry.Id.Uri.Content.Split('/').Last(), entry.Title.Text, entry.Id.Uri.Content, entry.Id.Uri.Content));
+            }
+
+            return sheetList;
+        }
+
+        /// <summary>
+        /// Retrieve a list of File resources.
+        /// </summary>
+        /// <param name="service">Drive API service instance.</param>
+        /// <returns>List of File resources.</returns>
+        public static List<GDrive.File> GoogleRetrieveAllSheets(DriveService service)
+        {
+            List<GDrive.File> result = new List<GDrive.File>();
+            FilesResource.ListRequest request = service.Files.List();
+            request.Q = String.Format("mimeType='{0}'", _SheetMime);
+
+            do
+            {
+                try
+                {
+                    GDrive.FileList files = request.Execute();
+
+                    result.AddRange(files.Items);
+                    request.PageToken = files.NextPageToken;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("An error occurred: " + e.Message);
+                    request.PageToken = null;
+                }
+            } while (!String.IsNullOrEmpty(request.PageToken));
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieve all sheets and their folder structure using the Drive API.
+        /// </summary>
+        /// <param name="service">The Google Drive service to access.</param>
+        /// <param name="root">The root folder instance to start the tree search. Use null for root.</param>
+        /// <param name="level">The current level of the folder in the tree.</param>
+        /// <returns>The populated Google Drive folder.</returns>
+        public static GoogleFolder GoogleRetrieveSheetTree(DriveService service, GoogleFolder root, ref List<GoogleSheet> sheetList, int level = 1)
+        {
+            // Start with relative root folder
+            if (root == null)
+            {
+                root = root = new GoogleFolder(null, "root", "root", "", 0);
+                level = 1;
+            }
+            ChildrenResource.ListRequest request = service.Children.List(root.Id);
+            // Request immediate folder children of the relative root folder
+            request.Q = String.Format("mimeType='{0}'", _FolderMime);
+
+            do
+            {
+                try
+                {
+                    ChildList children = request.Execute();
+
+                    foreach (ChildReference child in children.Items)
+                    {
+                        // Get child folder metadata
+                        GDrive.File file = service.Files.Get(child.Id).Execute();
+                        // Add folder to relative root children folder list
+                        root.Children.Add(new GoogleFolder(root, child.Id, file.Title, child.ChildLink, level));
+                    }
+
+                    request.PageToken = children.NextPageToken;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("An error occurred: " + e.Message);
+                    request.PageToken = null;
+                }
+            } while (!String.IsNullOrEmpty(request.PageToken));
+
+            // Get list of sheets in the relative root folder
+            FilesResource.ListRequest requestFile = service.Files.List();
+            requestFile.Q = String.Format("mimeType='{0}' and '{1}' in parents", _SheetMime, root.Id);
+
+            do
+            {
+                try
+                {
+                    GDrive.FileList files = requestFile.Execute();
+
+                    foreach (GDrive.File file in files.Items)
+                    {
+                        // Get feed uri for current sheet
+                        string feedUri = "";
+                        if (sheetList != null && sheetList.Count > 0)
+                        {
+                            feedUri = (from feed in sheetList where feed.Id.Equals(file.Id) select feed.FeedUri).First();
+                        }
+                        // Add sheet to relative root sheet list
+                        root.Sheets.Add(new GoogleSheet(root, file.Id, file.Title + ".sheet", file.SelfLink, feedUri));
+                    }
+                    request.PageToken = files.NextPageToken;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("An error occurred: " + e.Message);
+                    request.PageToken = null;
+                }
+            } while (!String.IsNullOrEmpty(request.PageToken));
+
+            // Recurse through the children folders
+            for (int i = 0; i < root.Children.Count; i++)
+            {
+                root.Children[i] = GoogleRetrieveSheetTree(service, root.Children[i], ref sheetList, level + 1);
+            }
+
+            // Trim away folders that don't contain children and don't contain sheets
+            List<GoogleFolder> notNullChildren = new List<GoogleFolder>();
+            foreach (GoogleFolder folder in root.Children)
+            {
+                if (folder != null)
+                    notNullChildren.Add(folder);
+            }
+            root.Children.Clear();
+            root.Children.AddRange(notNullChildren);
+
+            // Return null if not sheets and no children with sheets
+            if (root.ChildrenCount > 0 || root.SheetCount > 0)
+                return root;
+            else
+                return null;
+        }
+
+        #endregion
+
+        #region Worksheet Addition
+
+        /// <summary>
+        /// Creates the check-in file content to be placed in the file.
+        /// </summary>
+        /// <param name="xmlData">The check-in data as an XML string.</param>
+        /// <returns>The list of check-in entries.</returns>
+        public static List<CheckinEntry> CreateFileContent(string xmlData)
+        {
+            try
+            {
+                if (String.IsNullOrWhiteSpace(xmlData))
+                    return null;
+
+                // create file content
+                XmlDocument xml = JsonConvert.DeserializeXmlNode(xmlData, "data", false);
+
+                List<CheckinEntry> entries = new List<CheckinEntry>();
+
+                // spreadsheet column layout
+                //"Student Id,First Name,Last Name,Email,Date,Meeting"
+
+                foreach (XmlNode node in xml.DocumentElement.ChildNodes)
+                {
+                    entries.Add(new CheckinEntry()
+                    {
+                        StudentId = node.ChildNodes[0].FirstChild.Value,
+                        FirstName = node.ChildNodes[1].FirstChild.Value,
+                        LastName = node.ChildNodes[2].FirstChild.Value,
+                        Email = node.ChildNodes[3].FirstChild.Value,
+                        DateStr = node.ChildNodes[4].FirstChild.Value,
+                        Meeting = node.ChildNodes[5].FirstChild.Value
+                    });
+                }
+
+                return entries;
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Creates a spreadsheet file on Google Drive.
+        /// </summary>
+        /// <param name="service">The Google Drive service to access.</param>
+        /// <param name="docName">The name of the document to add.</param>
+        /// <param name="parentFolderId">The id of the folder to add the document to. Default is root.</param>
+        /// <returns>The file created.</returns>
+        public static GDrive.File CreateFile(DriveService service, string docName, string parentFolderId = "root")
+        {
+            try
+            {
+                if (service == null || String.IsNullOrWhiteSpace(docName))
+                    return null;
+
+                // File's metadata.
+                GDrive.File body = new GDrive.File();
+                body.Title = docName;
+                body.Description = "";
+                body.MimeType = _SheetMime;
+
+                if (String.IsNullOrWhiteSpace(parentFolderId))
+                    parentFolderId = "root";
+
+                // Set the parent folder.
+                if (!String.IsNullOrWhiteSpace(parentFolderId))
+                    body.Parents = new List<ParentReference>() { new ParentReference() { Id = parentFolderId } };
+
+                FilesResource.InsertRequest request = service.Files.Insert(body);
+                return request.Execute();
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Creates a worksheet in a Google spreadsheet or gets the existing worksheet with the same meeting name.
+        /// </summary>
+        /// <param name="service">The Spreadsheet service to access.</param>
+        /// <param name="feedUri">The full feed URI to the spreadsheet.</param>
+        /// <param name="meetingName">The name of the meeting.</param>
+        /// <returns>The spreadsheet created or found.</returns>
+        public static WorksheetEntry CreateWorksheet(SpreadsheetsService service, string feedUri, string meetingName = "")
+        {
+            try
+            {
+                if (service == null || String.IsNullOrWhiteSpace(feedUri))
+                    return null;
+
+                SpreadsheetEntry spreadsheet = QuerySpreadsheet(service, feedUri);
+                if (spreadsheet == null)
+                    return null; // error
+
+                // Create new worksheet in selected spreadhseet
+
+                if (!String.IsNullOrWhiteSpace(meetingName))
+                    meetingName = "my_meeting_" + DateTime.Now.ToString("yyyy-MM-dd");
+                meetingName = meetingName.Replace(" ", "_");
+
+                // Find if worksheet already present
+                WorksheetEntry worksheet = QueryWorksheet(service, feedUri, meetingName);
+
+                // not present so create new worksheet
+                if (worksheet == null)
+                {
+                    worksheet = new WorksheetEntry();
+                    worksheet.Title.Text = meetingName;
+                    worksheet.Cols = 6;
+                    worksheet.Rows = 2;
+
+                    // Send the local representation of the worksheet to the API for
+                    // creation.  The URL to use here is the worksheet feed URL of our
+                    // spreadsheet.
+                    WorksheetFeed wsFeed = spreadsheet.Worksheets;
+                    service.Insert(wsFeed, worksheet);
+
+
+                    // update worksheet query
+                    worksheet = QueryWorksheet(service, feedUri, meetingName);
+                    if (worksheet == null)
+                        return null; // error
+
+                    // Create header row
+                    // Fetch the cell feed of the worksheet.
+                    CellQuery cellQuery = new CellQuery(worksheet.CellFeedLink);
+                    CellFeed cellFeed = service.Query(cellQuery);
+
+                    Dictionary<string, string> headers = new Dictionary<string, string>();
+                    headers.Add("R1C1", "studentid");
+                    headers.Add("R1C2", "firstname");
+                    headers.Add("R1C3", "lastname");
+                    headers.Add("R1C4", "email");
+                    headers.Add("R1C5", "date");
+                    headers.Add("R1C6", "meeting");
+
+                    List<CellAddress> cellAddrs = new List<CellAddress>();
+                    for (uint col = 1; col <= 6; ++col)
+                        cellAddrs.Add(new CellAddress(1, col));
+
+                    // Prepare the update
+                    // GetCellEntryMap is what makes the update fast.
+                    Dictionary<String, CellEntry> cellEntries = GetCellEntryMap(service, cellFeed, cellAddrs);
+
+                    CellFeed batchRequest = new CellFeed(cellQuery.Uri, service);
+                    foreach (CellAddress cellAddr in cellAddrs)
+                    {
+                        CellEntry batchEntry = cellEntries[cellAddr.IdString];
+                        batchEntry.InputValue = headers[cellAddr.IdString];
+                        batchEntry.BatchData = new GDataBatchEntryData(cellAddr.IdString, GDataBatchOperationType.update);
+                        batchRequest.Entries.Add(batchEntry);
+                    }
+
+                    // Submit the update
+                    CellFeed batchResponse = (CellFeed)service.Batch(batchRequest, new Uri(cellFeed.Batch));
+
+                    // update worksheet query again
+                    return QueryWorksheet(service, feedUri, meetingName);
+                }
+                else
+                    return worksheet;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Adds the check-in entries to the worksheet.
+        /// </summary>
+        /// <param name="service">The Spreadsheet service to access.</param>
+        /// <param name="worksheet">The worksheet to add the content to.</param>
+        /// <param name="entries">The check-in entries to add to the worksheet.</param>
+        /// <returns>If the content was successfully added to the worksheet.</returns>
+        public static bool AddContentToWorksheet(SpreadsheetsService service, WorksheetEntry worksheet, List<CheckinEntry> entries)
+        {
+            try
+            {
+                if (service == null || worksheet == null || entries == null || entries.Count <= 0)
+                    return false;
+
+                // Define the URL to request the list feed of the worksheet.
+                AtomLink listFeedLink = worksheet.Links.FindService(GDataSpreadsheetsNameTable.ListRel, null);
+
+                // Fetch the list feed of the worksheet.
+                ListQuery listQuery = new ListQuery(listFeedLink.HRef.ToString());
+                ListFeed listFeed = service.Query(listQuery);
+
+                foreach (CheckinEntry entry in entries)
+                {
+                    // Create a local representation of the new row.
+                    ListEntry row = new ListEntry();
+                    row.Elements.Add(new ListEntry.Custom() { LocalName = "studentid", Value = entry.StudentId });
+                    row.Elements.Add(new ListEntry.Custom() { LocalName = "firstname", Value = entry.FirstName });
+                    row.Elements.Add(new ListEntry.Custom() { LocalName = "lastname", Value = entry.LastName });
+                    row.Elements.Add(new ListEntry.Custom() { LocalName = "email", Value = entry.Email });
+                    row.Elements.Add(new ListEntry.Custom() { LocalName = "date", Value = entry.DateStr });
+                    row.Elements.Add(new ListEntry.Custom() { LocalName = "meeting", Value = entry.Meeting });
+
+                    // Send the new row to the API for insertion.
+                    service.Insert(listFeed, row);
+                }
+
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets the spreadsheet with the given feed URI.
+        /// </summary>
+        /// <param name="service">The Spreadsheet service to access.</param>
+        /// <param name="feedUri">The URI of the feed of the spreadsheet to get.</param>
+        /// <returns>The spreadsheet of the given feed URI.</returns>
+        public static SpreadsheetEntry QuerySpreadsheet(SpreadsheetsService service, string feedUri)
+        {
+            if (service == null || String.IsNullOrWhiteSpace(feedUri))
+                return null;
+
+            SpreadsheetQuery query = new SpreadsheetQuery(feedUri);
+            
+            // Make a request to the API and get all spreadsheets.
+            SpreadsheetFeed feed = service.Query(query);
+
+            if (feed.Entries.Count == 0)
+            {
+                return null;
+            }
+
+            return (SpreadsheetEntry)feed.Entries[0];
+        }
+
+        /// <summary>
+        /// Gets the Worksheet with the given feed URI.
+        /// </summary>
+        /// <param name="service">The Spreadsheet service to access.</param>
+        /// <param name="feedUri">The URI of the feed of the spreadsheet with the worksheet to get.</param>
+        /// <param name="worksheetName">The name of the worksheet to get.</param>
+        /// <returns>The requested worksheet.</returns>
+        public static WorksheetEntry QueryWorksheet(SpreadsheetsService service, string feedUri, string worksheetName)
+        {
+            if (service == null || String.IsNullOrWhiteSpace(feedUri) || String.IsNullOrWhiteSpace(worksheetName))
+                return null;
+
+            // Re-query for the spreadsheet and updated worksheet feed
+            SpreadsheetEntry spreadsheet = QuerySpreadsheet(service, feedUri);
+            if (spreadsheet == null)
+                return null; // error
+
+            // Make a request to the API to fetch information about all
+            // worksheets in the spreadsheet.
+            WorksheetFeed wsFeed = spreadsheet.Worksheets;
+
+            // Iterate through each worksheet in the spreadsheet.
+            WorksheetEntry worksheet = null;
+            foreach (WorksheetEntry entry in wsFeed.Entries)
+            {
+                if (entry.Title.Text.Equals(worksheetName))
+                {
+                    worksheet = entry;
+                    break;
+                }
+            }
+
+            return worksheet;
+        }
+
+        /// <summary>
+        /// Gets the mapping between the column headers and their absolute cell address.
+        /// </summary>
+        /// <param name="service">The Spreadsheet service to access.</param>
+        /// <param name="cellFeed">The Cell feed service to the worksheet.</param>
+        /// <param name="cellAddrs">The addresses of the cells to map.</param>
+        /// <returns>A dictionary of the cell entry and the given cell address.</returns>
+        public static Dictionary<String, CellEntry> GetCellEntryMap(SpreadsheetsService service, CellFeed cellFeed, List<CellAddress> cellAddrs)
+        {
+            if (service == null || cellFeed == null || cellAddrs == null || cellAddrs.Count <= 0)
+                return null;
+
+            CellFeed batchRequest = new CellFeed(new Uri(cellFeed.Self), service);
+            foreach (CellAddress cellId in cellAddrs)
+            {
+                CellEntry batchEntry = new CellEntry(cellId.Row, cellId.Col, cellId.IdString);
+                batchEntry.Id = new AtomId(string.Format("{0}/{1}", cellFeed.Self, cellId.IdString));
+                batchEntry.BatchData = new GDataBatchEntryData(cellId.IdString, GDataBatchOperationType.query);
+                batchRequest.Entries.Add(batchEntry);
+            }
+
+            CellFeed queryBatchResponse = (CellFeed)service.Batch(batchRequest, new Uri(cellFeed.Batch));
+
+            Dictionary<String, CellEntry> cellEntryMap = new Dictionary<String, CellEntry>();
+            foreach (CellEntry entry in queryBatchResponse.Entries)
+                cellEntryMap.Add(entry.BatchData.Id, entry);
+
+            return cellEntryMap;
+        }
+
+        #endregion
 
     }
 }

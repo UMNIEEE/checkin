@@ -224,6 +224,8 @@
     <Content Include="Content\layout.css" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Images\ajax-loader.gif" />
+    <Content Include="MemberPages\GoogleDocLoading.aspx" />
     <Content Include="MemberPages\GoogleDocSelect.aspx" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -344,6 +346,13 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="MemberPages\GoogleDocLoading.aspx.cs">
+      <DependentUpon>GoogleDocLoading.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MemberPages\GoogleDocLoading.aspx.designer.cs">
+      <DependentUpon>GoogleDocLoading.aspx</DependentUpon>
     </Compile>
     <Compile Include="MemberPages\GoogleDocSelect.aspx.cs">
       <DependentUpon>GoogleDocSelect.aspx</DependentUpon>

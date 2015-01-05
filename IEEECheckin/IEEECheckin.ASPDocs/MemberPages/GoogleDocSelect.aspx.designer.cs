@@ -40,6 +40,15 @@ namespace IEEECheckin.ASPDocs.MemberPages {
         protected global::System.Web.UI.WebControls.HiddenField MeetingDate;
         
         /// <summary>
+        /// FolderTreeXml control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField FolderTreeXml;
+        
+        /// <summary>
         /// SheetTreeDataSource control.
         /// </summary>
         /// <remarks>
@@ -81,9 +90,9 @@ namespace IEEECheckin.ASPDocs.MemberPages {
         /// <remarks>
         /// Auto-generated property.
         /// </remarks>
-        public new IEEECheckin.ASPDocs.MemberPages.Output PreviousPage {
+        public new IEEECheckin.ASPDocs.MemberPages.GoogleDocLoading PreviousPage {
             get {
-                return ((IEEECheckin.ASPDocs.MemberPages.Output)(base.PreviousPage));
+                return ((IEEECheckin.ASPDocs.MemberPages.GoogleDocLoading)(base.PreviousPage));
             }
         }
     }

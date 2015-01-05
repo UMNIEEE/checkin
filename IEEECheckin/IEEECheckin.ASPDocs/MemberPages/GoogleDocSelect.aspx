@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="Google Doc Export" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="GoogleDocSelect.aspx.cs" Inherits="IEEECheckin.ASPDocs.MemberPages.GoogleDocSelect" %>
 
-<%@ PreviousPageType VirtualPath="~/MemberPages/Output.aspx" %> 
+<%@ PreviousPageType VirtualPath="~/MemberPages/GoogleDocLoading.aspx" %> 
 
 <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server">
     <style>
@@ -24,10 +24,11 @@
         <asp:HiddenField ID="SubmitData" runat="server" />
         <asp:HiddenField ID="MeetingName" runat="server" />
         <asp:HiddenField ID="MeetingDate" runat="server" />
+        <asp:HiddenField ID="FolderTreeXml" runat="server" />
         <asp:XmlDataSource ID="SheetTreeDataSource" runat="server" />
         <asp:TreeView ID="SheetTree" DataSourceID="SheetTreeDataSource" runat="server">
             <DataBindings>
-                <asp:TreeNodeBinding DataMember="GoogleFolder" TextField="Title" />
+                <asp:TreeNodeBinding DataMember="GoogleFolder" TextField="Title" ValueField="Id" />
                 <asp:TreeNodeBinding DataMember="GoogleSheet" TextField="Title" ValueField="FeedUri"/>
             </DataBindings>
         </asp:TreeView>
