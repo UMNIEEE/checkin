@@ -4,6 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.Security;
+
+//username: ieeegofirst
+//password: 0ed2df89a5!
 
 namespace IEEECheckin.ASP.Account
 {
@@ -19,6 +23,15 @@ namespace IEEECheckin.ASP.Account
             {
                 RegisterHyperLink.NavigateUrl += "?ReturnUrl=" + returnUrl;
             }
+        }
+
+        protected void login_LoggedIn(object sender, EventArgs e)
+        {
+            string req = Request["ReturnUrl"];
+            if (login.RememberMeSet)
+                FormsAuthentication.SetAuthCookie(login.UserName, true);
+            if (String.IsNullOrWhiteSpace(req) || req.Contains("Default"))
+                Response.Redirect("~/MemberPages/Menu");
         }
     }
 }

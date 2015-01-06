@@ -74,7 +74,7 @@ catch(Exception $e) {
             <p class="section-header">Meeting Options<i class="fa fa-list"></i></p>  
             <!-- Insert action to redirect to checkin.php -->
             <form class="boxed-section margin-lg-after" id="meetingForm" method="post" role="form">
-                <p class="section-label">Select Exisiting Meeting<i class="fa fa-calendar-o"></i></p>
+                <p class="section-label">Select Existing Meeting<i class="fa fa-calendar-o"></i></p>
                 <select class="selectpicker" id="meetingDropdown" name="meeting">
                 <?php
                     $index = 0;
