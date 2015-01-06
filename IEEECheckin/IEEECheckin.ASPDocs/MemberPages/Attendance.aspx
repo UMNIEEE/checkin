@@ -1,10 +1,10 @@
-﻿<%@ Page Title="Output" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Output.aspx.cs" Inherits="IEEECheckin.ASPDocs.MemberPages.Output" %>
+﻿<%@ Page Title="Output" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Attendance.aspx.cs" Inherits="IEEECheckin.ASPDocs.MemberPages.Output" %>
 <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server">
     <style>
         td, th {
             padding-left: 10px;
             padding-right: 10px;
-            width: 230px;
+            width: 250px;
         }
         th {
             padding-bottom: 10px;
@@ -12,18 +12,16 @@
         td {
             padding-bottom: 5px;
         }
-        .col-lg-4 {
-            width: 50.0%;
-            margin-left: 25.0%;
+        .col-custom-offset {
+            margin-left: 12.5%;
+        }
+        .col-custom {
+            width: 75.0%;
         }
         #output {
             background: white;
             color: black;
             border: 1px solid;
-        }
-        .boxed-section {
-            width: 50.0%;
-            margin-left: 25.0%;
         }
     </style>
 </asp:Content>
@@ -49,9 +47,10 @@
 
     <p class="section-header">Clear Attendance <i class="fa fa-eraser"></i></p>
     <div class="boxed-section margin-lg-after">
-        <button class="form-control input-lg btn btn-info check-in" onclick="return clearSubmit();" type="submit" id="Button1" name="outputbutton"><i class="fa fa-check"></i>Clear</button>
+        <asp:Button CssClass="form-control input-lg btn btn-info check-in" OnClientClick="return clearSubmit();" ID="ClearButton" Text="Clear" runat="server" />
     </div>
-
+    </div><!--Not an orphaned /div in VS, just starts on the master page. Same for closing tag of div below.-->
+    <div class="col-custom-offset col-custom col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
     <div id="outputDiv">
         <table id="output">
             <tbody>
@@ -65,7 +64,6 @@
                 </tr>
             </tbody>
         </table>
-    </div>
 </asp:Content>
 <asp:Content ID="JavaScriptContent" ContentPlaceHolderID="JavaScripts" runat="server">
     <script type="text/javascript">

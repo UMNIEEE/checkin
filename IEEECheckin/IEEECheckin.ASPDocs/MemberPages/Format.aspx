@@ -50,25 +50,28 @@
     <h2 id="meetingName" class="post-header">Example Meeting</h2>
     <div id="swipe-section">
         <p class="section-label">U-Card Swipe Card Entry <i class="fa fa-credit-card"></i></p>
-        <form id="form-ucard" class="boxed-section margin-lg-after" role="form">
+        <div id="form-ucard" class="boxed-section margin-lg-after" role="form">
             <div class="form-group no-margin-after">
                 <input class="form-control input-lg margin-sm-after" autofocus="autofocus" type="password" name="cardtxt" id="cardtxt" placeholder="Click here, then swipe your card">
             </div>
-        </form>
+        </div>
     </div>
     <p class="section-label">Manual Entry <i class="fa fa-pencil"></i></p>
     <div class="boxed-section margin-lg-after">
         <input class="form-control input-lg margin-sm-after" type="text" name="firstname" id="firstname" placeholder="First Name">
         <input class="form-control input-lg margin-sm-after" type="text" name="lastname" id="lastname" placeholder="Last Name">
         <input class="form-control input-lg margin-sm-after" type="text" name="email" id="email" placeholder="Email">
-        <button class="form-control input-lg btn btn-info check-in" onclick="return false;" type="submit" id="checkinbutton" name="checkinbutton"><i class="fa fa-check"></i> Check In</button>
+        <button class="form-control input-lg btn btn-info check-in" onclick="return false;" type="submit" id="checkinbutton" name="checkinbutton">Check In</button>
     </div>
     <p class="section-label">Edit Content <i class="fa fa-cogs"></i></p>
     <div class="boxed-section margin-lg-after">
-        <p>Changes occur when a control loses focus (click somewhere else on page for chages to occur).</p>
-        <input class="form-control input-lg margin-sm-after" type="text" name="imageUrl" id="imageUrl" placeholder="Image Url" onblur="updateImage()">
+        <p>Changes occur when a control loses focus (click somewhere else on page for changes to occur).</p>
+        <input class="form-control input-lg margin-sm-after" type="text" name="imageUrl" id="imageUrl" placeholder="Image Url (or 'default' or 'none')" onblur="updateImage()">
         <input class="form-control input-lg margin-sm-after" type="text" name="topText" id="topText" placeholder="Top Text" onblur="updateTopText()">
-        <table><tbody><tr><td><input class="form-control margin-sm-after" type="checkbox" name="swipeCheck" id="swipeCheck" onblur="updateSwipe()"></td><td>Use U-Card Swipe</td></tr></tbody></table>
+        <table><tbody>
+            <tr><td><input class="margin-sm-after" type="checkbox" name="swipeCheck" id="swipeCheck" onblur="updateSwipe()"></td><td>Use U-Card Swipe</td></tr>
+            <tr><td><input class="margin-sm-after" type="checkbox" name="themeShade" id="themeShade" onblur="updateThemeShade()"></td><td id="themeShadeText">Use Light Theme</td></tr>
+        </tbody></table>
         <table>
             <tbody>
                 <tr>
@@ -83,7 +86,8 @@
                 </tr>
             </tbody>
         </table>
-        <button class="form-control input-lg btn btn-info check-in" onclick="return resetTheme();" type="submit" id="resetbutton" name="resetbutton"><i class="fa fa-check"></i> Reset Theme</button>
+        <br />
+        <button class="form-control input-lg btn btn-info check-in" onclick="return resetTheme();" type="submit" id="resetbutton" name="resetbutton">Reset Theme</button>
     </div>
     <p class="section-label">Import/Export Format <i class="fa fa-copy"></i></p>
     <div class="boxed-section margin-lg-after">
@@ -99,10 +103,20 @@
         $(document).ready(function () {
             var us = $.cookie("use-swipe");
             if (us != null && us != undefined && us === "false") {
-                $("#swipeCheck").prop("checked", false)
+                $("#swipeCheck").prop("checked", false);
             }
             else {
-                $("#swipeCheck").prop("checked", true)
+                $("#swipeCheck").prop("checked", true);
+            }
+
+            var ts = $.cookie("theme-shade");
+            if (ts != null && ts != undefined && ts === "dark") {
+                $("#themeShade").prop("checked", false);
+                $("#themeShadeText").html("Use Dark Theme");
+            }
+            else {
+                $("#themeShade").prop("checked", true);
+                $("#themeShadeText").html("Use Light Theme");
             }
                     
             var bbc = $.cookie("body-background-color");
@@ -183,12 +197,19 @@
         });
         function updateImage() {
             var value = $("#imageUrl").val();
-            if (value != null) {
+            if (value === "default") {
+                $("#logoImage").attr("src", "../Images/logo.svg");
+                $.cookie("image-url", "../Images/logo.svg", { expires: 365, path: "/" });
+            }
+            else if (value === "none") {
+                $("#logoImage").attr("src", "");
+                $.cookie("image-url", "", { expires: 365, path: "/" });
+            }
+            else if (value != null) {
                 $("#logoImage").attr("src", value);
                 $.cookie("image-url", value, { expires: 365, path: "/" });
             }
-            //else
-            //    $("#logoImage").attr("src", "../Images/logo.svg");
+            
             themeUpdated();
             return false;
         }
@@ -203,18 +224,7 @@
             themeUpdated();
             return false;
         }
-        function resetTheme() {
-            $.removeCookie("body-background-color", { path: '/' });
-            $.removeCookie("button-background-color", { path: '/' });
-            $.removeCookie("background-color", { path: '/' });
-            $.removeCookie("body-color", { path: '/' });
-            $.removeCookie("image-url", { path: '/' });
-            $.removeCookie("header-text", { path: '/' });
-            $.removeCookie("use-swipe", true, { expires: 365, path: "/" });
-            location.reload();
-            themeUpdated();
-            return false;
-        }
+        
         function updateSwipe() {
             if ($("#swipeCheck").prop("checked")) {
                 $.cookie("use-swipe", true, { expires: 365, path: "/" });
@@ -224,6 +234,31 @@
                 $.cookie("use-swipe", false, { expires: 365, path: "/" });
                 $("#swipe-section").attr("style", "display: none;");
             }
+            themeUpdated();
+            return false;
+        }
+        function updateThemeShade() {
+            if ($("#themeShade").prop("checked")) {
+                $.cookie("theme-shade", "light", { expires: 365, path: "/" });
+                $("#themeShadeText").html("Use Light Theme");
+            }
+            else {
+                $.cookie("theme-shade", "dark", { expires: 365, path: "/" });
+                $("#themeShadeText").html("Use Dark Theme");
+            }
+            themeUpdated();
+            return false;
+        }
+        function resetTheme() {
+            $.removeCookie("body-background-color", { path: '/' });
+            $.removeCookie("button-background-color", { path: '/' });
+            $.removeCookie("background-color", { path: '/' });
+            $.removeCookie("body-color", { path: '/' });
+            $.removeCookie("theme-shade", { path: '/' });
+            $.removeCookie("image-url", { path: '/' });
+            $.removeCookie("header-text", { path: '/' });
+            $.removeCookie("use-swipe", true, { expires: 365, path: "/" });
+            location.reload();
             themeUpdated();
             return false;
         }
@@ -242,6 +277,14 @@
             if (bc == null || bc == undefined)
                 bc = "ffffff";
             $("#colorSelector3").css("background-color", "#" + bc);
+
+            var ts = $.cookie("theme-shade");
+            if (ts == null || ts == undefined)
+                ts = "light";
+            if (ts === "light")
+                $("#themeShade").prop("checked", true);
+            else
+                $("#themeShade").prop("checked", false);
 
             var iu = $.cookie("image-url");
             if (iu == null || iu == undefined)
@@ -265,6 +308,7 @@
                 bodyBackgroundColor: bbc,
                 buttonBackgroundColor: bubc,
                 bodyColor: bc,
+                themeShade: ts,
                 imageUrl: iu,
                 headerText: ht,
                 useSwipe: us
@@ -288,6 +332,10 @@
                 var bc = theme.bodyColor;
                 if (bc != null && bc != undefined)
                     $.cookie("body-color", bc, { expires: 365, path: "/" });
+
+                var ts = theme.themeShade;
+                if (ts != null && ts != undefined)
+                    $.cookie("theme-shade", ts, { expires: 365, path: "/" });
 
                 var iu = theme.imageUrl;
                 if (iu != null && iu != undefined)

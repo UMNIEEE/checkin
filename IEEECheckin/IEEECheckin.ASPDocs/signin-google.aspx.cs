@@ -23,7 +23,7 @@ namespace IEEECheckin.ASPDocs
                 {
                     GoogleOAuth2.GoogleAuthToken(Request, Response);
 
-                    Response.Redirect("~/MemberPages/Menu.aspx");
+                    Response.Redirect("~/MemberPages/CreateCheckin.aspx");
                 }
                 catch (Exception ex)
                 {

@@ -224,7 +224,16 @@
     <Content Include="Content\layout.css" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Images\ajax-loader.gif" />
+    <Content Include="Images\ajax-loader-dark.gif" />
+    <Content Include="Images\ajax-loader-light.gif" />
+    <Content Include="Images\file-icon-dark-large.png" />
+    <Content Include="Images\file-icon-dark-small.png" />
+    <Content Include="Images\file-icon-light-large.png" />
+    <Content Include="Images\file-icon-light-small.png" />
+    <Content Include="Images\folder-icon-dark-large.png" />
+    <Content Include="Images\folder-icon-dark-small.png" />
+    <Content Include="Images\folder-icon-light-large.png" />
+    <Content Include="Images\folder-icon-light-small.png" />
     <Content Include="MemberPages\GoogleDocLoading.aspx" />
     <Content Include="MemberPages\GoogleDocSelect.aspx" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -276,8 +285,8 @@
     <Content Include="MemberPages\Checkin.aspx" />
     <Content Include="MemberPages\Confirm.aspx" />
     <Content Include="MemberPages\Format.aspx" />
-    <Content Include="MemberPages\Menu.aspx" />
-    <Content Include="MemberPages\Output.aspx" />
+    <Content Include="MemberPages\CreateCheckin.aspx" />
+    <Content Include="MemberPages\Attendance.aspx" />
     <Content Include="packages.config" />
     <Content Include="Account\Web.config" />
     <Content Include="Scripts\check-in.js" />
@@ -396,19 +405,19 @@
     <Compile Include="MemberPages\Format.aspx.designer.cs">
       <DependentUpon>Format.aspx</DependentUpon>
     </Compile>
-    <Compile Include="MemberPages\Menu.aspx.cs">
-      <DependentUpon>Menu.aspx</DependentUpon>
+    <Compile Include="MemberPages\CreateCheckin.aspx.cs">
+      <DependentUpon>CreateCheckin.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="MemberPages\Menu.aspx.designer.cs">
-      <DependentUpon>Menu.aspx</DependentUpon>
+    <Compile Include="MemberPages\CreateCheckin.aspx.designer.cs">
+      <DependentUpon>CreateCheckin.aspx</DependentUpon>
     </Compile>
-    <Compile Include="MemberPages\Output.aspx.cs">
-      <DependentUpon>Output.aspx</DependentUpon>
+    <Compile Include="MemberPages\Attendance.aspx.cs">
+      <DependentUpon>Attendance.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="MemberPages\Output.aspx.designer.cs">
-      <DependentUpon>Output.aspx</DependentUpon>
+    <Compile Include="MemberPages\Attendance.aspx.designer.cs">
+      <DependentUpon>Attendance.aspx</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

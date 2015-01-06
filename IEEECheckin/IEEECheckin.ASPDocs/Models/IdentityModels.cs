@@ -860,7 +860,7 @@ namespace IEEECheckin.ASPDocs.Models
                             feedUri = (from feed in sheetList where feed.Id.Equals(file.Id) select feed.FeedUri).First();
                         }
                         // Add sheet to relative root sheet list
-                        root.Sheets.Add(new GoogleSheet(root, file.Id, file.Title + ".sheet", file.SelfLink, feedUri));
+                        root.Sheets.Add(new GoogleSheet(root, file.Id, file.Title, file.SelfLink, feedUri));
                     }
                     request.PageToken = files.NextPageToken;
                 }
@@ -995,8 +995,8 @@ namespace IEEECheckin.ASPDocs.Models
 
                 // Create new worksheet in selected spreadhseet
 
-                if (!String.IsNullOrWhiteSpace(meetingName))
-                    meetingName = "my_meeting_" + DateTime.Now.ToString("yyyy-MM-dd");
+                if (String.IsNullOrWhiteSpace(meetingName))
+                    meetingName = "all_meetings_" + DateTime.Now.ToString("yyyy-MM-dd");
                 meetingName = meetingName.Replace(" ", "_");
 
                 // Find if worksheet already present

@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="Check-in" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Checkin.aspx.cs" Inherits="IEEECheckin.ASPDocs.MemberPages.Checkin" %>
 
-<%@ PreviousPageType VirtualPath="~/MemberPages/Menu.aspx" %> 
+<%@ PreviousPageType VirtualPath="~/MemberPages/CreateCheckin.aspx" %> 
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <h1 class="post-header">Meeting Check-In for:</h1>

@@ -28,7 +28,6 @@ namespace IEEECheckin.ASPDocs.MemberPages
             {
                 try
                 {
-
                     if(PreviousPage != null)
                     {
                         SubmitDataStr = PreviousPage.SubmitDataStr;
@@ -45,6 +44,43 @@ namespace IEEECheckin.ASPDocs.MemberPages
                 {
 
                 }
+            }
+        }
+
+        protected void SheetTree_DataBound(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Request.Cookies["theme-shade"] != null && !String.IsNullOrWhiteSpace(Request.Cookies["theme-shade"].Value) && !Request.Cookies["theme-shade"].Value.Equals("light"))
+                {
+                    string value = Request.Cookies["theme-shade"].Value;
+                    foreach (var node in Descendants(SheetTree.Nodes))
+                    {
+                        if (!String.IsNullOrWhiteSpace(node.ImageUrl))
+                        {
+                            node.ImageUrl = node.ImageUrl.Replace("light", value);
+                        }
+                    }
+                }
+                else
+                {
+                    //SheetTree.HoverNodeStyle.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
+        }
+
+        IEnumerable<TreeNode> Descendants(TreeNodeCollection nodes)
+        {
+            foreach(TreeNode node in nodes)
+            {
+                yield return node;
+
+                foreach (var child in Descendants(node.ChildNodes))
+                    yield return child;
             }
         }
 
@@ -68,7 +104,9 @@ namespace IEEECheckin.ASPDocs.MemberPages
                 else
                 {
                     selectedUri = SheetTree.SelectedNode.Value;
-                    isSheet = SheetTree.SelectedNode.Text.Contains(".sheet");
+                    if (String.IsNullOrWhiteSpace(selectedUri))
+                        throw new Exception("Server exception: code 4");
+                    isSheet = (selectedUri.Contains("http://") || selectedUri.Contains("https://"));
                 }
                 
                 string submitData = SubmitDataStr;
@@ -126,7 +164,7 @@ namespace IEEECheckin.ASPDocs.MemberPages
                 Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "alert", script, true);
             }
         }
-
         
     }
+
 }

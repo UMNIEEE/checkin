@@ -1,8 +1,8 @@
-﻿<%@ Page Title="Menu" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Menu.aspx.cs" Inherits="IEEECheckin.ASPDocs.MemberPages.Menu" %>
+﻿<%@ Page Title="Menu" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="CreateCheckin.aspx.cs" Inherits="IEEECheckin.ASPDocs.MemberPages.Menu" %>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h3>Welcome</h3>
-    <p>Welcome message!</p>
+    <h1 class="post-header">Welcome</h1>
+    <p class="text-center">Create a new meeting or select one of your previous meetings to begin.</p>
 
     <p class="section-header">Meeting Options <i class="fa fa-list"></i></p>  
     <div class="boxed-section margin-lg-after">
@@ -11,7 +11,9 @@
         <p class="section-label">Create New Meeting<i class="fa fa-pencil"></i></p>
         <asp:TextBox CssClass="form-control input-lg margin-sm-after" ID="MeetingName" placeholder="Meeting Name" runat="server" />
         <asp:HiddenField ID="DropdownValue" runat="server" />
-        <asp:Button CssClass="form-control input-lg btn btn-info check-in" ID="MeetingButton" OnClientClick="meetingSubmit()" PostBackUrl="~/MemberPages/Checkin.aspx" Text="New Meeting" runat="server" />
+        <asp:Button CssClass="form-control input-lg btn btn-info check-in" ID="MeetingButton" OnClientClick="return meetingSubmit();" Text="Start Meeting" runat="server" />
+        <asp:Button CssClass="hidden" ID="MeetingButtonHidden" PostBackUrl="~/MemberPages/Checkin.aspx" Text="Start Meeting" runat="server" />
+
     </div>
 
 </asp:Content>
@@ -45,12 +47,13 @@
             var dropdown = $("#meetingDropdown option:selected").val();
             var meeting = $("#MainContent_MeetingName").val();
             $("#MainContent_DropdownValue").val(dropdown);
-            if ((dropdown == null || dropdown == undefined || dropdown.trim() === "") && (meeting == null || meeting == undefined || meeting.trim === "")) {
+            if ((dropdown == null || dropdown == undefined || dropdown.trim() === "") && (meeting == null || meeting == undefined || meeting.trim() === "")) {
                 alert("Must select a meeting or create a new one.")
                 return false;
             }
 
-            return true;
+            $("#MainContent_MeetingButtonHidden").click();
+            return false;
         }
 
         function decodeMeeting(meeting) {

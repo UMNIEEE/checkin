@@ -14,6 +14,7 @@ function updateFormat() {
     if (bubc != null && bubc != undefined) {
         $.cookie("button-background-color", bubc, { expires: 365, path: "/" });
         $("button").css("background-color", "#" + bubc);
+        $("input[type='submit'][class*='form-control']").css("background-color", "#" + bubc);
     }
 
     var bc = $.cookie("body-color"); // text color
@@ -21,6 +22,15 @@ function updateFormat() {
         $.cookie("body-color", bc, { expires: 365, path: "/" });
         $("body").css("color", "#" + bc);
         $("button").css("color", "#" + bc);
+        $("input[type='submit'][class*='form-control']").css("color", "#" + bc);
+    }
+
+    var ts = $.cookie("theme-shade");
+    if (ts != null && ts != undefined && ts === "dark") {
+        $.cookie("theme-shade", ts, { expires: 365, path: "/" });
+        $("img[class*='shaded']").each(function () {
+            $(this).attr("src", $(this).attr("src").replace("light", "dark"));
+        });
     }
 
     var iu = $.cookie("image-url");
