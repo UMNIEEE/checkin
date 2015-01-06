@@ -811,7 +811,7 @@ namespace IEEECheckin.ASPDocs.Models
             // Start with relative root folder
             if (root == null)
             {
-                root = root = new GoogleFolder(null, "root", "root", "", 0);
+                root = root = new GoogleFolder(null, "root", "<i class=\"fa fa-folder\"></i>   root", "", 0);
                 level = 1;
             }
             ChildrenResource.ListRequest request = service.Children.List(root.Id);
@@ -829,7 +829,7 @@ namespace IEEECheckin.ASPDocs.Models
                         // Get child folder metadata
                         GDrive.File file = service.Files.Get(child.Id).Execute();
                         // Add folder to relative root children folder list
-                        root.Children.Add(new GoogleFolder(root, child.Id, file.Title, child.ChildLink, level));
+                        root.Children.Add(new GoogleFolder(root, child.Id, "<i class=\"fa fa-folder\"></i>   " + file.Title, child.ChildLink, level));
                     }
 
                     request.PageToken = children.NextPageToken;
@@ -860,7 +860,7 @@ namespace IEEECheckin.ASPDocs.Models
                             feedUri = (from feed in sheetList where feed.Id.Equals(file.Id) select feed.FeedUri).First();
                         }
                         // Add sheet to relative root sheet list
-                        root.Sheets.Add(new GoogleSheet(root, file.Id, file.Title, file.SelfLink, feedUri));
+                        root.Sheets.Add(new GoogleSheet(root, file.Id, "<i class=\"fa fa-file\"></i>   " + file.Title, file.SelfLink, feedUri));
                     }
                     request.PageToken = files.NextPageToken;
                 }

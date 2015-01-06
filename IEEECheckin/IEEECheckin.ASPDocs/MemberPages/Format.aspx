@@ -46,6 +46,7 @@
     </style>
 </asp:Content>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+    <h1 class="post-header">Format</h1>
     <h1 class="post-header">Meeting Check-In for:</h1>
     <h2 id="meetingName" class="post-header">Example Meeting</h2>
     <div id="swipe-section">
@@ -61,9 +62,9 @@
         <input class="form-control input-lg margin-sm-after" type="text" name="firstname" id="firstname" placeholder="First Name">
         <input class="form-control input-lg margin-sm-after" type="text" name="lastname" id="lastname" placeholder="Last Name">
         <input class="form-control input-lg margin-sm-after" type="text" name="email" id="email" placeholder="Email">
-        <button class="form-control input-lg btn btn-info check-in" onclick="return false;" type="submit" id="checkinbutton" name="checkinbutton">Check In</button>
+        <button class="form-control input-lg btn btn-info check-in" onclick="return false;" type="submit" id="checkinbutton" name="checkinbutton"><i class="fa fa-check"></i> Check In</button>
     </div>
-    <p class="section-label">Edit Content <i class="fa fa-cogs"></i></p>
+    <p class="section-header">Edit Content <i class="fa fa-cogs"></i></p>
     <div class="boxed-section margin-lg-after">
         <p>Changes occur when a control loses focus (click somewhere else on page for changes to occur).</p>
         <input class="form-control input-lg margin-sm-after" type="text" name="imageUrl" id="imageUrl" placeholder="Image Url (or 'default' or 'none')" onblur="updateImage()">
@@ -89,7 +90,7 @@
         <br />
         <button class="form-control input-lg btn btn-info check-in" onclick="return resetTheme();" type="submit" id="resetbutton" name="resetbutton">Reset Theme</button>
     </div>
-    <p class="section-label">Import/Export Format <i class="fa fa-copy"></i></p>
+    <p class="section-header">Import/Export Format <i class="fa fa-copy"></i></p>
     <div class="boxed-section margin-lg-after">
         <p>Copy the output and paste it into another browser/computer to replicate theme.</p>
         <input class="form-control input-lg margin-sm-after" type="multiline" name="export" id="export" onblur="importTheme()">

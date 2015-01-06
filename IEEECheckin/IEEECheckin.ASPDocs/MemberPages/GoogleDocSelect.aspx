@@ -70,10 +70,10 @@
             <asp:HiddenField ID="FolderTreeXml" runat="server" />
             <asp:XmlDataSource ID="SheetTreeDataSource" runat="server" />
 
-            <asp:TreeView ID="SheetTree" OnDataBound="SheetTree_DataBound" DataSourceID="SheetTreeDataSource" runat="server" SelectedNodeStyle-CssClass="selected" ShowLines="True" NodeStyle-HorizontalPadding="5" NodeStyle-VerticalPadding="5" NodeStyle-CssClass="tree-elements">
+            <asp:TreeView ID="SheetTree" DataSourceID="SheetTreeDataSource" runat="server" SelectedNodeStyle-CssClass="selected" ShowLines="True" NodeStyle-HorizontalPadding="5" NodeStyle-VerticalPadding="5" NodeStyle-CssClass="tree-elements">
                 <DataBindings>
-                    <asp:TreeNodeBinding DataMember="GoogleFolder" TextField="Title" ValueField="Id" ImageUrl="../Images/folder-icon-light-small.png" ToolTip="Google Folder" />
-                    <asp:TreeNodeBinding DataMember="GoogleSheet" TextField="Title" ValueField="FeedUri" ImageUrl="../Images/file-icon-light-small.png" ToolTip="Google Sheet" />
+                    <asp:TreeNodeBinding DataMember="GoogleFolder" TextField="Title" ValueField="Id" ToolTip="Google Folder" />
+                    <asp:TreeNodeBinding DataMember="GoogleSheet" TextField="Title" ValueField="FeedUri" ToolTip="Google Sheet" />
                 </DataBindings>
             </asp:TreeView>
             <br /><br />
@@ -100,6 +100,9 @@
             var bc = $.cookie("body-color"); // text color
             if (bc != null && bc != undefined) {
                 $(".tree-elements").css("color", "#" + bc);
+            }
+            else {
+                $(".tree-elements").css("color", "rgba(255, 255, 255, 0.8)");
             }
         });
     </script>

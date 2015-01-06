@@ -7,6 +7,13 @@
         .col-custom {
             width: 50.0%;
         }
+        .link-override {
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: bold;
+        }
+        .link-override:hover {
+            text-decoration: underline;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
@@ -90,8 +97,20 @@
         </p>
         <h3>Contact</h3>
         <p>
-            For any questions, comments, concerns, or suggestions contact us at <a href="mailto:ieee@umn.edu">ieee@umn.edu</a>
+            For any questions, comments, concerns, or suggestions contact us at <a class="link-override" href="mailto:ieee@umn.edu">ieee@umn.edu</a>
         </p>
 </asp:Content>
 <asp:Content ID="JavaScriptContent" ContentPlaceHolderID="JavaScripts" runat="server">
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var bc = $.cookie("body-color"); // text color
+            if (bc != null && bc != undefined) {
+                $(".link-override").css("color", "#" + bc);
+            }
+            else {
+                $(".link-override").css("color", "rgba(255, 255, 255, 0.8)");
+            }
+        });
+    </script>
 </asp:Content>

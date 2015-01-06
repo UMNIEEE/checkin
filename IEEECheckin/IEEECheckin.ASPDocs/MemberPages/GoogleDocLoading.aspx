@@ -16,7 +16,7 @@
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-    <h1 class="post-header">Loading Sheets</h1>
+    <h1 class="post-header">Loading Google Docs</h1>
     <h2 id="meetingName" class="post-header"></h2>
 
     <asp:HiddenField ID="SubmitData" runat="server" />

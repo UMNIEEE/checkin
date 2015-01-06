@@ -26,7 +26,7 @@
     </style>
 </asp:Content>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-    <h1 class="post-header">Meeting Output</h1>
+    <h1 class="post-header">Meeting Attendance</h1>
 
     <p class="section-header">Filter Meeting Attendance <i class="fa fa-file-text"></i></p> 
     <div class="boxed-section margin-lg-after">
