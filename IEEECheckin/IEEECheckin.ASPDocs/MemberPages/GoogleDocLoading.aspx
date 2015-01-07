@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" validateRequest="false" CodeBehind="GoogleDocLoading.aspx.cs" Inherits="IEEECheckin.ASPDocs.MemberPages.GoogleDocLoading" %>
+﻿<%@ Page Title="Google Docs Loading" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" validateRequest="false" CodeBehind="GoogleDocLoading.aspx.cs" Inherits="IEEECheckin.ASPDocs.MemberPages.GoogleDocLoading" %>
 
 <%@ PreviousPageType VirtualPath="~/MemberPages/Attendance.aspx" %> 
 
@@ -24,7 +24,7 @@
     <asp:HiddenField ID="MeetingDate" runat="server" />
     <asp:HiddenField ID="FolderTreeXml" runat="server" />
 
-    <asp:Image CssClass="float-center shaded" ID="LoadingImage" ImageUrl="~/Images/ajax-loader-light.gif" runat="server" />
+    <asp:Image CssClass="float-center shaded" ID="LoadingImage" ImageUrl="~/Images/ajax-loader-dark.gif" runat="server" />
     <br /><br />
     <p>We are currently getting a list of your spreadsheets, please be patient as this may take some time.</p>
     <p>You will automatically be taken to a list of your spreadsheets. Do not refresh or navigate away from this page.</p>
@@ -62,7 +62,8 @@
                     },
                     success: function (data) {
                         if (data.d === "") {
-                            alert("Could not retrieve data.")
+                            alert("Could not retrieve Google Docs. Try logging off and back in again.");
+                            window.history.back();
                         }
                         else {
                             $("#MainContent_FolderTreeXml").val(data.d);
