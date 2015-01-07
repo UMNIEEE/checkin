@@ -1,7 +1,7 @@
 body {
   font-family: "Lato", sans-serif;
-  background-color: #006699;
-  color: rgba(255, 255, 255, 0.8);
+  background-color: #ffffff;
+  color: rgba(0, 0, 0, 0.8);
   margin-top: 40px;
   margin-bottom: 40px;
   padding-top: 50px;
@@ -18,6 +18,16 @@ body {
 }
 .logo {
   width: 100%;
+}
+.btn-info {
+    color: #000000;
+    background-color: #ffffff;
+    border-color: #000000
+}
+.btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .open .dropdown-toggle.btn-info {
+    color: #000;
+    background-color: #fff;
+    border-color: #000;
 }
 .pre-header, .post-header {
   font-weight: bold;
@@ -53,7 +63,7 @@ i {
   margin-left: 8px;
 }
 .boxed-section {
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid #000;
   border-style: dashed;
   border-radius: 8px;
   padding: 12px;

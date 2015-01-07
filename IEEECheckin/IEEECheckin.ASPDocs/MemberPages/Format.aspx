@@ -67,11 +67,11 @@
     <p class="section-header">Edit Content <i class="fa fa-cogs"></i></p>
     <div class="boxed-section margin-lg-after">
         <p>Changes occur when a control loses focus (click somewhere else on page for changes to occur).</p>
-        <input class="form-control input-lg margin-sm-after" type="text" name="imageUrl" id="imageUrl" placeholder="Image Url (or 'default' or 'none')" onblur="updateImage()">
+        <input class="form-control input-lg margin-sm-after" type="text" name="imageUrl" id="imageUrl" placeholder="Image Url" onblur="updateImage()">
         <input class="form-control input-lg margin-sm-after" type="text" name="topText" id="topText" placeholder="Top Text" onblur="updateTopText()">
         <table><tbody>
             <tr><td><input class="margin-sm-after" type="checkbox" name="swipeCheck" id="swipeCheck" onblur="updateSwipe()"></td><td>Use U-Card Swipe</td></tr>
-            <tr><td><input class="margin-sm-after" type="checkbox" name="themeShade" id="themeShade" onblur="updateThemeShade()"></td><td id="themeShadeText">Use Light Theme</td></tr>
+            <tr><td><input class="margin-sm-after" type="checkbox" name="themeShade" id="themeShade" onblur="updateThemeShade()"></td><td id="themeShadeText">Using Light Theme</td></tr>
         </tbody></table>
         <table>
             <tbody>
@@ -111,26 +111,26 @@
             }
 
             var ts = $.cookie("theme-shade");
-            if (ts != null && ts != undefined && ts === "dark") {
+            if (ts != null && ts != undefined && ts === "light") {
                 $("#themeShade").prop("checked", false);
-                $("#themeShadeText").html("Use Dark Theme");
+                $("#themeShadeText").html("Using Light Theme");
             }
             else {
                 $("#themeShade").prop("checked", true);
-                $("#themeShadeText").html("Use Light Theme");
+                $("#themeShadeText").html("Using Dark Theme");
             }
                     
             var bbc = $.cookie("body-background-color");
             if (bbc == null || bbc == undefined)
-                bbc = "006699";
+                bbc = "ffffff";
 
             var bubc = $.cookie("button-background-color");
             if (bubc == null || bubc == undefined)
-                bubc = "39b3d7";
+                bubc = "ffffff";
 
             var bc = $.cookie("body-color"); // text color
             if (bc == null || bc == undefined)
-                bc = "ffffff";
+                bc = "000000";
 
             $('#colorSelector').ColorPicker({ // body background
                 color: bbc,
@@ -190,6 +190,7 @@
                     $("button").css("color", "#" + hex);
                     $.cookie("body-color", hex, { expires: 365, path: "/" });
                     $("#colorSelector3").css("background-color", "#" + hex);
+                    $("[class*='boxed-section']").css("border", "1px dashed #" + bc);
                     themeUpdated();
                 }
             });
@@ -198,13 +199,9 @@
         });
         function updateImage() {
             var value = $("#imageUrl").val();
-            if (value === "default") {
+            if (value != null && value.toLowerCase().trim() === "ieee") {
                 $("#logoImage").attr("src", "../Images/logo.svg");
                 $.cookie("image-url", "../Images/logo.svg", { expires: 365, path: "/" });
-            }
-            else if (value === "none") {
-                $("#logoImage").attr("src", "");
-                $.cookie("image-url", "", { expires: 365, path: "/" });
             }
             else if (value != null) {
                 $("#logoImage").attr("src", value);
@@ -220,8 +217,6 @@
                 $("#topHeader").html(value);
                 $.cookie("header-text", value, { expires: 365, path: "/" });
             }
-            //else
-            //    $("#topHeader").html("University of Minnesota");
             themeUpdated();
             return false;
         }
@@ -240,12 +235,12 @@
         }
         function updateThemeShade() {
             if ($("#themeShade").prop("checked")) {
-                $.cookie("theme-shade", "light", { expires: 365, path: "/" });
-                $("#themeShadeText").html("Use Light Theme");
+                $.cookie("theme-shade", "dark", { expires: 365, path: "/" });
+                $("#themeShadeText").html("Using Dark Theme");
             }
             else {
-                $.cookie("theme-shade", "dark", { expires: 365, path: "/" });
-                $("#themeShadeText").html("Use Dark Theme");
+                $.cookie("theme-shade", "light", { expires: 365, path: "/" });
+                $("#themeShadeText").html("Using Light Theme");
             }
             themeUpdated();
             return false;
@@ -266,26 +261,30 @@
         function themeUpdated() {
             var bbc = $.cookie("body-background-color");
             if (bbc == null || bbc == undefined)
-                bbc = "006699";
+                bbc = "ffffff";
             $("#colorSelector").css("background-color", "#" + bbc);
 
             var bubc = $.cookie("button-background-color");
             if (bubc == null || bubc == undefined)
-                bubc = "39b3d7";
+                bubc = "ffffff";
             $("#colorSelector2").css("background-color", "#" + bubc);
 
             var bc = $.cookie("body-color"); // text color
             if (bc == null || bc == undefined)
-                bc = "ffffff";
+                bc = "000000";
             $("#colorSelector3").css("background-color", "#" + bc);
 
             var ts = $.cookie("theme-shade");
             if (ts == null || ts == undefined)
-                ts = "light";
-            if (ts === "light")
+                ts = "dark";
+            if (ts === "dark") {
                 $("#themeShade").prop("checked", true);
-            else
+                $("#themeShadeText").html("Using Dark Theme");
+            }
+            else {
                 $("#themeShade").prop("checked", false);
+                $("#themeShadeText").html("Using Light Theme");
+            }
 
             var iu = $.cookie("image-url");
             if (iu == null || iu == undefined)
@@ -294,16 +293,18 @@
 
             var ht = $.cookie("header-text");
             if (ht == null || ht == undefined)
-                ht = "University of Minnesota";
+                ht = "Meeting Check-in Web App";
             $("#topText").val(ht);
 
             var us = $.cookie("use-swipe");
             if (us == null || us == undefined)
                 us = "true";
-            if (us === "true")
+            if (us === "true") {
                 $("#swipeCheck").prop("checked", true);
-            else
+            }
+            else {
                 $("#swipeCheck").prop("checked", false);
+            }
 
             var theme = {
                 bodyBackgroundColor: bbc,
@@ -315,6 +316,8 @@
                 useSwipe: us
             };
             $("#export").val(JSON.stringify(theme));
+
+            updateFormat();
         }
         function importTheme() {
             try {
@@ -350,7 +353,7 @@
                 if (us != null && us != undefined)
                     $.cookie("use-swipe", us, { expires: 365, path: "/" });
 
-                updateFormat();
+                themeUpdated();
             }
             catch (err) {
                 alert(err.message)

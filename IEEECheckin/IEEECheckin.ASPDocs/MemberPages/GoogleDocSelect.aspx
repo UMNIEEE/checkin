@@ -14,7 +14,7 @@
             font-weight: bold;
         }
         .tree-elements {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(0, 0, 0, 0.8);
         }
     </style>
 </asp:Content>
@@ -102,7 +102,7 @@
                 $(".tree-elements").css("color", "#" + bc);
             }
             else {
-                $(".tree-elements").css("color", "rgba(255, 255, 255, 0.8)");
+                $(".tree-elements").css("color", "rgba(0, 0, 0, 0.8)");
             }
         });
     </script>

@@ -8,7 +8,7 @@
             width: 50.0%;
         }
         .link-override {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(0, 0, 0, 0.8);
             font-weight: bold;
         }
         .link-override:hover {
@@ -72,7 +72,10 @@
             and pasting the full string found in the "Import/Export" textbox at the bottom of the page
                 <ul>
                     <li>To try theme import/export out, copy and paste the following text into the "Import/Export" textbox:
-                    <br /><br /> {"bodyBackgroundColor":"bb2cd1", "buttonBackgroundColor":"d63a54", "bodyColor":"00ff1e", "themeShade":"light", "imageUrl":"http://goo.gl/bzHpYs", "headerText":"Cat Lovers of America", "useSwipe":"true"}
+                    <br /><br /> {"bodyBackgroundColor":"bb2cd1", "buttonBackgroundColor":"d63a54", "bodyColor":"00ff1e", "themeShade":"light", "imageUrl":"http://goo.gl/bzHpYs", "headerText":"Cat Lovers of America", "useSwipe":"true"} <br /><br /> 
+                    </li>
+                    <li>Else you can try this IEEE theme:
+                    <br /><br /> {"bodyBackgroundColor":"006699", "buttonBackgroundColor":"39b3d7", "bodyColor":"ffffff", "themeShade":"light", "imageUrl":"../Images/logo.svg", "headerText":"University of Minnesota", "useSwipe":"true"}
                     </li>
                 </ul>
             </li>
@@ -109,7 +112,7 @@
                 $(".link-override").css("color", "#" + bc);
             }
             else {
-                $(".link-override").css("color", "rgba(255, 255, 255, 0.8)");
+                $(".link-override").css("color", "rgba(0, 0, 0, 0.8)");
             }
         });
     </script>

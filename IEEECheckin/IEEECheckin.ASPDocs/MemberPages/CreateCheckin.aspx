@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Menu" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="CreateCheckin.aspx.cs" Inherits="IEEECheckin.ASPDocs.MemberPages.Menu" %>
+﻿<%@ Page Title="Create Check-in" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="CreateCheckin.aspx.cs" Inherits="IEEECheckin.ASPDocs.MemberPages.Menu" %>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <h1 class="post-header">Welcome</h1>

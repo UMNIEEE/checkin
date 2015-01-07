@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Output" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Attendance.aspx.cs" Inherits="IEEECheckin.ASPDocs.MemberPages.Output" %>
+﻿<%@ Page Title="Attendance" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Attendance.aspx.cs" Inherits="IEEECheckin.ASPDocs.MemberPages.Output" %>
 <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server">
     <style>
         td, th {

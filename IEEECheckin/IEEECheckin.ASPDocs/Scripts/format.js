@@ -4,6 +4,13 @@
     $(".footer").html("Powered by the U of M IEEE Tech Subcommittee. &copy; " + dt.getFullYear() + " - University of Minnesota IEEE Student Branch");
 });
 function updateFormat() {
+
+    var iu = $.cookie("image-url");
+    if (iu != null && iu != undefined) {
+        $.cookie("image-url", iu, { expires: 365, path: "/" });
+        $("#logoImage").attr("src", iu);
+    }
+
     var bbc = $.cookie("body-background-color");
     if (bbc != null && bbc != undefined) {
         $.cookie("body-background-color", bbc, { expires: 365, path: "/" });
@@ -23,20 +30,21 @@ function updateFormat() {
         $("body").css("color", "#" + bc);
         $("button").css("color", "#" + bc);
         $("input[type='submit'][class*='form-control']").css("color", "#" + bc);
+        $("[class*='boxed-section']").css("border", "1px dashed #" + bc);
     }
 
     var ts = $.cookie("theme-shade");
-    if (ts != null && ts != undefined && ts === "dark") {
+    if (ts != null && ts != undefined && ts === "light") {
+        $.cookie("theme-shade", ts, { expires: 365, path: "/" });
+        $("img[class*='shaded']").each(function () {
+            $(this).attr("src", $(this).attr("src").replace("dark", "light"));
+        });
+    }
+    else if (ts != null && ts != undefined && ts === "dark") {
         $.cookie("theme-shade", ts, { expires: 365, path: "/" });
         $("img[class*='shaded']").each(function () {
             $(this).attr("src", $(this).attr("src").replace("light", "dark"));
         });
-    }
-
-    var iu = $.cookie("image-url");
-    if (iu != null && iu != undefined) {
-        $.cookie("image-url", iu, { expires: 365, path: "/" });
-        $("#logoImage").attr("src", iu);
     }
 
     var ht = $.cookie("header-text");
