@@ -34,15 +34,7 @@
 <asp:Content ID="JavaScriptContent" ContentPlaceHolderID="JavaScripts" runat="server">
     <script type="text/javascript">
         $(document).ready(function () {
-
-            var us = $.cookie("use-swipe");
-            if (us != null && us != undefined && us === "false") {
-                $("#firstname").focus();
-            }
-            else {
-                $("#cardtxt").focus();
-            }
-
+            setFocus();
             $("#meetingName").html($("#MainContent_MeetingName").val());
             // subscribe to the keydown for the U-card input
             $("#cardtxt, #firstname, #lastname, #email").keydown(function (event) {
@@ -51,76 +43,112 @@
                 }
             });
         });
-        // called when U-card parsing has completed
-        function parseUCardComplete(uCard) {
-            if (uCard === null || uCard === undefined)
-                return false;
-
-            $("#firstname").val(uCard["firstName"]);
-            $("#lastname").val(uCard["lastName"]);
-            $("#studentid").val(uCard["studentId"]);
-        }
-        // called when crawl parsing of a single person has completed
-        function parseCrawlComplete(uPerson) {
-            if (uPerson === null || uPerson === undefined)
-                return;
-            // add post crawl code here
-        }
-        // called when crawl parsing of multiple persons returned has completed
-        // html - raw HTML of the search results that can be displayed in an overlay
-        function searchResultSelected(html) {
-
-        }
         function entrySubmit() {
             try {
-                // perform the parse function if the U-card slot is not empty
-                if ($("#cardtxt").val() !== null && $("#cardtxt").val() !== undefined && $("#cardtxt").val().trim() !== "") {
-                    parse("#cardtxt");
-                }
+                // perform the parse function if the student id card input is not empty
+                if (checkStr($("#cardtxt").val())) {
+                    var regEx = "^%(\\w+)\\^(\\d+)\\^{3}(\\d+)\\^(\\w+),\\s([\\w\\s]+)\\?;(\\d+)=(\\d+)\\?$";
+                    var indicies = {
+                        "firstName": "5",
+                        "lastName": "4",
+                        "middleInit": "-1",
+                        "studentId": "2",
+                        "email": "-1"
+                    };
+                    var result = parseUMN($("#cardtxt").val().trim(), regEx, indicies);
 
-                // Change this to true to crawl the U of M directory for people
-                var crawlUMN = false;
-                if (crawlUMN) {
-                    // create U of M people search URL query.
-                    var urlPath = "http://www.umn.edu/lookup?SET_INSTITUTION=UMNTC&type=name&CN=" +
-                        $("#firstname").val() + "+" + $("#lastname").val() + "&campus=a&role=any";
-
-                    var returnVal = crawl(urlPath); // returns raw HTML of the search results that can be displayed in an overlay
-
-                    $("#links").append(returnVal);
-
-                    $("#crawlConfirm").focus();
-                    $("#crawlConfirm").keyup(function () {
-                        parseData();
+                    if (result === null || result === undefined) {
+                        alert("Failed to parse card data. Try again or use manual entry.");
+                        setFocus();
                         return false;
-                    });
+                    }
 
-                    var w = $("#modalDiv").width();
-                    $("#modalDiv").css("margin-left", w / -2);
-                    showOverlay("#umnOverlay");
+                    // check to make sure first name, last name, and student id are present in the results
+                    var datas = ["firstName", "lastName", "studentId"];
+                    var datasReadable = ["First Name", "Last Name", "Student ID"];
+                    var index;
+                    for (index = 0; index < datas.length; index++) {
+                        if (!checkStr(result[datas[index]])) {
+                            alert("Missing " + datasReadable[index] + ".");
+                            setFocus();
+                            return false;
+                        }
+                    }
+
+                    var emailVal = "";
+                    if (checkStr($("#email").val()))
+                        emailVal = $("#email").val().trim();
+
+                    // create new database entry
+                    var entry = {
+                        "firstname": result["firstName"],
+                        "lastname": result["lastName"],
+                        "studentid": result["studentId"],
+                        "email": emailVal,
+                        "meeting": $("#MainContent_MeetingName").val().trim(),
+                        "date": $("#MainContent_MeetingDate").val().trim()
+                    };
+
+                    // add data to the database
+                    addData(entry);
+
+                    // clear the form, ready for adding the next entry
+                    clearForm();
+                    setFocus();
+
+                    // navigate to the confirmation page
+                    window.location.href = "Confirm.aspx";
                 }
+                // student id card slot empty so check for valid manual entry
+                else if (checkStr($("#firstname").val()) && checkStr($("#lastname").val()) && checkStr($("#studentid").val())) {
+                    var emailVal = "";
+                    if (checkStr($("#email").val()))
+                        emailVal = $("#email").val().trim();
 
-                var data = {
-                    "firstname": $("#firstname").val().trim(),
-                    "lastname": $("#lastname").val().trim(),
-                    "studentid": $("#studentid").val().trim(),
-                    "email": $("#email").val().trim(),
-                    "meeting": $("#MainContent_MeetingName").val().trim(),
-                    "date": $("#MainContent_MeetingDate").val().trim()
-                };
+                    // create new database entry
+                    var entry = {
+                        "firstname": $("#firstname").val().trim(),
+                        "lastname": $("#lastname").val().trim(),
+                        "studentid": $("#studentid").val().trim(),
+                        "email": emailVal,
+                        "meeting": $("#MainContent_MeetingName").val().trim(),
+                        "date": $("#MainContent_MeetingDate").val().trim()
+                    };
 
-                addData(data);
+                    // add data to the database
+                    addData(entry);
 
-                // clear the form, ready for adding the next entry
-                $("#firstname").val("");
-                $("#lastname").val("");
-                $("#studentid").val("");
-                $("#email").val("");
+                    // clear the form, ready for adding the next entry
+                    clearForm();
+                    setFocus();
+
+                    // navigate to the confirmation page
+                    window.location.href = "Confirm.aspx";
+                }
+                // both are invalid
+                else {
+                    if (!checkStr($("#cardtxt").val())) {
+                        if (checkStr($("#firstname").val()))
+                            alert("Missing First Name.");
+                        else if(checkStr($("#lastname").val()))
+                            alert("Missing Last Name.");
+                        else if(checkStr($("#studentid").val()))
+                            alert("Missing Student ID.");
+                    }
+                    else
+                        alert("Missing Card or Manual Input Data.")
+                    setFocus();
+                    return false;
+                }
             }
             catch (err) {
                 alert(err.message);
+                setFocus();
             }
 
+            return false;
+        }
+        function setFocus() {
             var us = $.cookie("use-swipe");
             if (us != null && us != undefined && us === "false") {
                 $("#firstname").focus();
@@ -128,9 +156,13 @@
             else {
                 $("#cardtxt").focus();
             }
-
-            window.location.href = "Confirm.aspx";
-            return false;
+        }
+        function clearForm() {
+            $("#cardtxt").val("");
+            $("#firstname").val("");
+            $("#lastname").val("");
+            $("#studentid").val("");
+            $("#email").val("");
         }
     </script>
 </asp:Content>

@@ -58,6 +58,10 @@ function clearHideOverlay(parent, overlay, errorOutput, validatable) {
     }
     return false;
 }
+// Checks if a string is not null, undefined, and empty
+function checkStr(str) {
+    return (str !== null && str !== undefined && str.trim() !== "")
+}
 // document ready
 $(document).ready(function () {
     // prevent form submit due to an enter key press.
