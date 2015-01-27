@@ -369,7 +369,8 @@ function parse(cardInputBoxSelector) {
         // Non-essential/less-essential parsing
         try {
             libraryId = firstSplit[0];
-            libraryId = libraryId.replace("%").trim();
+            if(libraryId !== null && libraryId !== undefined)
+                libraryId = libraryId.replace("%").trim();
             if (!isNaN(parseInt(firstSplit[1]))) {
                 studentId = parseInt(firstSplit[1]);
             }
@@ -400,7 +401,7 @@ function parse(cardInputBoxSelector) {
                     // split first name middle initial
                     var thirdSplit = secondSplit[1].trim().split(" ");
 
-                    if (thirdSplit !== null && thirdSplit !== undefined) {
+                    if (thirdSplit !== null && thirdSplit !== undefined && thirdSplit.length > 1) {
 
                         // middle initial == string length of 1
                         if (thirdSplit[thirdSplit.length - 1].length == 1) {
@@ -419,6 +420,8 @@ function parse(cardInputBoxSelector) {
                         }
                         firstName = firstName.trim().toLowerCase();
                     }
+                    else
+                        firstName = secondSplit[1].trim().toLowerCase();
                 }
 
                 break; // from for loop
@@ -428,6 +431,8 @@ function parse(cardInputBoxSelector) {
         // Non-essential/less-essential parsing
         try {
             codabar = firstSplit[nameInd - 1];
+            if (codabar !== null && codabar !== undefined)
+                codabar = codabar.trim();
             var re4 = new RegExp("[;=]");
             var someNumArray = firstSplit[nameInd + 1].split(re4);
             var k = 0;
@@ -449,12 +454,12 @@ function parse(cardInputBoxSelector) {
         var uCard = {};
         try {
             uCard = {
-                "firstName": firstName.trim(),
-                "lastName": lastName.trim(),
-                "middleInit": middleInit.trim(),
+                "firstName": firstName,
+                "lastName": lastName,
+                "middleInit": middleInit,
                 "studentId": studentId,
-                "libraryId": libraryId.trim(),
-                "codabar": codabar.trim(),
+                "libraryId": libraryId,
+                "codabar": codabar,
                 "someNumOne": someNumOne,
                 "someNumTwo": someNumTwo
             };
