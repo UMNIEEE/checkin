@@ -293,7 +293,6 @@
     <Content Include="MemberPages\Attendance.aspx" />
     <Content Include="packages.config" />
     <Content Include="Account\Web.config" />
-    <Content Include="Scripts\check-in.js" />
     <Content Include="Scripts\colorpicker.js" />
     <Content Include="Scripts\eye.js" />
     <Content Include="Scripts\format.js" />
@@ -449,7 +448,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57724</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

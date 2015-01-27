@@ -93,7 +93,7 @@ function addData(data) {
             missingVal = "Meeting Date. Re-enter the meeting";
 
         alert("Data not submitted — form incomplete: " + missingVal);
-        return;
+        return false;
     } else {
 
         // grab the values entered into the form fields and store them in an object ready for being inserted into the IDB
@@ -128,7 +128,10 @@ function addData(data) {
             // report the success of our new item going into the database
             //alert("New item added to database.");
         }
+        return true;
     }
+
+    return false;
 }
 
 function GetQueryStringParams(sParam) {

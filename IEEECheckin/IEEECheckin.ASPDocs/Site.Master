@@ -91,7 +91,6 @@
             </div>
         </div>
         <script src="../Scripts/jquery.cookie.js"></script>
-        <script src="../Scripts/check-in.js"></script>
         <script src="../Scripts/card-parser.js"></script>
         <script src="../Scripts/store.js"></script>
         <script src="../Scripts/format.js"></script>

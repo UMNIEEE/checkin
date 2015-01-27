@@ -90,6 +90,11 @@
         <br />
         <button class="form-control input-lg btn btn-info check-in" onclick="return resetTheme();" type="submit" id="resetbutton" name="resetbutton">Reset Theme</button>
     </div>
+    <p class="section-header">Card Regex <i class="fa fa-copy"></i></p>
+    <div class="boxed-section margin-lg-after">
+        <p>Input a regular expression for parsing the data from card swipes.</p>
+        <input class="form-control input-lg margin-sm-after" type="multiline" name="export" id="regex" onblur="regexChange()">
+    </div>
     <p class="section-header">Import/Export Format <i class="fa fa-copy"></i></p>
     <div class="boxed-section margin-lg-after">
         <p>Copy the output and paste it into another browser/computer to replicate theme.</p>
@@ -244,6 +249,9 @@
             }
             themeUpdated();
             return false;
+        }
+        function regexChange() {
+
         }
         function resetTheme() {
             $.removeCookie("body-background-color", { path: '/' });
