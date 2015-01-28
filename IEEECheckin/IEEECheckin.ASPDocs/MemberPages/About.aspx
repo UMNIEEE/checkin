@@ -31,13 +31,27 @@
         <h5>Checking In</h5>
         <ul>
             <li>From the menu page create a new meeting (or select a pre-existing meeting from the drop-down)</li>
-            <li>If using University of Minnesota U-Cards with a compatible card reader, focus on the card entry box and swipe the card.</li>
-            <li>If not using U-Cards, have the participant manually enter their information in the "Manual Entry" section.</li>
+            <li>If using a compatible id card with a compatible card reader, focus on the card entry box and swipe the card.</li>
+            <li>If not using a compatible id card, have the participant manually enter their information in the "Manual Entry" section.</li>
             <li>Upon swiping the card or clicking the "Check In" button, a confirmation page will appear and shortly return to the check-in page.</li>
             <li>If the confirmation page does not appear or a message box appears, refresh the page and retry entering the user's info.
             If the problem persists, please contact us using the information below.</li>
             <li>When done with a check-in session, simply return to the menu page.</li>
             <li>You can re-enter a check-in session by selecting the meeting from the drop-down box.</li>
+        </ul>
+        <h5>Compatible Cards and Card Readers</h5>
+        <ul>
+            <li>Compatible cards are listed in the Select Card dropdown found on the Format page.</li>
+            <li>To change the compatible card used, simply change the selection found on the Format page.</li>
+            <li>If you do not see your school/institution listed, send us an email and we will provide further details on how to get added to the list.</li>
+            <li>Not all card types or readers may be compatible. Some requirements include:
+                <ul>
+                    <li>A keyboard emulating card reader (this may be either magnetic strip or laser scanner)</li>
+                    <li>Cards readable by the card reader</li>
+                    <li>A minimum of the person's first and last name present in the card's data</li>
+                </ul>
+            </li>
+            <li>An example reader used at the University of Minnesota is the <a class="link-override" href="http://amzn.com/B00EILXURM">Magtek MagneSafe Mini</a>.</li>
         </ul>
         <h5>Viewing/Managing Data</h5>
         <ul>
@@ -58,7 +72,7 @@
                 <ul>
                     <li>The top display image (must be a link to an image url found online)</li>
                     <li>The top header text</li>
-                    <li>The use of a U-Card (limited to University of Minnesota only)</li>
+                    <li>The use of a compatible id card</li>
                     <li>The background color</li>
                     <li>The button color</li>
                     <li>The text color</li>
@@ -68,6 +82,7 @@
             <li>To set a theme, simply change the values and navigate back to the menu page.</li>
             <li>Themes are saved as cookies. This means your theme will persist in your web browser as long as you have cookies enabled and you don't clear your browser cookies.</li>
             <li>The best logo images to use are either vector graphics (svg) or large images with transparent backgrounds.</li>
+            <li>You can also choose a pre-existing theme from the theme dropdown and modify from there.</li>
             <li>Optionally you can import or export a theme from another browser or computer by copying, sending,
             and pasting the full string found in the "Import/Export" textbox at the bottom of the page
                 <ul>
@@ -76,9 +91,11 @@
                     </li>
                     <li>Else you can try this IEEE theme:
                     <br /><br /> {"bodyBackgroundColor":"006699", "buttonBackgroundColor":"39b3d7", "bodyColor":"ffffff", "themeShade":"light", "imageUrl":"../Images/logo.svg", "headerText":"University of Minnesota", "useSwipe":"true"}
+                    <br /><br />
                     </li>
                 </ul>
             </li>
+            <li>You also have the option of sharing your theme with everyone! Send us the content of the "Import/Export" textbox and we will see about adding it to the list of pre-existing themes.</li>
         </ul>
         <h5>Other Notes</h5>
         <ul>

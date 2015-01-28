@@ -13,7 +13,7 @@
         </div>
     </div>
     <div id="swipe-section">
-        <p class="section-label">U-Card Swipe Card Entry <i class="fa fa-credit-card"></i></p>
+        <p class="section-label">ID Card Swipe Entry <i class="fa fa-credit-card"></i></p>
         <div class="boxed-section margin-lg-after">
             <div class="form-group no-margin-after">
                 <asp:HiddenField ID="MeetingName" runat="server" />
@@ -58,10 +58,11 @@
                     };
                     var re = $.cookie("card-regex");
                     if (re != null && re != undefined) {
-                        if (checkStr(["regex"]))
-                            regex = re["regex"];
-                        if (re["indices"] != null && re["indices"] != undefined)
-                            indices = re["indices"];
+                        var rejson = JSON.parse(re);
+                        if (checkStr(rejson["regex"]))
+                            regex = rejson["regex"];
+                        if (rejson["indices"] != null && rejson["indices"] != undefined)
+                            indices = rejson["indices"];
                     }
 
                     // parse the card

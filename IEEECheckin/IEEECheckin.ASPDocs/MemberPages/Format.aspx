@@ -50,7 +50,7 @@
     <h1 class="post-header">Meeting Check-In for:</h1>
     <h2 id="meetingName" class="post-header">Example Meeting</h2>
     <div id="swipe-section">
-        <p class="section-label">U-Card Swipe Card Entry <i class="fa fa-credit-card"></i></p>
+        <p class="section-label">ID Card Swipe Entry <i class="fa fa-credit-card"></i></p>
         <div id="form-ucard" class="boxed-section margin-lg-after" role="form">
             <div class="form-group no-margin-after">
                 <input class="form-control input-lg margin-sm-after" autofocus="autofocus" type="password" name="cardtxt" id="cardtxt" placeholder="Click here, then swipe your card">
@@ -70,7 +70,7 @@
         <input class="form-control input-lg margin-sm-after" type="text" name="imageUrl" id="imageUrl" placeholder="Image Url" onblur="updateImage()">
         <input class="form-control input-lg margin-sm-after" type="text" name="topText" id="topText" placeholder="Top Text" onblur="updateTopText()">
         <table><tbody>
-            <tr><td><input class="margin-sm-after" type="checkbox" name="swipeCheck" id="swipeCheck" onblur="updateSwipe()"></td><td>Use U-Card Swipe</td></tr>
+            <tr><td><input class="margin-sm-after" type="checkbox" name="swipeCheck" id="swipeCheck" onblur="updateSwipe()"></td><td>Use ID Card Swipe</td></tr>
             <tr><td><input class="margin-sm-after" type="checkbox" name="themeShade" id="themeShade" onblur="updateThemeShade()"></td><td id="themeShadeText">Using Light Theme</td></tr>
         </tbody></table>
         <table>
@@ -89,11 +89,19 @@
         </table>
         <br />
         <button class="form-control input-lg btn btn-info check-in" onclick="return resetTheme();" type="submit" id="resetbutton" name="resetbutton">Reset Theme</button>
+        <br />
+        <br />
+        <p class="section-label">Select Existing Theme<i class="fa fa-pencil"></i></p>
+        <asp:DropDownList class="selectpicker" ID="themeDropdown" AutoPostBack="false" AppendDataBoundItems="true" runat="server" onblur="updatePreDefTheme()">
+            <asp:ListItem Text="Custom Theme" Value="" Selected="true"></asp:ListItem>
+        </asp:DropDownList>
     </div>
-    <p class="section-header">Card Regex <i class="fa fa-copy"></i></p>
+    <p class="section-header">Select Card Format <i class="fa fa-credit-card"></i></p>
     <div class="boxed-section margin-lg-after">
-        <p>Input a regular expression for parsing the data from card swipes.</p>
-        <input class="form-control input-lg margin-sm-after" type="multiline" name="export" id="regex" onblur="regexChange()">
+        <p>Select your school/card format. See the about page for more information.</p>
+        <asp:DropDownList class="selectpicker" ID="regexDropdown" AutoPostBack="false" AppendDataBoundItems="true" runat="server" onblur="updateRegex()">
+            <asp:ListItem Text="No Card Format" Value="" Selected="true"></asp:ListItem>
+        </asp:DropDownList>
     </div>
     <p class="section-header">Import/Export Format <i class="fa fa-copy"></i></p>
     <div class="boxed-section margin-lg-after">
@@ -113,6 +121,23 @@
             }
             else {
                 $("#swipeCheck").prop("checked", true);
+            }
+
+            try{
+                var re = $.cookie("card-regex");
+                if (re != null && re != undefined) {
+                    var rejson = JSON.parse(re);
+                    if (checkStr(rejson["name"])) {
+                        var regName = rejson["name"];
+                        $("#MainContent_regexDropdown option").filter(function () { return $(this).html() == regName }).attr('selected', 'selected');
+                    }
+                }
+                else {
+                    $("#MainContent_regexDropdown option").filter(function () { return $(this).html() == "University of Minnesota" }).attr('selected', 'selected');
+                }
+            }
+            catch(err) {
+
             }
 
             var ts = $.cookie("theme-shade");
@@ -225,7 +250,6 @@
             themeUpdated();
             return false;
         }
-        
         function updateSwipe() {
             if ($("#swipeCheck").prop("checked")) {
                 $.cookie("use-swipe", true, { expires: 365, path: "/" });
@@ -250,8 +274,22 @@
             themeUpdated();
             return false;
         }
-        function regexChange() {
-
+        function updateRegex() {
+            var sel = $("#MainContent_regexDropdown option:selected").val();
+            if (checkStr(sel))
+                $.cookie("card-regex", sel, { expires: 365, path: "/" });
+            else {
+                $.removeCookie("card-regex");
+                $("#swipeCheck").prop("checked", false);
+                updateSwipe();
+            }
+        }
+        function updatePreDefTheme() {
+            var sel = $("#MainContent_themeDropdown option:selected").val();
+            if (checkStr(sel)) {
+                $("#export").val(sel);
+                importTheme();
+            }
         }
         function resetTheme() {
             $.removeCookie("body-background-color", { path: '/' });

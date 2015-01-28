@@ -58,4 +58,8 @@ function updateFormat() {
         $.cookie("use-swipe", us, { expires: 365, path: "/" });
         $("#swipe-section").attr("style", "display: none;");
     }
+
+    var sel = $.cookie("card-regex");
+    if (sel != null && sel != undefined)
+        $.cookie("card-regex", sel, { expires: 365, path: "/" });
 }
