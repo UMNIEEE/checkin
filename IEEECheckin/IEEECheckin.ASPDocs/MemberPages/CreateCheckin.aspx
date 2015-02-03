@@ -20,9 +20,10 @@
 <asp:Content ID="JavaScriptContent" ContentPlaceHolderID="JavaScripts" runat="server">
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#newMeeting").keydown(function (event) {
-                if (event.keyCode == 13) {
-                    meetingSubmit()
+            $("#MainContent_MeetingName").keydown(function (e) {
+                var charCode = e.charCode || e.keyCode || e.which;
+                if (charCode == 13) {
+                    meetingSubmit();
                 }
             });   
         });

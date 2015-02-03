@@ -7,6 +7,8 @@ var newItem = [
       { index: "", studentid: "", firstname: "", lastname: "", email: "", day: 0, month: 0, year: 0, meeting: "" }
 ];
 
+
+// open the database instance
 $(document).ready(function () {
 
     // In the following line, you should include the prefixes of implementations you want to test.
@@ -68,6 +70,7 @@ $(document).ready(function () {
 
 });
 
+// add data to the database
 function addData(data) {
     var firstnameVal = data["firstname"];
     var lastnameVal = data["lastname"];
@@ -134,6 +137,7 @@ function addData(data) {
     return false;
 }
 
+// grabs parameter values with given name ou of url query string
 function GetQueryStringParams(sParam) {
     var sPageURL = window.location.search.substring(1);
     var sURLVariables = sPageURL.split('&');
@@ -146,6 +150,7 @@ function GetQueryStringParams(sParam) {
     return null;
 }
 
+// delete all items matching the meeting name and date exactly
 function deleteItems(meeting, date) {
     var transaction = db.transaction([dbName], "readwrite");
     var objectStore = transaction.objectStore(dbName);
@@ -171,6 +176,7 @@ function deleteItems(meeting, date) {
     }
 }
 
+// deletes an item based on index in database
 function deleteItem(index) {
 
     // open a database transaction and delete the task, finding it by the name we retrieved above
@@ -183,6 +189,7 @@ function deleteItem(index) {
     }
 }
 
+// clears all data from the database
 function clearData() {
     // open a read/write db transaction, ready for clearing the data
     var transaction = db.transaction([dbName], "readwrite");
@@ -212,6 +219,8 @@ function clearData() {
 
 var outputText = "";
 
+// creates the html table of data to display of the given meeting and date data (both null == all data)
+// tableSelector is a jquery selector to a table where the data will be appended.
 function createOutput(tableSelector, meeting, date) {
     var transaction = db.transaction([dbName], "readonly");
     var objectStore = transaction.objectStore(dbName);
@@ -274,6 +283,7 @@ function createOutput(tableSelector, meeting, date) {
 
 var outputObject = [];
 
+// creates the json string of the given meeting and date data (both null == all data)
 function getJson(meeting, date) {
     var transaction = db.transaction([dbName], "readonly");
     var objectStore = transaction.objectStore(dbName);
@@ -310,6 +320,7 @@ function getJson(meeting, date) {
 var outputObjectsM = [];
 var outputMeetings = [];
 
+// gets the names and dates of all the meetings in the database
 function getMeetings() {
     var transaction = db.transaction([dbName], "readonly");
     var objectStore = transaction.objectStore(dbName);

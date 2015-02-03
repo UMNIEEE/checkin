@@ -1,18 +1,4 @@
-﻿// document ready
-$(document).ready(function () {
-    // prevent form submit due to an enter key press.
-    $(window).keydown(function (event) {
-        if (event.keyCode == 13) {
-            event.preventDefault();
-            return false;
-        }
-    });
-});
-// Checks if a string is not null, undefined, and empty
-function checkStr(str) {
-    return (str !== null && str !== undefined && str.trim() !== "")
-}
-// Execute the regular expression to parse the card information
+﻿// Execute the regular expression to parse the card information
 function parseCard(cardRaw, regEx, groupInds) {
     //decode u-card
     try {

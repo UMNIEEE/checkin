@@ -54,8 +54,11 @@ function updateFormat() {
     }
 
     var us = $.cookie("use-swipe");
-    if (us != null && us != undefined && us === "false") {
+    if (us != null && us != undefined && us === "true") {
         $.cookie("use-swipe", us, { expires: 365, path: "/" });
+        $("#swipe-section").attr("style", "display: inherit;");
+    }
+    else {
         $("#swipe-section").attr("style", "display: none;");
     }
 

@@ -115,15 +115,18 @@
     <script src="../Scripts/utils.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+            pageLoaded();
+        });
+        function pageLoaded() {
             var us = $.cookie("use-swipe");
-            if (us != null && us != undefined && us === "false") {
-                $("#swipeCheck").prop("checked", false);
-            }
-            else {
+            if (us != null && us != undefined && us === "true") {
                 $("#swipeCheck").prop("checked", true);
             }
+            else {
+                $("#swipeCheck").prop("checked", false);
+            }
 
-            try{
+            try {
                 var re = $.cookie("card-regex");
                 if (re != null && re != undefined) {
                     var rejson = JSON.parse(re);
@@ -133,10 +136,23 @@
                     }
                 }
                 else {
-                    $("#MainContent_regexDropdown option").filter(function () { return $(this).html() == "University of Minnesota" }).attr('selected', 'selected');
+                    $("#MainContent_regexDropdown option").filter(function () { return $(this).html() == "No Card Format" }).attr('selected', 'selected');
                 }
             }
-            catch(err) {
+            catch (err) {
+
+            }
+
+            try {
+                var tn = $.cookie("theme-name");
+                if (checkStr(tn)) {
+                    $("#MainContent_themeDropdown option").filter(function () { return $(this).html() == tn }).attr('selected', 'selected');
+                }
+                else {
+                    $("#MainContent_themeDropdown option").filter(function () { return $(this).html() == "Custom Theme" }).attr('selected', 'selected');
+                }
+            }
+            catch (err) {
 
             }
 
@@ -149,7 +165,7 @@
                 $("#themeShade").prop("checked", true);
                 $("#themeShadeText").html("Using Dark Theme");
             }
-                    
+
             var bbc = $.cookie("body-background-color");
             if (bbc == null || bbc == undefined)
                 bbc = "ffffff";
@@ -226,7 +242,7 @@
             });
 
             themeUpdated();
-        });
+        }
         function updateImage() {
             var value = $("#imageUrl").val();
             if (value != null && value.toLowerCase().trim() === "ieee") {
@@ -279,17 +295,25 @@
             if (checkStr(sel))
                 $.cookie("card-regex", sel, { expires: 365, path: "/" });
             else {
-                $.removeCookie("card-regex");
+                $.removeCookie("card-regex", { path: '/' });
                 $("#swipeCheck").prop("checked", false);
                 updateSwipe();
             }
+            return false;
         }
         function updatePreDefTheme() {
             var sel = $("#MainContent_themeDropdown option:selected").val();
+            var name = $("#MainContent_themeDropdown option:selected").text();
             if (checkStr(sel)) {
+                $.cookie("theme-name", name, { expires: 365, path: "/" });
                 $("#export").val(sel);
                 importTheme();
             }
+            else {
+                $.cookie("theme-name", name, { expires: 365, path: "/" });
+                $.removeCookie("theme-name", { path: '/' });
+            }
+            return false;
         }
         function resetTheme() {
             $.removeCookie("body-background-color", { path: '/' });
@@ -299,9 +323,10 @@
             $.removeCookie("theme-shade", { path: '/' });
             $.removeCookie("image-url", { path: '/' });
             $.removeCookie("header-text", { path: '/' });
-            $.removeCookie("use-swipe", true, { expires: 365, path: "/" });
+            $.removeCookie("use-swipe", { path: "/" });
+            $.removeCookie("theme-name", { path: '/' });
+            pageLoaded();
             location.reload();
-            themeUpdated();
             return false;
         }
         function themeUpdated() {
@@ -344,7 +369,7 @@
 
             var us = $.cookie("use-swipe");
             if (us == null || us == undefined)
-                us = "true";
+                us = "false";
             if (us === "true") {
                 $("#swipeCheck").prop("checked", true);
             }

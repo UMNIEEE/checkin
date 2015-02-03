@@ -67,20 +67,16 @@
 </asp:Content>
 <asp:Content ID="JavaScriptContent" ContentPlaceHolderID="JavaScripts" runat="server">
     <script type="text/javascript">
+        // callback for when database is opened
         function dbOpenCallback() {
             try {
-                getMeetings();
+                getMeetings(); // get the meetings in the database
             }
             catch (err) {
                 alert(err.message);
             }
         }
-        function outputCallback(outputVal) {
-            if (outputVal != null && outputVal.trim() != "") {
-                outputVal = outputVal.replace('/"', '/');
-                outputVal = "First Name,Last Name,Student ID,Email,Meeting,Date\n" + outputVal;
-            }
-        }
+        // callback for when the json is ready
         function jsonCallback(outputVal) {
             var decoded = decodeMeeting($("#ouputDropdown option:selected").val());
             var data = { "data": outputVal };
@@ -89,6 +85,7 @@
             $("#MainContent_MeetingName").val(decoded["name"]);
             $("#MainContent_MeetingDate").val(decoded["date"]);
         }
+        // callback for when the list of meetings is ready, populate meeting selection dropdown
         function meetingCallback(meetings) {
             var htmlVal = "";
             for (var i = 0; i < meetings.length; i++) {
@@ -98,11 +95,12 @@
             htmlVal = "<option value='meeting=&date='>All Meetings</option>" + htmlVal;
             $("#ouputDropdown").html(htmlVal);
 
+            // initially populated data with all meetings and dates
             var decoded = decodeMeeting($("#ouputDropdown option:selected").val());
             createOutput("#output tr:last", decoded["name"], decoded["date"]);
             getJson("", "");
         }
-
+        // event handler for when meeting dropdown selection is changed
         function selectionChanged() {
             var decoded = decodeMeeting($("#ouputDropdown option:selected").val());
 
@@ -110,7 +108,7 @@
             createOutput("#output tr:last", decoded["name"], decoded["date"]);
             getJson(decoded["name"], decoded["date"]);
         }
-
+        // event handler for when clear button is clicked
         function clearSubmit() {
             var decoded = decodeMeeting($("#ouputDropdown option:selected").val());
 
@@ -135,7 +133,7 @@
 
             return false;
         }
-
+        // gets the meeting and date from the query encoded data string
         function decodeMeeting(meeting) {
             var meet = "", date = "";
 

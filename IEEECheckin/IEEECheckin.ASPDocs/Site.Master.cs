@@ -72,11 +72,15 @@ namespace IEEECheckin.ASPDocs
             if(GoogleOAuth2.IsGoogleAuthenticated(Page.Request)) // logged in
             {
                 LoginButton.Text = "Google Log Off";
+                LoginButton.Click -= LogOffGoogle;
+                LoginButton.Click -= LogInGoogle;
                 LoginButton.Click += LogOffGoogle;
             }
             else // logged off
             {
                 LoginButton.Text = "Google Log In";
+                LoginButton.Click -= LogInGoogle;
+                LoginButton.Click -= LogOffGoogle;
                 LoginButton.Click += LogInGoogle;
             }
         }

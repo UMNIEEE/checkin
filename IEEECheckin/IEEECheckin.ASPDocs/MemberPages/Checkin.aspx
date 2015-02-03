@@ -32,14 +32,37 @@
     </div>
 </asp:Content>
 <asp:Content ID="JavaScriptContent" ContentPlaceHolderID="JavaScripts" runat="server">
+    <script src="../Scripts/card-parser.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             setFocus();
             $("#meetingName").html($("#MainContent_MeetingName").val());
-            // subscribe to the keydown for the U-card input
-            $("#cardtxt, #firstname, #lastname, #email").keydown(function (event) {
-                if (event.keyCode == 13) {
-                    entrySubmit()
+            // subscribe to the keydown events
+            // move from firstname to lastname
+            $("#firstname").keydown(function (e) {
+                var charCode = e.charCode || e.keyCode || e.which;
+                if (charCode == 13) {
+                    e.preventDefault();
+                    $("#lastname").focus();
+                    return false;
+                }
+            });
+            // move from lastname to email
+            $("#lastname").keydown(function (e) {
+                var charCode = e.charCode || e.keyCode || e.which;
+                if (charCode == 13) {
+                    e.preventDefault();
+                    $("#email").focus();
+                    return false;
+                }
+            });
+            // submit the form
+            $("#email, #cardtxt").keydown(function (e) {
+                var charCode = e.charCode || e.keyCode || e.which;
+                if (charCode == 13) {
+                    e.preventDefault();
+                    entrySubmit();
+                    return false;
                 }
             });
         });
@@ -151,14 +174,27 @@
                 }
                 // both are invalid
                 else {
-                    if (!checkStr($("#cardtxt").val())) {
-                        if (checkStr($("#firstname").val()))
+                    // card input is empty, but manual is not empty, but incomplete
+                    if (!checkStr($("#cardtxt").val()) && (checkStr($("#firstname").val()) || checkStr($("#lastname").val()))) {
+                        // firstname missing
+                        if (!checkStr($("#firstname").val()) && checkStr($("#lastname").val())) {
                             alert("Missing First Name.");
-                        else if(checkStr($("#lastname").val()))
+                            $("#firstname").focus();
+                            return false;
+                        }
+                        // lastname missing
+                        else if (!checkStr($("#lastname").val()) && checkStr($("#firstname").val())) {
                             alert("Missing Last Name.");
+                            $("#lastname").focus();
+                            return false;
+                        }
+                        // something else missing
+                        else
+                            alert("Missing Card or Manual Input Data.");
                     }
+                    // card input and manual input are empty
                     else
-                        alert("Missing Card or Manual Input Data.")
+                        alert("Missing Card or Manual Input Data.");
                     setFocus();
                     return false;
                 }
@@ -173,11 +209,11 @@
         // set focus based on saved cookies
         function setFocus() {
             var us = $.cookie("use-swipe");
-            if (us != null && us != undefined && us === "false") {
-                $("#firstname").focus();
+            if (us != null && us != undefined && us === "true") {
+                $("#cardtxt").focus();
             }
             else {
-                $("#cardtxt").focus();
+                $("#firstname").focus();
             }
         }
         // clear the entries in the form

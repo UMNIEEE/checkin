@@ -47,6 +47,11 @@ namespace IEEECheckin.ASPDocs.MemberPages
             }
         }
 
+        /// <summary>
+        /// TreeView event handler. Creates a tree from a TreeView control.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void SheetTree_DataBound(object sender, EventArgs e)
         {
             try
@@ -73,6 +78,11 @@ namespace IEEECheckin.ASPDocs.MemberPages
             }
         }
 
+        /// <summary>
+        /// Get descendants from a TreeNodeCollection.
+        /// </summary>
+        /// <param name="nodes"></param>
+        /// <returns></returns>
         IEnumerable<TreeNode> Descendants(TreeNodeCollection nodes)
         {
             foreach(TreeNode node in nodes)
@@ -97,6 +107,7 @@ namespace IEEECheckin.ASPDocs.MemberPages
                 string selectedUri = "";
                 bool isSheet = false;
 
+                // check for valid user selection first
                 if (SheetTree.SelectedNode == null)
                 {
                     selectedUri = "root";

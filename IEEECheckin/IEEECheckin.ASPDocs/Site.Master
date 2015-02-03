@@ -38,7 +38,8 @@
     <asp:ContentPlaceHolder runat="server" ID="HeadContent" />
 </head>
 <body>
-    <form runat="server" method="post">
+    <form runat="server" method="post" defaultbutton="DoNothing">
+        <asp:Button ID="DoNothing" runat="server" Enabled="false" style="display: none;" />
         <asp:ScriptManager runat="server">
             <Scripts>
                 <%--To learn more about bundling scripts in ScriptManager see http://go.microsoft.com/fwlink/?LinkID=301884 --%>
@@ -77,7 +78,7 @@
                         <li><a runat="server" href="~/MemberPages/About.aspx">About</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><asp:Button CssClass="login-button" ID="LoginButton" Text="Login" runat="server" /></li>
+                        <li><asp:Button CssClass="login-button" ID="LoginButton" Text="Login" OnClick="LogInGoogle" runat="server" /></li>
                     </ul>
                 </div>
             </div>
@@ -90,8 +91,32 @@
                 <asp:ContentPlaceHolder runat="server" ID="MainContent" />
             </div>
         </div>
+        <script>
+            // document ready
+            $(document).ready(function () {
+                // prevent form submit due to an enter key press.
+                $(window).keydown(function (e) {
+                    var charCode = e.charCode || e.keyCode || e.which;
+                    if (charCode == 13) {
+                        e.preventDefault();
+                        return false;
+                    }
+                });
+                // prevent login button from clicking due to enter
+                $("#LoginButton").keydown(function (e) {
+                    var charCode = e.charCode || e.keyCode || e.which;
+                    if (charCode == 13) {
+                        e.preventDefault();
+                        return false;
+                    }
+                });
+            });
+            // Checks if a string is not null, undefined, and empty
+            function checkStr(str) {
+                return (str !== null && str !== undefined && str.trim() !== "")
+            }
+        </script>
         <script src="../Scripts/jquery.cookie.js"></script>
-        <script src="../Scripts/card-parser.js"></script>
         <script src="../Scripts/store.js"></script>
         <script src="../Scripts/format.js"></script>
         <asp:ContentPlaceHolder runat="server" ID="JavaScripts" />
