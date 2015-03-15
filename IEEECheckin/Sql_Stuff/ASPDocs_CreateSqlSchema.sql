@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.6.17, for Win32 (x86)
 --
--- Host: 192.168.0.99    Database: ieee
+-- Host:     Database: ieee
 -- ------------------------------------------------------
 -- Server version	5.6.21-log
 
@@ -19,8 +19,6 @@
 -- Table structure for table `type_regex`
 --
 
-USE ieee;
-
 DROP TABLE IF EXISTS `type_regex`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -35,7 +33,7 @@ CREATE TABLE `type_regex` (
   `LastModifiedBy` varchar(500) DEFAULT NULL COMMENT 'Email of person who last modified the regex.',
   PRIMARY KEY (`RegexId`),
   UNIQUE KEY `RegexId_UNIQUE` (`RegexId`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='Table of regular expressions for parsing card inputs from various cards and institutions.';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='Table of regular expressions for parsing card inputs from various cards and institutions.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,7 +42,7 @@ CREATE TABLE `type_regex` (
 
 LOCK TABLES `type_regex` WRITE;
 /*!40000 ALTER TABLE `type_regex` DISABLE KEYS */;
-INSERT INTO `type_regex` VALUES (1,'^%(\\w+)\\^(\\d+)\\^{3}(\\d+)\\^(\\w+),\\s(?:([\\w\\s]+)\\s(\\w{1})\\?;|([\\w\\s]+)\\?;)(\\d+)=(\\d+)\\?$','University of Minnesota','{\"firstName\":\"5,7\",\"lastName\":\"4\",\"middleName\":\"6\",\"studentId\":\"2\",\"email\":\"-1\"}','2015-01-27 16:28:00','stadi012@umn.edu','2015-01-27 16:28:00','stadi012@umn.edu'),(2,'^%(\\w+)\\^(\\d+)\\^{3}(\\d+)\\^(\\w+),\\s(?:([\\w\\s]+)\\s(\\w{1})\\?;|([\\w\\s]+)\\?;)(\\d+)=(\\d+)\\?$','University of Wisconsin','{\"firstName\":\"5,7\",\"lastName\":\"4\",\"middleName\":\"6\",\"studentId\":\"2\",\"email\":\"-1\"}','2015-01-27 16:28:00','stadi012@umn.edu','2015-01-27 16:28:00','stadi012@umn.edu');
+INSERT INTO `type_regex` VALUES (1,'^%(\\w+)\\^(\\d+)\\^{3}(\\d+)\\^(\\w+),\\s(?:([\\w\\s]+)\\s(\\w{1})\\?;|([\\w\\s]+)\\?;)(\\d+)=(\\d+)\\?$','University of Minnesota','{\"firstName\":\"5,7\",\"lastName\":\"4\",\"middleName\":\"6\",\"studentId\":\"2\",\"email\":\"-1\"}','2015-01-27 16:28:00','stadi012@umn.edu','2015-01-27 16:28:00','stadi012@umn.edu'),(2,'^%(\\w{2})(\\w*)\\^(\\w+)\\s([\\w\\s]+)\\s(\\w+)\\^([\\w\\s]+)\\^\\?;(\\d+)=(\\d+)\\?#\\\"\\s(\\d+)\\s+(\\w)\\s+(\\w)(\\d{3})(\\d{3})\\s+(\\w+)\\s+\\[\\\\%\\\"\\](\\w)\\\'\\s+\\?','Minnesota Driver\'s License','{\"firstName\":\"3\",\"lastName\":\"5\",\"middleName\":\"4\",\"studentId\":\"-1\",\"email\":\"-1\"}','2015-02-06 21:05:00','stadi012@umn.edu','2015-02-06 21:05:00','stadi012@umn.edu');
 /*!40000 ALTER TABLE `type_regex` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -63,7 +61,7 @@ CREATE TABLE `type_themes` (
   `DateModified` datetime DEFAULT NULL,
   PRIMARY KEY (`ThemeId`),
   UNIQUE KEY `ThemeId_UNIQUE` (`ThemeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='Predefined themes availale loaded for use.';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='Predefined themes availale loaded for use.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +70,7 @@ CREATE TABLE `type_themes` (
 
 LOCK TABLES `type_themes` WRITE;
 /*!40000 ALTER TABLE `type_themes` DISABLE KEYS */;
-INSERT INTO `type_themes` VALUES (1,'{\"bodyBackgroundColor\":\"006699\", \"buttonBackgroundColor\":\"39b3d7\", \"bodyColor\":\"ffffff\", \"themeShade\":\"light\", \"imageUrl\":\"../Images/logo.svg\", \"headerText\":\"University of Minnesota\", \"useSwipe\":\"true\"}','UMN IEEE','2015-01-27 22:24:00','2015-01-27 22:24:00'),(2,'{\"bodyBackgroundColor\":\"bb2cd1\", \"buttonBackgroundColor\":\"d63a54\", \"bodyColor\":\"00ff1e\", \"themeShade\":\"light\", \"imageUrl\":\"http://goo.gl/bzHpYs\", \"headerText\":\"Cat Lovers of America\", \"useSwipe\":\"true\"} ','Cat Lovers of America','2015-01-27 22:24:00','2015-01-27 22:24:00');
+INSERT INTO `type_themes` VALUES (1,'{\"bodyBackgroundColor\":\"006699\", \"buttonBackgroundColor\":\"39b3d7\", \"bodyColor\":\"ffffff\", \"themeShade\":\"light\", \"imageUrl\":\"../Images/logo.svg\", \"headerText\":\"University of Minnesota\", \"useSwipe\":\"true\"}','UMN IEEE','2015-01-27 22:24:00','2015-01-27 22:24:00'),(2,'{\"bodyBackgroundColor\":\"bb2cd1\", \"buttonBackgroundColor\":\"d63a54\", \"bodyColor\":\"00ff1e\", \"themeShade\":\"light\", \"imageUrl\":\"http://goo.gl/bzHpYs\", \"headerText\":\"Cat Lovers of America\", \"useSwipe\":\"true\"} ','Cat Lovers of America','2015-01-27 22:24:00','2015-01-27 22:24:00'),(3,'{\"bodyBackgroundColor\":\"a058c9\",\"buttonBackgroundColor\":\"5f0594\",\"bodyColor\":\"ffffff\",\"themeShade\":\"light\",\"imageUrl\":\"http://ieee.griet.ac.in/wp-content/uploads/2014/04/ieee_wie_purple.png\",\"headerText\":\"University of Minnesota\",\"useSwipe\":\"true\"}','UMN IEEE WiE','2015-02-07 16:50:00','2015-02-07 16:50:00'),(4,'{\"bodyBackgroundColor\":\"ffd018\",\"buttonBackgroundColor\":\"9e1313\",\"bodyColor\":\"000000\",\"themeShade\":\"dark\",\"imageUrl\":\"http://www.mngofirst.org/uploads/6/3/5/8/6358288/1401824902.png\",\"headerText\":\"GOFIRST\",\"useSwipe\":\"true\"}','GOFIRST','2015-03-03 19:44:00','2015-03-03 19:44:00');
 /*!40000 ALTER TABLE `type_themes` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -85,4 +83,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-01-27 22:51:30
+-- Dump completed on 2015-03-15 17:57:39
