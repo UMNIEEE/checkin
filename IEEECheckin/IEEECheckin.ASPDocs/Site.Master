@@ -114,9 +114,7 @@
                 return (str !== null && str !== undefined && str.trim() !== "")
             }
         </script>
-        <script src="<% Response.Write(VirtualPathUtility.ToAbsolute("~/Scripts/jquery.cookie.js")); %>"></script>
-        <script src="<% Response.Write(VirtualPathUtility.ToAbsolute("~/Scripts/store.js")); %>"></script>
-        <script src="<% Response.Write(VirtualPathUtility.ToAbsolute("~/Scripts/format.js")); %>"></script>
+        <script src="<% Response.Write(VirtualPathUtility.ToAbsolute("~/Scripts/master.min.js")); %>"></script>
         <asp:ContentPlaceHolder runat="server" ID="JavaScripts" />
         <footer>
             <div class="container">
