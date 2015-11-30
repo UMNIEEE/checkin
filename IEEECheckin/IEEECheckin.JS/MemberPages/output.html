@@ -1,0 +1,120 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+    <title>Meeting Check-In</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700|Oswald:300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../Content/Site.css">
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <style>
+        td, th {
+            padding-left: 10px;
+            padding-right: 10px;
+            width: 230px;
+        }
+        th {
+            padding-bottom: 10px;
+        }
+        td {
+            padding-bottom: 5px;
+        }
+        .col-lg-offset-4 {
+            margin-left: 25.0%;
+        }
+        .col-lg-4 {
+            width: 50.0%;
+        }
+        #output {
+            background: white;
+            color: black;
+            border: 1px solid;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
+            <h1 class="pre-header" id="topHeader">University of Minnesota</h1>
+            <a href="menu.html"><img class="logo" id="logoImage" src="../Images/logo.svg"></a>
+            <h1 class="post-header">Meeting Output</h1>
+
+            <p class="section-header">Download <i class="fa fa-download"></i></p> 
+            <form id="formFile" class="boxed-section margin-lg-after" role="form" method="post" action="output.php">
+                <input class="form-control input-lg margin-sm-after" type="hidden" name="format" id="format" />
+                <input class="form-control input-lg margin-sm-after" type="hidden" name="submitData" id="submitData" />
+                <input class="form-control input-lg margin-sm-after" type="hidden" name="meeting" id="meeting" />
+                <button class="form-control input-lg btn btn-info check-in" onclick="return csvSubmit();" type="submit" id="csvbutton" name="csvbutton"><i class="fa fa-check"></i>Get CSV</button>
+                <br /><br />
+                <button class="form-control input-lg btn btn-info check-in" onclick="return jsonSubmit();" type="submit" id="jsonbutton" name="jsonbutton"><i class="fa fa-check"></i>Get JSON</button>
+            </form>
+
+            <div id="outputDiv">
+                <table id="output">
+                    <tbody>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Student ID</th>
+                            <th>Email</th>
+                            <th>Meeting</th>
+                            <th>Date</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br />            
+
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+            <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+            <script src="../Scripts/jquery.cookie.js"></script>
+            <script src="../Scripts/check-in.js"></script>
+            <script src="../Scripts/umn-crawl.js"></script>
+            <script src="../Scripts/store.js"></script>
+            <script src="../Scripts/format.js"></script>
+            <script>
+                function dbOpenCallback() {
+                    try {
+                        createOutput("#output tr:last", decodeURI(GetQueryStringParams("meeting")), decodeURI(GetQueryStringParams("date")));
+                    }
+                    catch (err) {
+                        alert(err.message);
+                    }
+                }
+                function cursorCallback(outputVal) {
+                    var bc = $.cookie("body-color");
+                    if (outputVal != null && outputVal.trim() != "") {
+                        outputVal = outputVal.replace('/"', '/');
+                        outputVal = "First Name,Last Name,Student ID,Email,Meeting,Date\n" + outputVal;
+                    }
+                }
+                function cursorObjectCallback(outputVal) {
+                    var data = { "data": outputVal };
+                    var dataVal = JSON.stringify(data);
+                    $("#submitData").val(dataVal);
+                    $("#formFile").submit();
+                }
+                function csvSubmit() {
+                    getJson(decodeURIComponent(GetQueryStringParams("meeting")));
+                    $("#format").val("csv");
+                    var meeting = decodeURIComponent(GetQueryStringParams("meeting")) + " " +decodeURIComponent(GetQueryStringParams("date"));
+                    $("#meeting").val(meeting);
+                    return false;
+                }
+                function jsonSubmit() {
+                    getJson(decodeURIComponent(GetQueryStringParams("meeting")));
+                    $("#format").val("json");
+                    var meeting = decodeURIComponent(GetQueryStringParams("meeting")) + " " + decodeURIComponent(GetQueryStringParams("date"));
+                    $("#meeting").val(meeting);
+                    return false;
+                }
+            </script>
+            <p class="footer"></p>
+        </div>
+    </div>
+</body>
+</html>

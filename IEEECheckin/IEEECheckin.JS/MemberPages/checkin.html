@@ -1,0 +1,143 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+    <title>Meeting Check-In</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700|Oswald:300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../Content/Site.css">
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+    <div class="container">
+        <div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
+            <h1 class="pre-header" id="topHeader">University of Minnesota</h1>
+            <img class="logo" id="logoImage" src="../Images/logo.svg">
+            <h1 class="post-header">Meeting Check-In for:</h1>
+            <h2 id="meetingName" class="post-header"></h2>
+
+            <div class="overlay" id="umnOverlay" style="display: none;">
+                <div class="modal">
+                    <asp:Button runat="server" ID="overlayClose" Text="X" OnClientClick="return hideOverlay('#umnOverlay')" style="float: right;" />
+                    <div id="links" style="margin-top: 45px;"></div>
+                </div>
+            </div>
+            <div id="swipe-section">
+                <p class="section-label">U-Card Swipe Card Entry <i class="fa fa-credit-card"></i></p>
+                <form id="form-ucard" class="boxed-section margin-lg-after" role="form">
+                    <div class="form-group no-margin-after">
+                        <input class="form-control input-lg margin-sm-after" autofocus="autofocus" type="password" name="cardtxt" id="cardtxt" placeholder="Click here, then swipe your card">
+                    </div>
+                </form>
+            </div>
+            <p class="section-label">Manual Entry <i class="fa fa-pencil"></i></p>
+            <form id="form-manual" class="boxed-section margin-lg-after" role="form">
+                <input class="form-control input-lg margin-sm-after" type="text" name="firstname" id="firstname" placeholder="First Name">
+                <input class="form-control input-lg margin-sm-after" type="text" name="lastname" id="lastname" placeholder="Last Name">
+                <input class="form-control input-lg margin-sm-after" type="text" name="email" id="email" placeholder="Email">
+                <input class="form-control input-lg margin-sm-after" type="hidden" name="studentid" id="studentid" placeholder="Student ID">
+                <button class="form-control input-lg btn btn-info check-in" onclick="return entrySubmit();" type="submit" id="checkinbutton" name="checkinbutton"><i class="fa fa-check"></i> Check In</button>
+            </form>
+
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+            <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+            <script src="../Scripts/jquery.cookie.js"></script>
+            <script src="../Scripts/check-in.js"></script>
+            <script src="../Scripts/umn-crawl.js"></script>
+            <script src="../Scripts/store.js"></script>
+            <script src="../Scripts/format.js"></script>
+            <script type="text/javascript">
+                $(document).ready(function () {
+
+                    var us = $.cookie("use-swipe");
+                    if (us != null && us != undefined && us === "false") {
+                        $("#firstname").focus();
+                    }
+                    else {
+                        $("#cardtxt").focus();
+                    }
+
+                    $("#meetingName").html(decodeURIComponent(GetQueryStringParams("meeting")));
+                    // subscribe to the keydown for the U-card input
+                    $("#cardtxt, #firstname, #lastname, #email").keydown(function (event) {
+                        if (event.keyCode == 13) {
+                            entrySubmit()
+                        }
+                    });
+                });
+                // called when U-card parsing has completed
+                function parseUCardComplete(uCard) {
+                    if (uCard === null || uCard === undefined)
+                        return false;
+
+                    $("#firstname").val(uCard["firstName"]);
+                    $("#lastname").val(uCard["lastName"]);
+                    $("#studentid").val(uCard["studentId"]);
+                }
+                // called when crawl parsing of a single person has completed
+                function parseCrawlComplete(uPerson) {
+                    if (uPerson === null || uPerson === undefined)
+                        return;
+                    // add post crawl code here
+                }
+                // called when crawl parsing of multiple persons returned has completed
+                // html - raw HTML of the search results that can be displayed in an overlay
+                function searchResultSelected(html) {
+
+                }
+                function entrySubmit() {
+                    try {
+                        // perform the parse function if the U-card slot is not empty
+                        if ($("#cardtxt").val() !== null && $("#cardtxt").val() !== undefined && $("#cardtxt").val().trim() !== "") {
+                            parse("#cardtxt");
+                        }
+
+                        // Change this to true to crawl the U of M directory for people
+                        var crawlUMN = false;
+                        if (crawlUMN) {
+                            // create U of M people search URL query.
+                            var urlPath = "http://www.umn.edu/lookup?SET_INSTITUTION=UMNTC&type=name&CN=" +
+                                $("#firstname").val() + "+" + $("#lastname").val() + "&campus=a&role=any";
+
+                            var returnVal = crawl(urlPath); // returns raw HTML of the search results that can be displayed in an overlay
+
+                            $("#links").append(returnVal);
+
+                            $("#crawlConfirm").focus();
+                            $("#crawlConfirm").keyup(function () {
+                                parseData();
+                                return false;
+                            });
+
+                            var w = $("#modalDiv").width();
+                            $("#modalDiv").css("margin-left", w / -2);
+                            showOverlay("#umnOverlay");
+                        }
+
+                        addData();
+                    }
+                    catch (err) {
+                        alert(err.message);
+                    }
+
+                    var us = $.cookie("use-swipe");
+                    if (us != null && us != undefined && us === "false") {
+                        $("#firstname").focus();
+                    }
+                    else {
+                        $("#cardtxt").focus();
+                    }
+
+                    window.location.href = "confirm.html";
+                    return false;
+                }
+            </script>
+            <p class="footer"></p>
+        </div>
+    </div>
+</body>
+</html>
