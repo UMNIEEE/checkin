@@ -12,6 +12,12 @@
             <div id="links" style="margin-top: 45px;"></div>
         </div>
     </div>
+    <div class="alert alert-success" style="display: none">
+        <strong>Success!</strong> Your entry has been saved.
+    </div>
+    <div class="alert alert-warning" style="display: none">
+        <strong>Warning!</strong> <div class="alert-warning-msg"></div>
+    </div>
     <div id="swipe-section">
         <p class="section-label">ID Card Swipe Entry <i class="fa fa-credit-card"></i></p>
         <div class="boxed-section margin-lg-after">
@@ -34,6 +40,7 @@
 <asp:Content ID="JavaScriptContent" ContentPlaceHolderID="JavaScripts" runat="server">
     <script src="../Scripts/card-parser.min.js"></script>
     <script type="text/javascript">
+        var successID;
         $(document).ready(function () {
             setFocus();
             $("#meetingName").html($("#MainContent_MeetingName").val());
@@ -68,6 +75,9 @@
         });
         function entrySubmit() {
             try {
+                clearTimeout(successID);
+                $('.alert-success').hide();
+
                 // perform the parse function if the student id card input is not empty
                 if (checkStr($("#cardtxt").val())) {
                     // create/retrieve regular expression
@@ -91,7 +101,9 @@
                     // parse the card
                     var result = parseCard($("#cardtxt").val().trim(), regex, indices);
                     if (result === null || result === undefined) {
-                        alert("Failed to parse card data. Try again or use manual entry.");
+                        $('.alert-warning-msg').html("Failed to parse card data. Try again or use manual entry.")
+                        $('.alert-warning').show();
+                        setTimeout(function () { $('.alert-warning').hide(); }, 3000);
                         clearForm();
                         setFocus();
                         return false;
@@ -103,7 +115,9 @@
                     var index;
                     for (index = 0; index < datas.length; index++) {
                         if (!checkStr(result[datas[index]])) {
-                            alert("Missing " + datasReadable[index] + ".");
+                            $('.alert-warning-msg').html("Missing " + datasReadable[index] + ".")
+                            $('.alert-warning').show();
+                            setTimeout(function () { $('.alert-warning').hide(); }, 3000);
                             clearForm();
                             setFocus();
                             return false;
@@ -136,8 +150,8 @@
                     clearForm();
                     setFocus();
 
-                    // navigate to the confirmation page
-                    window.location.href = "Confirm.aspx";
+                    $('.alert-success').show();
+                    successID = setTimeout(function () { $('.alert-success').hide(); }, 3000);
                 }
                 // student id card slot empty so check for valid manual entry
                 else if (checkStr($("#firstname").val()) && checkStr($("#lastname").val())) {
@@ -169,8 +183,8 @@
                     clearForm();
                     setFocus();
 
-                    // navigate to the confirmation page
-                    window.location.href = "Confirm.aspx";
+                    $('.alert-success').show();
+                    successID = setTimeout(function () { $('.alert-success').hide(); }, 3000);
                 }
                 // both are invalid
                 else {
@@ -178,29 +192,40 @@
                     if (!checkStr($("#cardtxt").val()) && (checkStr($("#firstname").val()) || checkStr($("#lastname").val()))) {
                         // firstname missing
                         if (!checkStr($("#firstname").val()) && checkStr($("#lastname").val())) {
-                            alert("Missing First Name.");
+                            $('.alert-warning-msg').html("Missing First Name.")
+                            $('.alert-warning').show();
+                            setTimeout(function () { $('.alert-warning').hide(); }, 3000);
                             $("#firstname").focus();
                             return false;
                         }
-                        // lastname missing
+                            // lastname missing
                         else if (!checkStr($("#lastname").val()) && checkStr($("#firstname").val())) {
-                            alert("Missing Last Name.");
+                            $('.alert-warning-msg').html("Missing Last Name.")
+                            $('.alert-warning').show();
+                            setTimeout(function () { $('.alert-warning').hide(); }, 3000);
                             $("#lastname").focus();
                             return false;
                         }
-                        // something else missing
-                        else
-                            alert("Missing Card or Manual Input Data.");
+                            // something else missing
+                        else {
+                            $('.alert-warning-msg').html("Missing Card or Manual Input Data.")
+                            $('.alert-warning').show();
+                            setTimeout(function () { $('.alert-warning').hide(); }, 3000);
+                        }
                     }
-                    // card input and manual input are empty
-                    else
-                        alert("Missing Card or Manual Input Data.");
+                        // card input and manual input are empty
+                    else {
+                        $('.alert-warning-msg').html("Missing Card or Manual Input Data.")
+                        $('.alert-warning').show();
+                        setTimeout(function () { $('.alert-warning').hide(); }, 3000);
+                    }
+
                     setFocus();
+
                     return false;
                 }
             }
             catch (err) {
-                alert(err.message);
                 setFocus();
             }
 

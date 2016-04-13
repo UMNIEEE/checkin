@@ -82,7 +82,6 @@
                 getMeetings(); // get the meetings in the database
             }
             catch (err) {
-                alert(err.message);
             }
         }
         // callback for when the json is ready
@@ -136,7 +135,6 @@
                         clearData();
                 }
                 catch (err) {
-                    alert(err.message);
                 }
             }
 

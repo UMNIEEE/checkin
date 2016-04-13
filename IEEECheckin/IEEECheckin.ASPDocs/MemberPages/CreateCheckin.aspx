@@ -2,6 +2,9 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <h1 class="post-header">Welcome</h1>
+    <div class="alert alert-info" style="display: none">
+        <strong>Info!</strong> Must select a meeting or create a new one.
+    </div>
     <p class="text-center">Create a new meeting or select one of your previous meetings to begin.</p>
 
     <p class="section-header">Meeting Options <i class="fa fa-list"></i></p>  
@@ -32,7 +35,6 @@
                 getMeetings();
             }
             catch (err) {
-                alert(err.message);
             }
         }
         function meetingCallback(meetings) {
@@ -49,7 +51,8 @@
             var meeting = $("#MainContent_MeetingName").val();
             $("#MainContent_DropdownValue").val(dropdown);
             if ((dropdown == null || dropdown == undefined || dropdown.trim() === "") && (meeting == null || meeting == undefined || meeting.trim() === "")) {
-                alert("Must select a meeting or create a new one.")
+                $('.alert-info').show();
+                setTimeout(function () { $('.alert-info').hide(); }, 3000);
                 return false;
             }
 

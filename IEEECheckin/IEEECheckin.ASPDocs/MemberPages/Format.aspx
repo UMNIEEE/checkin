@@ -425,7 +425,6 @@
                 themeUpdated();
             }
             catch (err) {
-                alert(err.message)
             }
         }
     </script>
