@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace IEEECheckin.ASPDocs.MemberPages
+namespace IEEECheckin.ASPDocs
 {
     public partial class About : System.Web.UI.Page
     {

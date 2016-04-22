@@ -7,32 +7,23 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%: Page.Title %></title>
+
     <asp:PlaceHolder runat="server">     
           <%: Scripts.Render("~/bundles/modernizr") %>
-    </asp:PlaceHolder>  
-    <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
-    <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Lato:300,400,700|Oswald:300' />
-    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
-    <link rel="stylesheet" type="text/css" href="Content/Site.css" />
-    <!--[if lt IE 9]>
-    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    </asp:PlaceHolder>
 
-    <style>
-        .login-button {
-            margin-top: 5px;
-            color: #999;
-            background-color: #222;
-            border-color: #080808;
-            height: 40px;
-        }
-        .login-button:hover {
-            color: #FFF;
-        }
-    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    
+    <script src="Scripts/Local/store.js"></script>
+    <script src="Scripts/Local/load-format.js"></script>
+    <script src="Scripts/Local/jquery.cookie.js"></script>
+
+    <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="Content/Site.css" />
 
     <asp:ContentPlaceHolder runat="server" ID="HeadContent" />
 </head>
@@ -67,16 +58,16 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" runat="server" href="~/MemberPages/CreateCheckin.aspx">Meeting Check-in</a>
+                    <a class="navbar-brand" runat="server" href="~/Default.aspx">Meeting Check-in</a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a runat="server" href="~/MemberPages/Attendance.aspx">Attendance</a></li>
-                        <li><a runat="server" href="~/MemberPages/Format.aspx">Format</a></li>
-                        <li><a runat="server" href="~/MemberPages/About.aspx">About</a></li>
+                        <li><a runat="server" href="~/Attendance.aspx">Attendance</a></li>
+                        <li><a runat="server" href="~/Format.aspx">Format</a></li>
+                        <li><a runat="server" href="~/About.aspx">About</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><asp:Button CssClass="login-button" ID="LoginButton" Text="Login" OnClick="LogInGoogle" runat="server" /></li>
+                        <li><asp:Button CssClass="login-button" ID="LoginButton" Text="Login" runat="server" /></li>
                     </ul>
                 </div>
             </div>
@@ -114,7 +105,6 @@
                 return (str !== null && str !== undefined && str.trim() !== "")
             }
         </script>
-        <script src="<% Response.Write(VirtualPathUtility.ToAbsolute("~/Scripts/master.min.js")); %>"></script>
         <asp:ContentPlaceHolder runat="server" ID="JavaScripts" />
         <footer>
             <div class="container">

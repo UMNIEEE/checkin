@@ -7,18 +7,27 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace IEEECheckin.ASPDocs.Account {
+namespace IEEECheckin.ASPDocs {
     
     
-    public partial class OpenAuthProviders {
+    public partial class Format {
         
         /// <summary>
-        /// providerDetails control.
+        /// themeDropdown control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListView providerDetails;
+        protected global::System.Web.UI.WebControls.DropDownList themeDropdown;
+        
+        /// <summary>
+        /// regexDropdown control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList regexDropdown;
     }
 }

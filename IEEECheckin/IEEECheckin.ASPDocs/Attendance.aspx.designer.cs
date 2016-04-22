@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace IEEECheckin.ASPDocs.MemberPages {
+namespace IEEECheckin.ASPDocs {
     
     
-    public partial class Output {
+    public partial class Attendance {
         
         /// <summary>
         /// SubmitData control.

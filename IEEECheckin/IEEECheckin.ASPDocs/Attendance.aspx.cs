@@ -9,16 +9,13 @@ using System.Text;
 using System.IO;
 using System.Configuration;
 using Newtonsoft.Json;
-using Google.GData.Client;
-using Google.GData.Spreadsheets;
-using IEEECheckin.ASPDocs.Models;
 using System.Web.Services;
 using System.Net;
 
 
-namespace IEEECheckin.ASPDocs.MemberPages
+namespace IEEECheckin.ASPDocs
 {
-    public partial class Output : System.Web.UI.Page
+    public partial class Attendance : System.Web.UI.Page
     {
 
         public string SubmitDataStr { get { return SubmitData.Value; } set { SubmitData.Value = value; } }

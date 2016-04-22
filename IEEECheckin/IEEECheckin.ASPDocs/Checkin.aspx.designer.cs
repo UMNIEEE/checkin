@@ -7,10 +7,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace IEEECheckin.ASPDocs.MemberPages {
+namespace IEEECheckin.ASPDocs {
     
     
-    public partial class Menu {
+    public partial class Checkin {
+        
+        /// <summary>
+        /// overlayClose control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button overlayClose;
         
         /// <summary>
         /// MeetingName control.
@@ -19,33 +28,27 @@ namespace IEEECheckin.ASPDocs.MemberPages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox MeetingName;
+        protected global::System.Web.UI.WebControls.HiddenField MeetingName;
         
         /// <summary>
-        /// DropdownValue control.
+        /// MeetingDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField DropdownValue;
+        protected global::System.Web.UI.WebControls.HiddenField MeetingDate;
         
         /// <summary>
-        /// MeetingButton control.
+        /// PreviousPage property.
         /// </summary>
         /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// Auto-generated property.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button MeetingButton;
-        
-        /// <summary>
-        /// MeetingButtonHidden control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button MeetingButtonHidden;
+        public new IEEECheckin.ASPDocs.Default PreviousPage {
+            get {
+                return ((IEEECheckin.ASPDocs.Default)(base.PreviousPage));
+            }
+        }
     }
 }
