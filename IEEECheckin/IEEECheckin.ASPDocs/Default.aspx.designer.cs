@@ -11,41 +11,5 @@ namespace IEEECheckin.ASPDocs {
     
     
     public partial class Default {
-        
-        /// <summary>
-        /// MeetingName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox MeetingName;
-        
-        /// <summary>
-        /// DropdownValue control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField DropdownValue;
-        
-        /// <summary>
-        /// MeetingButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button MeetingButton;
-        
-        /// <summary>
-        /// MeetingButtonHidden control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button MeetingButtonHidden;
     }
 }

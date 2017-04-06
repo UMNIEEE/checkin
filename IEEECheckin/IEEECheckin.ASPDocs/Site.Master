@@ -14,13 +14,17 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-route.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     
-    <script src="Scripts/Local/store.js"></script>
+    <script src="Scripts/Local/angular-indexed-db.js"></script>
+    <script src="Scripts/Local/controller.js"></script>
     <script src="Scripts/Local/load-format.js"></script>
     <script src="Scripts/Local/jquery.cookie.js"></script>
+
 
     <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="Content/Site.css" />
@@ -76,8 +80,12 @@
         <div class="container">
             <div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
                 <h1 class="pre-header" id="topHeader">Meeting Check-in Web App</h1>
-                <a href="~/MemberPages/CreateCheckin.aspx" runat="server"><asp:Image CssClass="logo" ID="logoImage" ImageUrl="" runat="server" /></a>
-                <asp:ContentPlaceHolder runat="server" ID="MainContent" />
+                <a href="~/MemberPages/Default.aspx" runat="server"><asp:Image CssClass="logo" ID="logoImage" ImageUrl="" runat="server" /></a>
+                <div id="main">
+                    <div ng-view>
+                        <!--Angular Content gets injected here-->
+                    </div>
+                </div>
             </div>
         </div>
         <script>

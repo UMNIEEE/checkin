@@ -21,6 +21,7 @@
     <IISExpressUseClassicPipelineMode />
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>a368b360</NuGetPackageImportStamp>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -142,12 +143,13 @@
     <None Include="Properties\PublishProfiles\localhost.pubxml" />
     <None Include="Properties\PublishProfiles\served-remote.pubxml" />
     <None Include="Properties\PublishProfiles\served.pubxml" />
+    <Content Include="Pages\About.html" />
+    <Content Include="Pages\Checkin.html" />
+    <Content Include="Pages\Default.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Local\attendance.js" />
-    <Content Include="Scripts\Local\card-parser.js" />
-    <Content Include="Scripts\Local\checkin.js" />
-    <Content Include="Scripts\Local\default.js" />
+    <Content Include="Scripts\Local\controller.js" />
     <Content Include="Scripts\Local\format.js" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.3.js" />
@@ -186,18 +188,17 @@
     <Content Include="Images\select.png" />
     <Content Include="Images\select2.png" />
     <Content Include="Images\slider.png" />
-    <Content Include="About.aspx" />
-    <Content Include="Checkin.aspx" />
-    <Content Include="Format.aspx" />
+    <Content Include="Pages\About.aspx" />
+    <Content Include="Pages\Checkin.aspx" />
+    <Content Include="Pages\Format.aspx" />
     <Content Include="Default.aspx" />
-    <Content Include="Attendance.aspx" />
+    <Content Include="Pages\Attendance.aspx" />
     <Content Include="packages.config" />
     <Content Include="Scripts\Local\colorpicker.js" />
     <Content Include="Scripts\Local\colorpicker-eye.js" />
     <Content Include="Scripts\Local\load-format.js" />
     <Content Include="Scripts\Local\jquery.cookie.js" />
     <Content Include="Scripts\Local\layout.js" />
-    <Content Include="Scripts\Local\store.js" />
     <Content Include="Scripts\Local\colorpicker-utils.js" />
     <Content Include="Scripts\WebForms\DetailsView.js" />
     <Content Include="Scripts\WebForms\Focus.js" />
@@ -241,25 +242,25 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="About.aspx.cs">
+    <Compile Include="Pages\About.aspx.cs">
       <DependentUpon>About.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="About.aspx.designer.cs">
+    <Compile Include="Pages\About.aspx.designer.cs">
       <DependentUpon>About.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Checkin.aspx.cs">
+    <Compile Include="Pages\Checkin.aspx.cs">
       <DependentUpon>Checkin.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Checkin.aspx.designer.cs">
+    <Compile Include="Pages\Checkin.aspx.designer.cs">
       <DependentUpon>Checkin.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Format.aspx.cs">
+    <Compile Include="Pages\Format.aspx.cs">
       <DependentUpon>Format.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Format.aspx.designer.cs">
+    <Compile Include="Pages\Format.aspx.designer.cs">
       <DependentUpon>Format.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
@@ -269,11 +270,11 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Attendance.aspx.cs">
+    <Compile Include="Pages\Attendance.aspx.cs">
       <DependentUpon>Attendance.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Attendance.aspx.designer.cs">
+    <Compile Include="Pages\Attendance.aspx.designer.cs">
       <DependentUpon>Attendance.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
