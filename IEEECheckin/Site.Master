@@ -1,7 +1,7 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="IEEECheckin.ASPDocs.SiteMaster" %>
 
 <!-- TODO - fix navigation so all URLs refer to Default.aspx -->
-<!-- TODO - implement format page -->
+<!-- TODO - cleanup and simplify format controller -->
 <!-- TODO - implement offline mode -->
 
 <!DOCTYPE html>
@@ -16,18 +16,23 @@
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-cookies.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     
     <script src="Scripts/angular-indexed-db.js"></script>
     <script src="Scripts/controller.js"></script>
-    <script src="Scripts/load-format.js"></script>
-    <script src="Scripts/jquery.cookie.js"></script>
 
     <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="Content/Site.css" />
     <link rel="stylesheet" href="Content/font-awesome-4.7.0/css/font-awesome.min.css">
+
+    <!-- Format dependencies -->
+    <script src="Scripts/colorpicker.js"></script>
+    <script src="Scripts/colorpicker-eye.js"></script>
+    <script src="Scripts/colorpicker-utils.js"></script>
+    <link rel="stylesheet" href="Content/colorpicker.css" />
 
     <asp:ContentPlaceHolder runat="server" ID="HeadContent" />
 </head>
@@ -75,10 +80,6 @@
                     }
                 });
             });
-            // Checks if a string is not null, undefined, and empty
-            function checkStr(str) {
-                return (str !== null && str !== undefined && str.trim() !== "")
-            }
         </script>
         <asp:ContentPlaceHolder runat="server" ID="JavaScripts" />
         <footer>

@@ -54,10 +54,6 @@
       <HintPath>..\packages\AspNet.ScriptManager.jQuery.2.2.3\lib\net45\AspNet.ScriptManager.jQuery.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BouncyCastle.Crypto, Version=1.7.4137.9688, Culture=neutral, PublicKeyToken=a4292a325f69b123, processorArchitecture=MSIL">
-      <HintPath>..\packages\BouncyCastle.1.7.0\lib\Net40-Client\BouncyCastle.Crypto.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
@@ -141,18 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\colorpicker.css" />
-    <Content Include="Content\format.css" />
     <Content Include="Content\Site.css" />
-    <Content Include="Images\ajax-loader-dark.gif" />
-    <Content Include="Images\ajax-loader-light.gif" />
-    <Content Include="Images\file-icon-dark-large.png" />
-    <Content Include="Images\file-icon-dark-small.png" />
-    <Content Include="Images\file-icon-light-large.png" />
-    <Content Include="Images\file-icon-light-small.png" />
-    <Content Include="Images\folder-icon-dark-large.png" />
-    <Content Include="Images\folder-icon-dark-small.png" />
-    <Content Include="Images\folder-icon-light-large.png" />
-    <Content Include="Images\folder-icon-light-small.png" />
     <None Include="Properties\PublishProfiles\ieee-remote.pubxml" />
     <None Include="Properties\PublishProfiles\localhost.pubxml" />
     <None Include="Properties\PublishProfiles\served-remote.pubxml" />
@@ -161,11 +146,11 @@
     <Content Include="Pages\Attendance.html" />
     <Content Include="Pages\Checkin.html" />
     <Content Include="Pages\Default.html" />
+    <Content Include="Pages\Format.html" />
     <Content Include="Scripts\angular-indexed-db.js" />
     <Content Include="Scripts\controller.js" />
-    <Content Include="Scripts\format.js" />
-    <Content Include="Scripts\predef-formats.js" />
-    <Content Include="Images\blank.gif" />
+    <Content Include="Scripts\regexes.json" />
+    <None Include="Scripts\themes.json" />
     <Content Include="Images\colorpicker_background.png" />
     <Content Include="Images\colorpicker_hex.png" />
     <Content Include="Images\colorpicker_hsb_b.png" />
@@ -188,19 +173,14 @@
     <Content Include="Images\custom_rgb_g.png" />
     <Content Include="Images\custom_rgb_r.png" />
     <Content Include="Images\custom_submit.png" />
-    <Content Include="Images\icon-128.png" />
     <Content Include="Images\logo.svg" />
     <Content Include="Images\select.png" />
     <Content Include="Images\select2.png" />
     <Content Include="Images\slider.png" />
-    <Content Include="Pages\Format.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="packages.config" />
     <Content Include="Scripts\colorpicker.js" />
     <Content Include="Scripts\colorpicker-eye.js" />
-    <Content Include="Scripts\load-format.js" />
-    <Content Include="Scripts\jquery.cookie.js" />
-    <Content Include="Scripts\layout.js" />
     <Content Include="Scripts\colorpicker-utils.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -220,13 +200,6 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Format.aspx.cs">
-      <DependentUpon>Format.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pages\Format.aspx.designer.cs">
-      <DependentUpon>Format.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>

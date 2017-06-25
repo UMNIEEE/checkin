@@ -1,6 +1,6 @@
 ﻿<div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
     <h1 class="post-header">About</h1>
-    <h4 class="post-header"><asp:Label runat="server" Text="<%$ AppSettings: ApplicationName %>" /> Web App <asp:Label runat="server" Text="<%$ AppSettings: ApplicationVersion %>" /></h4>
+    <h4 class="post-header">Meeting Check-in Web App v3.0</h4>
 </div>
 <div class="col-about-offset col-about">
     <h3>Overview</h3>
@@ -15,9 +15,9 @@
         <li>From the menu page create a new meeting (or select a pre-existing meeting from the drop-down)</li>
         <li>If using a compatible id card with a compatible card reader, focus on the card entry box and swipe the card.</li>
         <li>If not using a compatible id card, have the participant manually enter their information in the "Manual Entry" section.</li>
-        <li>Upon swiping the card or clicking the "Check In" button, a confirmation page will appear and shortly return to the check-in page.</li>
+        <li>Upon swiping the card or clicking the "Check In" button, a confirmation message will appear and shortly be cleared.</li>
         <li>
-            If the confirmation page does not appear or a message box appears, refresh the page and retry entering the user's info.
+            If the confirmation message does not appear, refresh the page and retry entering the user's info.
             If the problem persists, please contact us using the information below.
         </li>
         <li>When done with a check-in session, simply return to the menu page.</li>
@@ -32,7 +32,7 @@
             Not all card types or readers may be compatible. Some requirements include:
             <ul>
                 <li>A keyboard emulating card reader (this may be either magnetic strip or laser scanner)</li>
-                <li>Cards readable by the card reader</li>
+                <li>Cards readable by the card reader and output as readable plaintext</li>
                 <li>A minimum of the person's first and last name present in the card's data</li>
             </ul>
         </li>
@@ -43,12 +43,8 @@
         <li>To view, export or delete entered data, click the "Attendance" link on the menu.</li>
         <li>You can filter by meeting by selecting the meeting from the drop-down box.</li>
         <li>
-            On the view page you can output the data to a Comma Separated Value (CSV) file.
+            On the view page you can output the data to a Comma Separated Value (CSV) file or as JSON data.
             This is a common format that can be opened by many applications include Microsoft Excel and Google Docs.
-        </li>
-        <li>
-            You can also export the data to Google Drive. Click the "Google Log In" button and authorize the application.
-            On the Attendance page, you can "Add to Google" and follow the instructions given.
         </li>
         <li>To clear data, select the meeting from the drop-down box and click the "Clear" button and confirm.</li>
     </ul>

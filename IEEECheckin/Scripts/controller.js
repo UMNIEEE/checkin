@@ -12,8 +12,20 @@
         return hash.toString();
     };
 
+    // Adds the number of days to the date object
+    Date.prototype.addDays = function (days) {
+        var dat = new Date(this.valueOf());
+        dat.setDate(dat.getDate() + days);
+        return dat;
+    }
+
+    // Checks if a string is not null, undefined, and empty
+    function checkStr(str) {
+        return (str !== null && str !== undefined && str.trim() !== "")
+    }
+
     // The AngularJS module.
-    var app = angular.module('checkin', ['ngRoute', 'indexedDB']);
+    var app = angular.module('checkin', ['ngRoute', 'ngCookies', 'indexedDB']);
     var popMsgTimeout = 6000;
 
     // Stores and communicates the current id between controllers
@@ -36,6 +48,84 @@
         return {
             "setMeeting": setMeeting,
             "getMeeting": getMeeting
+        };
+    });
+
+    /**
+    * Updates the format on the page from the cookies
+    */
+    app.service('$formatService', function ($cookies) {
+
+        var updateFormat = function () {
+
+            var iu = $cookies.get("image-url");
+            if (iu != null && iu != undefined && iu !== "") {
+                $cookies.put("image-url", iu, { expires: new Date().addDays(365), path: "/" });
+                $("#logoImage").attr("src", iu);
+                $("#logoImage").removeAttr("visibility");
+            }
+            else {
+                $("#logoImage").attr("visibility", "hidden");
+            }
+
+            var bbc = $cookies.get("body-background-color");
+            if (bbc != null && bbc != undefined) {
+                $cookies.put("body-background-color", bbc, { expires: new Date().addDays(365), path: "/" });
+                $("body").css("background-color", "#" + bbc);
+            }
+
+            var bubc = $cookies.get("button-background-color");
+            if (bubc != null && bubc != undefined) {
+                $cookies.put("button-background-color", bubc, { expires: new Date().addDays(365), path: "/" });
+                $("button").css("background-color", "#" + bubc);
+                $("input[type='submit'][class*='form-control']").css("background-color", "#" + bubc);
+            }
+
+            var bc = $cookies.get("body-color"); // text color
+            if (bc != null && bc != undefined) {
+                $cookies.put("body-color", bc, { expires: new Date().addDays(365), path: "/" });
+                $("body").css("color", "#" + bc);
+                $("button").css("color", "#" + bc);
+                $("input[type='submit'][class*='form-control']").css("color", "#" + bc);
+                $("[class*='boxed-section']").css("border", "1px dashed #" + bc);
+            }
+
+            var ts = $cookies.get("theme-shade");
+            if (ts != null && ts != undefined && ts === "light") {
+                $cookies.put("theme-shade", ts, { expires: new Date().addDays(365), path: "/" });
+                $("img[class*='shaded']").each(function () {
+                    $(this).attr("src", $(this).attr("src").replace("dark", "light"));
+                });
+            }
+            else if (ts != null && ts != undefined && ts === "dark") {
+                $cookies.put("theme-shade", ts, { expires: new Date().addDays(365), path: "/" });
+                $("img[class*='shaded']").each(function () {
+                    $(this).attr("src", $(this).attr("src").replace("light", "dark"));
+                });
+            }
+
+            var ht = $cookies.get("header-text");
+            if (ht != null && ht != undefined) {
+                $cookies.put("header-text", ht, { expires: new Date().addDays(365), path: "/" });
+                $("#topHeader").html(ht);
+            }
+
+            var us = $cookies.get("use-swipe");
+            if (us != null && us != undefined && us === "true") {
+                $cookies.put("use-swipe", us, { expires: new Date().addDays(365), path: "/" });
+                $("#swipe-section").attr("style", "display: inherit;");
+            }
+            else {
+                $("#swipe-section").attr("style", "display: none;");
+            }
+
+            var sel = $cookies.get("card-regex");
+            if (sel != null && sel != undefined)
+                $cookies.put("card-regex", sel, { expires: new Date().addDays(365), path: "/" });
+        }
+
+        return {
+            updateFormat
         };
     });
 
@@ -90,6 +180,12 @@
             controller: 'AttendanceController'
         })
 
+        // route for the format page
+        .when('/format', {
+            templateUrl: 'pages/Format.html',
+            controller: 'FormatController'
+        })
+
         // route to the home page
         .otherwise({
             templateUrl: 'pages/Default.html',
@@ -105,7 +201,7 @@
     /**
     *  Controls the meeting creation/select
     */
-    app.controller('MeetingController', function ($scope, $route, $routeParams, $location, $timeout, $indexedDB, $currentMeetingService) {
+    app.controller('MeetingController', function ($scope, $route, $routeParams, $location, $timeout, $indexedDB, $currentMeetingService, $formatService) {
         var controller = this;
         $scope.$route = $route;
         $scope.$location = $location;
@@ -114,6 +210,7 @@
 
         // Initialize the controller
         controller.init = function () {
+            $formatService.updateFormat();
             // Enter key pressed
             $("#meetingName").keydown(function (e) {
                 var charCode = e.charCode || e.keyCode || e.which;
@@ -200,12 +297,13 @@
     /**
     * Controls the about page
     */
-    app.controller('AboutController', function ($scope) {
+    app.controller('AboutController', function ($scope, $cookies, $formatService) {
         var controller = this;
 
         // Initialize the controller
         controller.init = function () {
-            var bc = $.cookie("body-color"); // text color
+            $formatService.updateFormat();
+            var bc = $cookies.get("body-color"); // text color
             if (bc != null && bc != undefined) {
                 $(".link-override").css("color", "#" + bc);
             }
@@ -220,7 +318,7 @@
     /**
     * Controls the checkin.
     */
-    app.controller('CheckinController', function ($scope, $timeout, $indexedDB, $currentMeetingService) {
+    app.controller('CheckinController', function ($scope, $timeout, $cookies, $indexedDB, $currentMeetingService, $formatService) {
         var controller = this;
         // Current meeting object
         controller.meeting = {};
@@ -237,6 +335,7 @@
 
         // Initialize the controller
         controller.init = function () {
+            $formatService.updateFormat();
             controller.setFocus();
             // Subscribe to the keydown events
             // Move from firstname to lastname
@@ -285,7 +384,7 @@
                     var regex = "^%(\\w+)\\^(\\d+)\\^{3}(\\d+)\\^(\\w+),\\s(?:([\\w\\s]+)\\s(\\w{1})\\?;|([\\w\\s]+)\\?;)(\\d+)=(\\d+)\\?$";
                     
                     // Try and get card parse regex from cookie's
-                    var re = $.cookie("card-regex");
+                    var re = $cookies.get("card-regex");
                     if (re != null && re != undefined) {
                         var rejson = JSON.parse(re);
                         if (checkStr(rejson["regex"]))
@@ -474,7 +573,7 @@
 
         // Set focus based on saved cookies (either card swipe or first name)
         controller.setFocus = function() {
-            var us = $.cookie("use-swipe");
+            var us = $cookies.get("use-swipe");
             if (us != null && us != undefined && us === "true") {
                 $("#cardtxt").focus();
             }
@@ -498,7 +597,10 @@
         controller.init();
     });
 
-    app.controller('AttendanceController', function ($scope, $timeout, $indexedDB, $currentMeetingService) {
+    /**
+    * Controls the attendee management
+    */
+    app.controller('AttendanceController', function ($scope, $timeout, $indexedDB, $currentMeetingService, $formatService) {
         var controller = this;
         $scope.data = { "model": null, "meetings": [], "attendees": [], "winner": null };
         // Dictionary of meetings (key, meeting)
@@ -508,6 +610,7 @@
 
         // Initialize the controller
         controller.init = function () {
+            $formatService.updateFormat();
             controller.updateDropdown();
             $scope.selectionChanged();
         }
@@ -731,6 +834,370 @@
             }
 
             return data;
+        }
+
+        controller.init();
+    });
+
+    /**
+    * Controls the format edit page
+    */
+    app.controller('FormatController', function ($scope, $timeout, $cookies, $http, $formatService) {
+        var controller = this;
+        $scope.data = { thememodel: null, themes: [], regexmodel: null, regexes: [] };
+        controller.themes = {};
+        controller.regexes = {};
+
+        // Initialize the controller
+        controller.init = function () {
+            $formatService.updateFormat();
+            var dt = new Date();
+            $(".footer").html("Powered by the U of M IEEE Tech Subcommittee. &copy; " + dt.getFullYear() + " - University of Minnesota IEEE Student Branch");
+            controller.pageLoaded();
+
+            $http.get('Scripts/themes.json').then(function (res) {
+                $scope.data.themes = res.data;
+                for (var i = 0; i < $scope.data.themes.length; i = i + 1) {
+                    controller.themes[$scope.data.themes[i].id] = $scope.data.themes[i];
+                }
+            });
+            $http.get('Scripts/regexes.json').then(function (res) {
+                $scope.data.regexes = res.data;
+                for (var i = 0; i < $scope.data.regexes.length; i = i + 1) {
+                    controller.regexes[$scope.data.regexes[i].id] = $scope.data.regexes[i];
+                }
+            });
+        }
+
+        controller.pageLoaded = function() {
+            var us = $cookies.get("use-swipe");
+            if (us != null && us != undefined && us === "true") {
+                $("#swipeCheck").prop("checked", true);
+            }
+            else {
+                $("#swipeCheck").prop("checked", false);
+            }
+
+            try {
+                var rn = $cookies.get("card-regex-id");
+                if (checkStr(rn)) {
+                    $scope.data.regexmodel = rn;
+                }
+                else {
+                    $scope.data.regexmodel = null;
+                }
+            }
+            catch (err) {
+
+            }
+
+            try {
+                var tn = $cookies.get("theme-id");
+                if (checkStr(tn)) {
+                    $scope.data.thememodel = tn;
+                }
+                else {
+                    $scope.data.thememodel = null;
+                }
+            }
+            catch (err) {
+
+            }
+
+            var ts = $cookies.get("theme-shade");
+            if (ts != null && ts != undefined && ts === "light") {
+                $("#themeShade").prop("checked", false);
+                $("#themeShadeText").html("Using Light Theme");
+            }
+            else {
+                $("#themeShade").prop("checked", true);
+                $("#themeShadeText").html("Using Dark Theme");
+            }
+
+            var bbc = $cookies.get("body-background-color");
+            if (bbc == null || bbc == undefined)
+                bbc = "ffffff";
+
+            var bubc = $cookies.get("button-background-color");
+            if (bubc == null || bubc == undefined)
+                bubc = "ffffff";
+
+            var bc = $cookies.get("body-color"); // text color
+            if (bc == null || bc == undefined)
+                bc = "000000";
+
+            $('#colorSelector').ColorPicker({ // body background
+                color: bbc,
+                onShow: function (colpkr) {
+                    $(colpkr).fadeIn(500);
+                    return false;
+                },
+                onHide: function (colpkr) {
+                    $(colpkr).fadeOut(500);
+                    return false;
+                },
+                onChange: function (hsb, hex, rgb) {
+                    $("body").css("background-color", "#" + hex);
+                    $cookies.put("body-background-color", hex, { expires: new Date().addDays(365), path: "/" });
+                    $("#colorSelector").css("background-color", "#" + hex);
+                    controller.themeUpdated();
+                }
+            });
+            $('#colorSelector2').ColorPicker({ // button color
+                color: bubc,
+                onShow: function (colpkr) {
+                    $(colpkr).fadeIn(500);
+                    return false;
+                },
+                onHide: function (colpkr) {
+                    $(colpkr).fadeOut(500);
+                    return false;
+                },
+                onChange: function (hsb, hex, rgb) {
+                    $("button").css("background-color", "#" + hex);
+                    $cookies.put("button-background-color", hex, { expires: new Date().addDays(365), path: "/" });
+                    reduced = parseInt(hex, 16);
+                    if (hex & 0x30 >= 0x0A0000)
+                        reduced = reduced - 0x0A0000;
+                    if (hex & 0x0C >= 0x000A00)
+                        reduced = reduced - 0x000A00;
+                    if (hex & 0x03 >= 0x00000A)
+                        reduced = reduced - 0x00000A;
+                    var temp = ("000000" + reduced.toString(16)).substr(-6)
+                    $("button").css("border-color", "#" + temp);
+                    $("#colorSelector2").css("background-color", "#" + hex);
+                    controller.themeUpdated();
+                }
+            });
+            $('#colorSelector3').ColorPicker({ // body (font) color
+                color: bc,
+                onShow: function (colpkr) {
+                    $(colpkr).fadeIn(500);
+                    return false;
+                },
+                onHide: function (colpkr) {
+                    $(colpkr).fadeOut(500);
+                    return false;
+                },
+                onChange: function (hsb, hex, rgb) {
+                    $("body").css("color", "#" + hex);
+                    $("button").css("color", "#" + hex);
+                    $cookies.put("body-color", hex, { expires: new Date().addDays(365), path: "/" });
+                    $("#colorSelector3").css("background-color", "#" + hex);
+                    $("[class*='boxed-section']").css("border", "1px dashed #" + bc);
+                    controller.themeUpdated();
+                }
+            });
+
+            controller.themeUpdated();
+        }
+
+        $scope.updateImage = function() {
+            var value = $("#imageUrl").val();
+            if (value != null && value.toLowerCase().trim() === "ieee") {
+                $("#logoImage").attr("src", "../Images/logo.svg");
+                $("#logoImage").removeAttr("visibility");
+                $cookies.put("image-url", "../Images/logo.svg", { expires: new Date().addDays(365), path: "/" });
+            }
+            else if (value != null && value !== "") {
+                $("#logoImage").attr("src", value);
+                $("#logoImage").removeAttr("visibility");
+                $cookies.put("image-url", value, { expires: new Date().addDays(365), path: "/" });
+            }
+            else {
+                $("#logoImage").attr("visibility", "hidden");
+            }
+
+            controller.themeUpdated();
+            return false;
+        }
+
+        $scope.updateTopText = function() {
+            var value = $("#topText").val();
+            if (value != null) {
+                $("#topHeader").html(value);
+                $cookies.put("header-text", value, { expires: new Date().addDays(365), path: "/" });
+            }
+            controller.themeUpdated();
+            return false;
+        }
+
+        $scope.updateSwipe = function() {
+            if ($("#swipeCheck").prop("checked")) {
+                $cookies.put("use-swipe", true, { expires: new Date().addDays(365), path: "/" });
+                $("#swipe-section").attr("style", "display: inherit;");
+            }
+            else {
+                $cookies.put("use-swipe", false, { expires: new Date().addDays(365), path: "/" });
+                $("#swipe-section").attr("style", "display: none;");
+            }
+            controller.themeUpdated();
+            return false;
+        }
+
+        $scope.updateThemeShade = function() {
+            if ($("#themeShade").prop("checked")) {
+                $cookies.put("theme-shade", "dark", { expires: new Date().addDays(365), path: "/" });
+                $("#themeShadeText").html("Using Dark Theme");
+            }
+            else {
+                $cookies.put("theme-shade", "light", { expires: new Date().addDays(365), path: "/" });
+                $("#themeShadeText").html("Using Light Theme");
+            }
+            controller.themeUpdated();
+            return false;
+        }
+
+        $scope.updateRegex = function() {
+            var id = $scope.data.regexmodel;
+            if (checkStr(id)) {
+                var regex = controller.regexes[id].regex;
+                $cookies.put("card-regex", JSON.stringify(regex), { expires: new Date().addDays(365), path: "/" });
+                $cookies.put("card-regex-id", id, { expires: new Date().addDays(365), path: "/" });
+            }
+            else {
+                $cookies.remove("card-regex", { path: '/' });
+                $cookies.remove("card-regex-id", { path: '/' });
+                $("#swipeCheck").prop("checked", false);
+                $scope.updateSwipe();
+            }
+            return false;
+        }
+
+        $scope.updatePreDefTheme = function () {
+            var id = $scope.data.thememodel;
+            if (checkStr(id)) {
+                $cookies.put("theme-id", id, { expires: new Date().addDays(365), path: "/" });
+                var theme = controller.themes[id];
+                $("#export").val(theme.theme);
+                $scope.importTheme();
+            }
+            else {
+                $cookies.put("theme-id", id, { expires: new Date().addDays(365), path: "/" });
+                $cookies.remove("theme-id", { path: '/' });
+            }
+            return false;
+        }
+
+        $scope.resetTheme = function() {
+            $cookies.remove("body-background-color", { path: '/' });
+            $cookies.remove("button-background-color", { path: '/' });
+            $cookies.remove("background-color", { path: '/' });
+            $cookies.remove("body-color", { path: '/' });
+            $cookies.remove("theme-shade", { path: '/' });
+            $cookies.remove("image-url", { path: '/' });
+            $cookies.remove("header-text", { path: '/' });
+            $cookies.remove("use-swipe", { path: "/" });
+            $cookies.remove("theme-id", { path: '/' });
+            controller.pageLoaded();
+            $formatService.updateFormat();
+        }
+
+        controller.themeUpdated = function() {
+            var bbc = $cookies.get("body-background-color");
+            if (bbc == null || bbc == undefined)
+                bbc = "ffffff";
+            $("#colorSelector").css("background-color", "#" + bbc);
+
+            var bubc = $cookies.get("button-background-color");
+            if (bubc == null || bubc == undefined)
+                bubc = "ffffff";
+            $("#colorSelector2").css("background-color", "#" + bubc);
+
+            var bc = $cookies.get("body-color"); // text color
+            if (bc == null || bc == undefined)
+                bc = "000000";
+            $("#colorSelector3").css("background-color", "#" + bc);
+
+            var ts = $cookies.get("theme-shade");
+            if (ts == null || ts == undefined)
+                ts = "dark";
+            if (ts === "dark") {
+                $("#themeShade").prop("checked", true);
+                $("#themeShadeText").html("Using Dark Theme");
+            }
+            else {
+                $("#themeShade").prop("checked", false);
+                $("#themeShadeText").html("Using Light Theme");
+            }
+
+            var iu = $cookies.get("image-url");
+            if (iu == null || iu == undefined | iu === "") {
+                iu = "";
+                $("#logoImage").attr("visibility", "hidden");
+            }
+            else {
+                $("#logoImage").attr("src", iu);
+                $("#logoImage").removeAttr("visibility");
+            }
+
+            var ht = $cookies.get("header-text");
+            if (ht == null || ht == undefined)
+                ht = "Meeting Check-in Web App";
+            $("#topText").val(ht);
+
+            var us = $cookies.get("use-swipe");
+            if (us == null || us == undefined)
+                us = "false";
+            if (us === "true") {
+                $("#swipeCheck").prop("checked", true);
+            }
+            else {
+                $("#swipeCheck").prop("checked", false);
+            }
+
+            var theme = {
+                bodyBackgroundColor: bbc,
+                buttonBackgroundColor: bubc,
+                bodyColor: bc,
+                themeShade: ts,
+                imageUrl: iu,
+                headerText: ht,
+                useSwipe: us
+            };
+            $("#export").val(JSON.stringify(theme));
+
+            $formatService.updateFormat();
+        }
+
+        $scope.importTheme = function() {
+            try {
+                var theme = jQuery.parseJSON($("#export").val());
+                if (theme == null || theme == undefined)
+                    return false;
+
+                var bbc = theme.bodyBackgroundColor;
+                if (bbc != null && bbc != undefined)
+                    $cookies.put("body-background-color", bbc, { expires: new Date().addDays(365), path: "/" });
+
+                var bubc = theme.buttonBackgroundColor;
+                if (bubc != null && bubc != undefined)
+                    $cookies.put("button-background-color", bubc, { expires: new Date().addDays(365), path: "/" });
+
+                var bc = theme.bodyColor;
+                if (bc != null && bc != undefined)
+                    $cookies.put("body-color", bc, { expires: new Date().addDays(365), path: "/" });
+
+                var ts = theme.themeShade;
+                if (ts != null && ts != undefined)
+                    $cookies.put("theme-shade", ts, { expires: new Date().addDays(365), path: "/" });
+
+                var iu = theme.imageUrl;
+                if (iu != null && iu != undefined)
+                    $cookies.put("image-url", iu, { expires: new Date().addDays(365), path: "/" });
+
+                var ht = theme.headerText;
+                if (ht != null && ht != undefined)
+                    $cookies.put("header-text", ht, { expires: new Date().addDays(365), path: "/" });
+
+                var us = theme.useSwipe;
+                if (us != null && us != undefined)
+                    $cookies.put("use-swipe", us, { expires: new Date().addDays(365), path: "/" });
+
+                controller.themeUpdated();
+            }
+            catch (err) {
+            }
         }
 
         controller.init();

@@ -1,0 +1,17 @@
+﻿ [
+    {
+        "id": 0,
+        "name": "UMN IEEE",
+        "theme": "{\"bodyBackgroundColor\":\"006699\", \"buttonBackgroundColor\":\"39b3d7\", \"bodyColor\":\"ffffff\", \"themeShade\":\"light\", \"imageUrl\":\"../Images/logo.svg\", \"headerText\":\"University of Minnesota\", \"useSwipe\":\"true\"}"
+    },
+    {
+        "id": 1,
+        "name": "UMN IEEE WIE",
+        "theme": "{\"bodyBackgroundColor\":\"a058c9\",\"buttonBackgroundColor\":\"5f0594\",\"bodyColor\":\"ffffff\",\"themeShade\":\"light\",\"imageUrl\":\"http://ieee.griet.ac.in/wp-content/uploads/2014/04/ieee_wie_purple.png\",\"headerText\":\"University of Minnesota\",\"useSwipe\":\"true\"}"
+    },
+    {
+        "id": 2,
+        "name": "GOFIRST",
+        "theme": "{\"bodyBackgroundColor\":\"ffd018\",\"buttonBackgroundColor\":\"9e1313\",\"bodyColor\":\"000000\",\"themeShade\":\"dark\",\"imageUrl\":\"https://mngofirst.org/application/themes/blah/images/logo.png\",\"headerText\":\"GOFIRST\",\"useSwipe\":\"true\"}"
+    }
+]
