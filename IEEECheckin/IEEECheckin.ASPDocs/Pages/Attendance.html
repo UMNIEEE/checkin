@@ -1,0 +1,55 @@
+﻿<div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
+    <h1 class="post-header">Meeting Attendance</h1>
+
+    <p class="section-header">Filter Meeting Attendance <i class="fa fa-filter"></i></p>
+    <div class="boxed-section margin-lg-after">
+        <select class="selectpicker" id="meetingDropdown" ng-change="selectionChanged()" ng-model="data.model">
+            <option value="">All Meetings</option>
+            <option ng-repeat="meeting in data.meetings" value="{{ meeting.id }}">{{ meeting.name }} {{ meeting.date}}</option>
+        </select>
+    </div>
+
+    <p class="section-header">Export <i class="fa fa-download"></i></p>
+    <div class="boxed-section margin-lg-after">
+        <button class="form-control input-lg btn btn-info check-in" ng-click="exportCsvSubmit()" type="button">Get CSV</button>
+        <br /><br />
+        <button class="form-control input-lg btn btn-info check-in" ng-click="exportJsonSubmit()" type="button">Get JSON</button>
+    </div>
+
+    <p class="section-header">Clear Attendance <i class="fa fa-eraser"></i></p>
+    <div class="boxed-section margin-lg-after">
+        <button class="form-control input-lg btn btn-info check-in" ng-click="clearSubmit()" type="button">Delete Meeting</button>
+    </div>
+
+    <p class="section-header">Lottery <i class="fa fa-random"></i></p>
+    <div class="boxed-section margin-lg-after">
+        <button class="form-control input-lg btn btn-info check-in" ng-click="lotteryRoll()" type="button">Roll</button>
+        <p class="text-center">And the winner is...</p>
+        <div class="text-center">
+            <h2>{{data.winner.firstName}} {{data.winner.lastName}}</h2>
+        </div>
+    </div>
+</div>
+
+<div class="col-attendance-offset col-attendance col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
+    <div id="outputDiv">
+        <table id="output">
+            <tr id="headerRow">
+                <th></th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Meeting</th>
+                <th>Date</th>
+            </tr>
+            <tr id="row{{attendee.index}}" ng-repeat="attendee in data.attendees">
+                <td>{{ attendee.index }}</td>
+                <td>{{ attendee.firstName }}</td>
+                <td>{{ attendee.lastName }}</td>
+                <td>{{ attendee.email }}</td>
+                <td>{{ attendee.meeting }}</td>
+                <td>{{ attendee.date }}</td>
+            </tr>
+        </table>
+    </div>
+</div>

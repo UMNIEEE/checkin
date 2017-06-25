@@ -1,17 +1,22 @@
-﻿<h1 class="post-header">Welcome</h1>
-<div class="alert alert-info" style="display: none">
-    <strong>Info!</strong> Must select a meeting or create a new one.
-</div>
-<p class="text-center">Create a new meeting or select one of your previous meetings to begin.</p>
+﻿<div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
+    <h1 class="post-header">Welcome</h1>
+    <div class="alert alert-info" style="display: none">
+        <strong>Info!</strong> Must select a meeting or create a new one.
+    </div>
+    <div class="alert alert-warning" style="display: none">
+        <strong>Warning!</strong> <div class="alert-warning-msg"></div>
+    </div>
+    <p class="text-center">Create a new meeting or select one of your previous meetings to begin.</p>
 
-<p class="section-header">Meeting Options <i class="fa fa-list"></i></p>
-<div class="boxed-section margin-lg-after">
-    <p class="section-label">Select Existing Meeting<i class="fa fa-calendar-o"></i></p>
-    <select class="selectpicker" id="meetingDropdown" name="meeting"></select>
-    <p class="section-label">Create New Meeting<i class="fa fa-pencil"></i></p>
-    <asp:TextBox CssClass="form-control input-lg margin-sm-after" ID="MeetingName" placeholder="Meeting Name" runat="server" />
-    <asp:HiddenField ID="DropdownValue" runat="server" />
-    <asp:Button CssClass="form-control input-lg btn btn-info check-in" ID="MeetingButton" OnClientClick="return meetingSubmit();" Text="Start Meeting" runat="server" />
-    <asp:Button CssClass="hidden" ID="MeetingButtonHidden" PostBackUrl="~/Checkin.aspx" Text="Start Meeting" runat="server" />
-
+    <p class="section-header">Meeting Options <i class="fa fa-list"></i></p>
+    <div class="boxed-section margin-lg-after">
+        <p class="section-label">Select Existing Meeting<i class="fa fa-calendar-o"></i></p>
+        <select class="selectpicker" id="meetingDropdown" name="meeting" ng-model="data.model">
+            <option value="">New Meeting</option>
+            <option ng-repeat="meeting in data.meetings" value="{{ meeting.id }}">{{ meeting.name }} {{ meeting.date}}</option>
+        </select>
+        <p class="section-label">Create New Meeting<i class="fa fa-pencil"></i></p>
+        <input class="form-control input-lg margin-sm-after clearable" type="text" id="meetingName" placeholder="Meeting Name" />
+        <button class="form-control input-lg btn btn-info check-in" ng-click="meetingSubmit()" type="button"><i class="fa fa-check"></i> Start Meeting</button>
+    </div>
 </div>

@@ -248,3 +248,52 @@ ul#menu li a:hover {
     color: #333;
     text-decoration: none;
 }
+
+/* about page overrides
+----------------------------------------------------------*/
+.col-about-offset {
+    margin-left: 25.0%;
+}
+
+.col-about {
+    width: 50.0%;
+}
+
+.link-override {
+    color: rgba(0, 0, 0, 0.8);
+    font-weight: bold;
+}
+
+.link-override:hover {
+    text-decoration: underline;
+}
+
+/* about page overrides
+----------------------------------------------------------*/
+td, th {
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 250px;
+}
+
+th {
+    padding-bottom: 10px;
+}
+
+td {
+    padding-bottom: 5px;
+}
+
+.col-attendance-offset {
+    margin-left: 12.5%;
+}
+
+.col-attendance {
+    width: 75.0%;
+}
+
+#output {
+    background: white;
+    color: black;
+    border: 1px solid;
+}
