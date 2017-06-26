@@ -3,7 +3,7 @@
 
     <p class="section-header">Filter Meeting Attendance <i class="fa fa-filter"></i></p>
     <div class="boxed-section margin-lg-after">
-        <select class="selectpicker" id="meetingDropdown" ng-change="selectionChanged()" ng-model="data.model">
+        <select class="form-control selectpicker" id="meetingDropdown" ng-change="selectionChanged()" ng-model="data.model">
             <option value="">All Meetings</option>
             <option ng-repeat="meeting in data.meetings" value="{{ meeting.id }}">{{ meeting.name }} {{ meeting.date}}</option>
         </select>

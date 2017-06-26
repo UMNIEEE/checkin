@@ -151,51 +151,48 @@
         $routeProvider
 
         // route for the home page
-        .when('/', {
-            templateUrl: 'pages/Default.html',
+            .when('/', {
+            templateUrl: 'Pages/Default.html',
             controller: 'MeetingController'
         })
 
         // alternate route for the home page
-        .when('/Default.aspx', {
-            templateUrl: 'pages/Default.html',
+            .when('/Default.aspx', {
+            templateUrl: 'Pages/Default.html',
             controller: 'MeetingController'
         })
 
         // route for the about page
-        .when('/about', {
-            templateUrl: 'pages/About.html',
+            .when('/about', {
+            templateUrl: 'Pages/About.html',
             controller: 'AboutController'
         })
 
         // route for the contact page
-        .when('/checkin', {
-            templateUrl: 'pages/Checkin.html',
+            .when('/checkin', {
+            templateUrl: 'Pages/Checkin.html',
             controller: 'CheckinController'
         })
 
         // route for the attendance page
-        .when('/attendance', {
-            templateUrl: 'pages/Attendance.html',
+            .when('/attendance', {
+            templateUrl: 'Pages/Attendance.html',
             controller: 'AttendanceController'
         })
 
         // route for the format page
-        .when('/format', {
-            templateUrl: 'pages/Format.html',
+            .when('/format', {
+            templateUrl: 'Pages/Format.html',
             controller: 'FormatController'
         })
 
         // route to the home page
         .otherwise({
-            templateUrl: 'pages/Default.html',
+            templateUrl: 'Pages/Default.html',
             controller: 'MeetingController'
-        });
+            });
 
-        $locationProvider.html5Mode({
-            enabled: true,
-            requireBase: false
-        });
+        $locationProvider.html5Mode(true);
     }]);
 
     /**
@@ -842,7 +839,7 @@
     /**
     * Controls the format edit page
     */
-    app.controller('FormatController', function ($scope, $timeout, $cookies, $http, $formatService) {
+    app.controller('FormatController', function ($scope, $timeout, $cookies, $http, $location, $formatService) {
         var controller = this;
         $scope.data = { thememodel: null, themes: [], regexmodel: null, regexes: [] };
         controller.themes = {};
@@ -855,13 +852,13 @@
             $(".footer").html("Powered by the U of M IEEE Tech Subcommittee. &copy; " + dt.getFullYear() + " - University of Minnesota IEEE Student Branch");
             controller.pageLoaded();
 
-            $http.get('Scripts/themes.json').then(function (res) {
+            $http.get('/IEEECheckin/Content/themes.json').then(function (res) {
                 $scope.data.themes = res.data;
                 for (var i = 0; i < $scope.data.themes.length; i = i + 1) {
                     controller.themes[$scope.data.themes[i].id] = $scope.data.themes[i];
                 }
             });
-            $http.get('Scripts/regexes.json').then(function (res) {
+            $http.get('/IEEECheckin/Content/regexes.json').then(function (res) {
                 $scope.data.regexes = res.data;
                 for (var i = 0; i < $scope.data.regexes.length; i = i + 1) {
                     controller.regexes[$scope.data.regexes[i].id] = $scope.data.regexes[i];
@@ -995,9 +992,19 @@
         $scope.updateImage = function() {
             var value = $("#imageUrl").val();
             if (value != null && value.toLowerCase().trim() === "ieee") {
-                $("#logoImage").attr("src", "../Images/logo.svg");
+                $("#logoImage").attr("src", "../IEEECheckin/Images/logo.svg");
                 $("#logoImage").removeAttr("visibility");
-                $cookies.put("image-url", "../Images/logo.svg", { expires: new Date().addDays(365), path: "/" });
+                $cookies.put("image-url", "../IEEECheckin/Images/logo.svg", { expires: new Date().addDays(365), path: "/" });
+            }
+            else if (value != null && value.toLowerCase().trim() === "wie") {
+                $("#logoImage").attr("src", "../IEEECheckin/Images/ieee_wie_purple.png");
+                $("#logoImage").removeAttr("visibility");
+                $cookies.put("image-url", "../IEEECheckin/Images/ieee_wie_purple.png", { expires: new Date().addDays(365), path: "/" });
+            }
+            else if (value != null && value.toLowerCase().trim() === "gofirst") {
+                $("#logoImage").attr("src", "../IEEECheckin/Images/gofirst.png");
+                $("#logoImage").removeAttr("visibility");
+                $cookies.put("image-url", "../IEEECheckin/Images/gofirst.png", { expires: new Date().addDays(365), path: "/" });
             }
             else if (value != null && value !== "") {
                 $("#logoImage").attr("src", value);
@@ -1069,7 +1076,7 @@
             if (checkStr(id)) {
                 $cookies.put("theme-id", id, { expires: new Date().addDays(365), path: "/" });
                 var theme = controller.themes[id];
-                $("#export").val(theme.theme);
+                $("#export").val(JSON.stringify(theme.theme));
                 $scope.importTheme();
             }
             else {

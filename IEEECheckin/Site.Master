@@ -1,6 +1,5 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="IEEECheckin.ASPDocs.SiteMaster" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="IEEECheckin.SiteMaster" %>
 
-<!-- TODO - fix navigation so all URLs refer to Default.aspx -->
 <!-- TODO - cleanup and simplify format controller -->
 <!-- TODO - implement offline mode -->
 
@@ -11,6 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%: Page.Title %></title>
+    <base href="/IEEECheckin/" />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -21,23 +21,19 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     
-    <script src="Scripts/angular-indexed-db.js"></script>
-    <script src="Scripts/controller.js"></script>
-
-    <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="Content/Site.css" />
     <link rel="stylesheet" href="Content/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="Content/colorpicker.css" />
 
-    <!-- Format dependencies -->
+    <script src="Scripts/angular-indexed-db.js"></script>
+    <script src="Scripts/controller.js"></script>
     <script src="Scripts/colorpicker.js"></script>
     <script src="Scripts/colorpicker-eye.js"></script>
     <script src="Scripts/colorpicker-utils.js"></script>
-    <link rel="stylesheet" href="Content/colorpicker.css" />
-
-    <asp:ContentPlaceHolder runat="server" ID="HeadContent" />
 </head>
 <body ng-app="checkin" ng-controller="MeetingController">
-    <form runat="server" method="post">
+    <form runat="server">
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
@@ -46,13 +42,13 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/">Meeting Check-in</a>
+                    <a class="navbar-brand" href="~/" runat="server">Meeting Check-in</a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="/attendance">Attendance</a></li>
-                        <li><a href="/format">Format</a></li>
-                        <li><a href="/about">About</a></li>
+                        <li><a href="~/attendance" runat="server">Attendance</a></li>
+                        <li><a href="~/format" runat="server">Format</a></li>
+                        <li><a href="~/about" runat="server">About</a></li>
                     </ul>
                 </div>
             </div>
@@ -81,7 +77,6 @@
                 });
             });
         </script>
-        <asp:ContentPlaceHolder runat="server" ID="JavaScripts" />
         <footer>
             <div class="container">
                 <div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">

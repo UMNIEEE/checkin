@@ -11,7 +11,7 @@
     <p class="section-header">Meeting Options <i class="fa fa-list"></i></p>
     <div class="boxed-section margin-lg-after">
         <p class="section-label">Select Existing Meeting<i class="fa fa-calendar-o"></i></p>
-        <select class="selectpicker" id="meetingDropdown" name="meeting" ng-model="data.model">
+        <select class="form-control selectpicker" id="meetingDropdown" name="meeting" ng-model="data.model">
             <option value="">New Meeting</option>
             <option ng-repeat="meeting in data.meetings" value="{{ meeting.id }}">{{ meeting.name }} {{ meeting.date}}</option>
         </select>

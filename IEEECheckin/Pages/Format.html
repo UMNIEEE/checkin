@@ -48,7 +48,7 @@
         <br />
         <br />
         <p class="section-label">Select Existing Theme<i class="fa fa-pencil"></i></p>
-        <select class="selectpicker" id="themeDropdown" ng-change="updatePreDefTheme()" ng-model="data.thememodel">
+        <select class="form-control selectpicker" id="themeDropdown" ng-change="updatePreDefTheme()" ng-model="data.thememodel">
             <option value="">Custom Theme</option>
             <option ng-repeat="theme in data.themes" value="{{ theme.id }}">{{ theme.name }}</option>
         </select>
@@ -56,7 +56,7 @@
     <p class="section-header">Select Card Format <i class="fa fa-credit-card"></i></p>
     <div class="boxed-section margin-lg-after">
         <p>Select your school/card format. See the about page for more information.</p>
-        <select class="selectpicker" id="regexDropdown" ng-change="updateRegex()" ng-model="data.regexmodel">
+        <select class="form-control selectpicker" id="regexDropdown" ng-change="updateRegex()" ng-model="data.regexmodel">
             <option value="">No card format</option>
             <option ng-repeat="regex in data.regexes" value="{{ regex.id }}">{{ regex.name }}</option>
         </select>
