@@ -16,3 +16,8 @@ Based on ASP.NET and AngularJS, the web app uses IndexedDB to store information 
 * To publish to a server, use the WebPublish extension in Visual Studio to publish to an IIS/ASP.NET server
 * Expects to be in a directory 'checkin' at the server root (i.e. ieee.umn.edu/checkin/)
     * To change base directory, change the '<base .../>' tag in Site.Master, the 'basePath' variable in controller.js, the image paths in themes.json, and the publish profile publish path.
+
+## Future Improvements/Work
+* Refactoring of the format controller to simplify operation and reduce amount of code
+* Implementation of offline caching
+* Ordering of meetings in dropdowns by date and name
