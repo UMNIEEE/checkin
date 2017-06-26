@@ -1,7 +1,7 @@
-ieee-checkin
+Meeting Check-in Web App
 ============
 
-Swipe your U Card or enter your info to check in at IEEE UMN meetings.
+Swipe your ID card or enter your info to check in at any meetings.
 
 Based on ASP.NET and AngularJS, the web app uses IndexedDB to store information client side. Allows for managing entries in client or to export to files.
 

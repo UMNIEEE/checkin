@@ -166,4 +166,4 @@ pip-log.txt
 .DS_Store
 
 # Repo specific
-IEEECheckin/Properties/PublishProfiles/served.pubxml
+IEEECheckin/Properties/PublishProfiles/

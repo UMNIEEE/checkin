@@ -121,9 +121,6 @@
     <Content Include="Pages\Checkin.html" />
     <Content Include="Pages\Default.html" />
     <Content Include="Pages\Format.html" />
-    <Content Include="Properties\PublishProfiles\ieee-remote.pubxml.user" />
-    <Content Include="Properties\PublishProfiles\served.pubxml.user" />
-    <Content Include="Properties\PublishProfiles\served.user" />
     <Content Include="Scripts\angular-indexed-db.js" />
     <Content Include="Scripts\colorpicker-eye.js" />
     <Content Include="Scripts\colorpicker-utils.js" />
@@ -206,8 +203,6 @@
     <Content Include="Scripts\Frameworks\bootstrap-3.3.7\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Scripts\Frameworks\bootstrap-3.3.7\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Scripts\Frameworks\bootstrap-3.3.7\fonts\glyphicons-halflings-regular.woff2" />
-    <None Include="Properties\PublishProfiles\ieee-remote.pubxml" />
-    <None Include="Properties\PublishProfiles\served.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
