@@ -7,7 +7,7 @@
             "buttonBackgroundColor": "39b3d7",
             "bodyColor": "ffffff",
             "themeShade": "light",
-            "imageUrl": "../IEEECheckin/Images/logo.svg",
+            "imageUrl": "../checkin/Images/logo.svg",
             "headerText": "University of Minnesota",
             "useSwipe": "true"
         }
@@ -20,7 +20,7 @@
             "buttonBackgroundColor": "5f0594",
             "bodyColor": "ffffff",
             "themeShade": "light",
-            "imageUrl": "../IEEECheckin/Images/ieee_wie_purple.png",
+            "imageUrl": "../checkin/Images/ieee_wie_purple.png",
             "headerText": "University of Minnesota",
             "useSwipe": "true"
         }
@@ -33,7 +33,7 @@
             "buttonBackgroundColor": "9e1313",
             "bodyColor": "000000",
             "themeShade": "dark",
-            "imageUrl": "../IEEECheckin/Images/gofirst.png",
+            "imageUrl": "../checkin/Images/gofirst.png",
             "headerText": "GOFIRST",
             "useSwipe": "true"
         }

@@ -40,6 +40,7 @@ local.properties
 *.suo
 *.user
 *.sln.docstates
+.vs/
 
 # Build results
 [Dd]ebug/
@@ -163,4 +164,6 @@ pip-log.txt
 
 # Mac crap
 .DS_Store
-IEEECheckin/.vs/
+
+# Repo specific
+IEEECheckin/Properties/PublishProfiles/served.pubxml

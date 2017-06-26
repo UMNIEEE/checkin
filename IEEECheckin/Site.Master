@@ -10,20 +10,25 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%: Page.Title %></title>
-    <base href="/IEEECheckin/" />
+    <base href="/checkin/" />
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-cookies.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <!-- Frameworks -->
+    <script src="Scripts/Frameworks/angular-1.6.4/angular.min.js"></script>
+    <script src="Scripts/Frameworks/angular-1.6.4/angular-cookies.min.js"></script>
+    <script src="Scripts/Frameworks/angular-1.6.4/angular-route.min.js"></script>
+
+    <script src="Scripts/Frameworks/jquery-3.2.1/jquery.min.js"></script>
+    <script src="Scripts/Frameworks/jquery-3.2.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="Scripts/Frameworks/jquery-3.2.1/jquery-ui.css">
+
+    <script src="Scripts/Frameworks/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="Scripts/Frameworks/bootstrap-3.3.7/css/bootstrap.min.css">
     
+    <link rel="stylesheet" href="Content/font-awesome-4.7.0/css/font-awesome.min.css">
+
+    <!-- Local/Custom -->
     <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="Content/Site.css" />
-    <link rel="stylesheet" href="Content/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="Content/colorpicker.css" />
 
     <script src="Scripts/angular-indexed-db.js"></script>

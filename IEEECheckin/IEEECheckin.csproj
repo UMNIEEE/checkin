@@ -121,11 +121,28 @@
     <Content Include="Pages\Checkin.html" />
     <Content Include="Pages\Default.html" />
     <Content Include="Pages\Format.html" />
+    <Content Include="Properties\PublishProfiles\ieee-remote.pubxml.user" />
+    <Content Include="Properties\PublishProfiles\served.pubxml.user" />
+    <Content Include="Properties\PublishProfiles\served.user" />
     <Content Include="Scripts\angular-indexed-db.js" />
     <Content Include="Scripts\colorpicker-eye.js" />
     <Content Include="Scripts\colorpicker-utils.js" />
     <Content Include="Scripts\colorpicker.js" />
     <Content Include="Scripts\controller.js" />
+    <Content Include="Scripts\Frameworks\angular-1.6.4\angular-cookies.min.js" />
+    <Content Include="Scripts\Frameworks\angular-1.6.4\angular-route.min.js" />
+    <Content Include="Scripts\Frameworks\angular-1.6.4\angular.min.js" />
+    <Content Include="Scripts\Frameworks\bootstrap-3.3.7\css\bootstrap-theme.css" />
+    <Content Include="Scripts\Frameworks\bootstrap-3.3.7\css\bootstrap-theme.min.css" />
+    <Content Include="Scripts\Frameworks\bootstrap-3.3.7\css\bootstrap.css" />
+    <Content Include="Scripts\Frameworks\bootstrap-3.3.7\css\bootstrap.min.css" />
+    <Content Include="Scripts\Frameworks\bootstrap-3.3.7\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Scripts\Frameworks\bootstrap-3.3.7\js\bootstrap.js" />
+    <Content Include="Scripts\Frameworks\bootstrap-3.3.7\js\bootstrap.min.js" />
+    <Content Include="Scripts\Frameworks\bootstrap-3.3.7\js\npm.js" />
+    <Content Include="Scripts\Frameworks\jquery-3.2.1\jquery-ui.css" />
+    <Content Include="Scripts\Frameworks\jquery-3.2.1\jquery-ui.min.js" />
+    <Content Include="Scripts\Frameworks\jquery-3.2.1\jquery.min.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +198,16 @@
     <Content Include="Content\regexes.json" />
     <Content Include="Content\themes.json" />
     <Content Include="Site.Master" />
+    <Content Include="Scripts\Frameworks\bootstrap-3.3.7\css\bootstrap-theme.css.map" />
+    <Content Include="Scripts\Frameworks\bootstrap-3.3.7\css\bootstrap-theme.min.css.map" />
+    <Content Include="Scripts\Frameworks\bootstrap-3.3.7\css\bootstrap.css.map" />
+    <Content Include="Scripts\Frameworks\bootstrap-3.3.7\css\bootstrap.min.css.map" />
+    <Content Include="Scripts\Frameworks\bootstrap-3.3.7\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Scripts\Frameworks\bootstrap-3.3.7\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Scripts\Frameworks\bootstrap-3.3.7\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Scripts\Frameworks\bootstrap-3.3.7\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="Properties\PublishProfiles\ieee-remote.pubxml" />
+    <None Include="Properties\PublishProfiles\served.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -206,7 +233,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>14772</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:57724/IEEECheckin/</IISUrl>
+          <IISUrl>http://localhost:57724/checkin/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
